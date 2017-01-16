@@ -27,4 +27,3 @@ $varDumper->dump($GLOBALS);
 ## Versioning
 
 The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) scheme.
-[Read more](DOCUMENTATION.md#backward-compatibility) about backward compatibility.sts.

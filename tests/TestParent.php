@@ -2,6 +2,9 @@
 
 namespace Awesomite\VarDumper;
 
+/**
+ * @internal
+ */
 class TestParent
 {
     protected static $protectedStatic = 'protected static value';

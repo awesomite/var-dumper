@@ -4,6 +4,9 @@ namespace Awesomite\VarDumper\Properties;
 
 use Awesomite\VarDumper\BaseTestCase;
 
+/**
+ * @internal
+ */
 class PropertiesTest extends BaseTestCase
 {
     /**

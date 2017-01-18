@@ -2,6 +2,9 @@
 
 namespace Awesomite\VarDumper;
 
+/**
+ * @internal
+ */
 class DumperTest extends BaseTestCase
 {
     /**

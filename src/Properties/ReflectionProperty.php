@@ -40,6 +40,7 @@ class ReflectionProperty implements PropertyInterface
 
     public function isVirtual()
     {
+        // new \ReflectionClass($this->object) sees also virtual properties in HHVM
         $class = new \ReflectionClass(get_class($this->object));
 
         do {

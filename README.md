@@ -4,12 +4,17 @@
 [![Coverage Status](https://coveralls.io/repos/github/awesomite/var-dumper/badge.svg?branch=master)](https://coveralls.io/github/awesomite/var-dumper?branch=master)
 [![Build Status](https://travis-ci.org/awesomite/var-dumper.svg?branch=master)](https://travis-ci.org/awesomite/var-dumper)
 
+## Why?
+
+To set limit size of output of printed variable.
+
 ## Usage
 
 ```php
 <?php
 
 use Awesomite\VarDumper\LightVarDumper;
+use Awesomite\VarDumper\Dumper;
 
 $varDumper = new LightVarDumper();
 $varDumper
@@ -18,6 +23,9 @@ $varDumper
     ->setMaxStringLength(200);
 
 $varDumper->dump($GLOBALS);
+
+// or easier way
+Dumper::dump($GLOBALS);
 ```
 
 ## Installation

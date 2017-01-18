@@ -19,13 +19,18 @@ class LightVarDumper extends InternalVarDumper
 
     private $canCompareArrays;
 
-    public function __construct()
+    public function __construct($displayPlaceInCode = false, $stepShift = 0)
     {
+        parent::__construct($displayPlaceInCode, $stepShift);
         $this->canCompareArrays = $this->canCompareArrayReferences();
     }
 
     public function dump($var)
     {
+        if ($this->displayPlaceInCode && $this->depth === 0) {
+            $this->dumpPlaceInCode(0);
+        }
+
         if ($this->depth > $this->maxDepth) {
             echo "Too deep location\n";
             return;
@@ -62,8 +67,11 @@ class LightVarDumper extends InternalVarDumper
         }
 
         // @codeCoverageIgnoreStart
-        // Theoretically the following line is unnecessary
+        // Theoretically the following lines are unnecessary
+        $prev = $this->displayPlaceInCode;
+        $this->displayPlaceInCode = false;
         parent::dump($var);
+        $this->displayPlaceInCode = $prev;
     }
         // @codeCoverageIgnoreEnd
 

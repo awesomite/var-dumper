@@ -31,11 +31,6 @@ class LightVarDumper extends InternalVarDumper
             $this->dumpPlaceInCode(0);
         }
 
-        if ($this->depth > $this->maxDepth) {
-            echo "Too deep location\n";
-            return;
-        }
-
         if (is_string($var)) {
             $this->dumpString($var);
             return;
@@ -152,16 +147,21 @@ class LightVarDumper extends InternalVarDumper
         $this->references[] = &$array;
 
         $limit = $this->maxChildren;
-        echo 'array(' . count($array) . ') {' . "\n";
-        foreach ($array as $key => $value) {
-            $valDump = str_replace("\n", "\n  ", $this->getDump($value));
-            $valDump = substr($valDump, 0, -2);
-            echo "  [{$key}] => \n  {$valDump}";
-            if (!--$limit) {
-                if (count($array) > $this->maxChildren) {
-                    echo "  (...)\n";
+        $count = count($array);
+        echo 'array(' . $count . ') {' . "\n";
+        if ($count > 0 && $this->depth > $this->maxDepth) {
+            echo "  ...\n";
+        } else {
+            foreach ($array as $key => $value) {
+                $valDump = str_replace("\n", "\n  ", $this->getDump($value));
+                $valDump = substr($valDump, 0, -2);
+                echo "  [{$key}] => \n  {$valDump}";
+                if (!--$limit) {
+                    if (count($array) > $this->maxChildren) {
+                        echo "  (...)\n";
+                    }
+                    break;
                 }
-                break;
             }
         }
         echo '}' . "\n";
@@ -185,21 +185,26 @@ class LightVarDumper extends InternalVarDumper
         /** @var PropertyInterface[] $properties */
         $properties = $propertiesIterator->getProperties();
         $class = get_class($object);
+        $count = count($properties);
         echo 'object(' . $class . ') (' . count($properties) . ') {' . "\n";
-        foreach ($properties as $property) {
-            $valDump = str_replace("\n", "\n  ", $this->getDump($property->getValue()));
-            $valDump = substr($valDump, 0, -2);
-            $declaringClass = '';
-            if ($property->getDeclaringClass() !== $class) {
-                $declaringClass = " @{$property->getDeclaringClass()}";
-            }
-            $name = $property->getName();
-            echo "  {$this->getTextTypePrefix($property)}\${$name}{$declaringClass} => \n  {$valDump}";
-            if (!--$limit) {
-                if (count($properties) > $this->maxChildren) {
-                    echo "  (...)\n";
+        if ($count > 0 && $this->depth > $this->maxDepth) {
+            echo "  ...\n";
+        } else {
+            foreach ($properties as $property) {
+                $valDump = str_replace("\n", "\n  ", $this->getDump($property->getValue()));
+                $valDump = substr($valDump, 0, -2);
+                $declaringClass = '';
+                if ($property->getDeclaringClass() !== $class) {
+                    $declaringClass = " @{$property->getDeclaringClass()}";
                 }
-                break;
+                $name = $property->getName();
+                echo "  {$this->getTextTypePrefix($property)}\${$name}{$declaringClass} => \n  {$valDump}";
+                if (!--$limit) {
+                    if (count($properties) > $this->maxChildren) {
+                        echo "  (...)\n";
+                    }
+                    break;
+                }
             }
         }
         echo '}' . "\n";

@@ -151,8 +151,7 @@ object(stdClass) (2) {
   int(5)
   $foo => 
   object(stdClass) (1) {
-    $bar => 
-    Too deep location
+    ...
   }
 }
 
@@ -182,8 +181,7 @@ DUMP;
 array(1) {
   [foo] => 
   array(1) {
-    [0] => 
-    Too deep location
+    ...
   }
 }
 

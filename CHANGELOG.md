@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0
+
+* New way of displaying too deep arrays:
+```
+array(7) {
+  ...
+}
+```
+
 ## 0.2.0
 
 * Added `\Awesomite\VarDumper\Dumper`

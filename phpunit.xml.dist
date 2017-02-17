@@ -22,4 +22,9 @@
     <logging>
         <log type="coverage-clover" target="build/logs/clover.xml"/>
     </logging>
+
+    <listeners>
+        <listener class="Awesomite\VarDumper\TestListener">
+        </listener>
+    </listeners>
 </phpunit>

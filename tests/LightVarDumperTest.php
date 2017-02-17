@@ -110,15 +110,10 @@ DUMP;
             array(null, "NULL\n"),
             array($object, $objectDump),
             array(tmpfile(), "resource of type stream\n"),
+            array($arrayObject, $arrayObjectDump),
+            array($testArrayObject, $testArrayObjectDump),
+            array($testArrayObject2, $testArrayObjectDump2),
         );
-
-        if (!defined('HHVM_VERSION')) {
-            $result = array_merge($result, array(
-                array($arrayObject, $arrayObjectDump),
-                array($testArrayObject, $testArrayObjectDump),
-                array($testArrayObject2, $testArrayObjectDump2),
-            ));
-        }
 
         return $result;
     }

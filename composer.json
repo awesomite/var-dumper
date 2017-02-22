@@ -1,5 +1,6 @@
 {
     "name": "awesomite/var-dumper",
+    "description": "The alternative for var_dump function",
     "license": "MIT",
     "authors": [
         {

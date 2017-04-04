@@ -31,10 +31,8 @@ DUMP;
 
         $result = array(
             array($recursiveObj, $objectDump),
+            array($recursiveArr, version_compare(PHP_VERSION, '5.4.5' >= 0) ? $arrayDump : false),
         );
-        if (version_compare(PHP_VERSION, '5.4.5' >= 0)) {
-            $result[] = array($recursiveArr, $arrayDump);
-        }
 
         return new \ArrayIterator($result);
     }

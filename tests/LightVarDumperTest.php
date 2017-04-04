@@ -94,12 +94,16 @@ class LightVarDumperTest extends BaseTestCase
      * @dataProvider providerRecursive
      *
      * @param $var
-     * @param string $dump
+     * @param string|bool $expectedDump
      */
-    public function testRecursive($var, $dump)
+    public function testRecursive($var, $expectedDump)
     {
         $dumper = new LightVarDumper();
-        $this->assertSame($dump, $dumper->getDump($var));
+        $dump = $dumper->getDump($var);
+        $this->assertInternalType('string', $dump);
+        if ($expectedDump !== false) {
+            $this->assertSame($expectedDump, $dumper->getDump($var));
+        }
     }
 
     public function providerRecursive()

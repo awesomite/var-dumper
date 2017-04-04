@@ -5,7 +5,7 @@ namespace Awesomite\VarDumper;
 class Dumper
 {
     /**
-     * @param mixed... $args
+     * @param mixed ...$args
      */
     public static function dump()
     {

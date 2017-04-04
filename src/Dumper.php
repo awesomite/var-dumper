@@ -2,6 +2,9 @@
 
 namespace Awesomite\VarDumper;
 
+/**
+ * The following class is just an example how to use LightVarDumper
+ */
 class Dumper
 {
     /**

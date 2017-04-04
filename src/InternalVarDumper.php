@@ -9,7 +9,7 @@ class InternalVarDumper implements VarDumperInterface
     private $shift;
 
     /**
-     * @param bool|false $displayPlaceInCode true whenever dumper should print also information about file and line
+     * @param bool $displayPlaceInCode true whenever dumper should print also information about file and line
      * @param int $stepShift nesting level of method "dump", it is used whenever $displayPlaceInCode is equal to true
      *
      * @see Awesomite\VarDumper\Dumper::dump

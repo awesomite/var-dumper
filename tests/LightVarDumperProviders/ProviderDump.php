@@ -14,6 +14,8 @@ class ProviderDump implements \IteratorAggregate
         $result['arrayObject'] = $this->getArrayObject();
         $result['extendedArrayObject'] = $this->getExtendedArrayObject();
         $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
+        $result['null'] = array(null, "NULL\n");
+        $result['resource'] = array(tmpfile(), "resource of type stream\n");
 
         return new \ArrayIterator($result);
     }

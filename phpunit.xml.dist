@@ -24,7 +24,7 @@
     </logging>
 
     <listeners>
-        <listener class="Awesomite\VarDumper\TestListener">
+        <listener class="Awesomite\VarDumper\Listeners\TestListener">
         </listener>
     </listeners>
 </phpunit>

@@ -32,4 +32,25 @@ class ReflectionPropertyTest extends BaseTestCase
             array($reflection, get_class($this)),
         );
     }
+
+    /**
+     * @dataProvider providerGetDeclaringClass
+     *
+     * @param ReflectionProperty $property
+     * @param string $expectedClass
+     */
+    public function testGetDeclaringClass(ReflectionProperty $property, $expectedClass)
+    {
+        $this->assertSame($expectedClass, $property->getDeclaringClass());
+    }
+
+    public function providerGetDeclaringClass()
+    {
+        $childClass = get_class(new TestChild());
+        $parentClass = get_class(new TestParent());
+
+        return array(
+            array(new ReflectionProperty(new \ReflectionProperty($childClass, 'foo'), new TestChild()), $parentClass),
+        );
+    }
 }

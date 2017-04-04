@@ -7,7 +7,13 @@ class InternalVarDumper implements VarDumperInterface
     protected $displayPlaceInCode;
     
     private $shift;
-    
+
+    /**
+     * @param bool|false $displayPlaceInCode true whenever dumper should print also information about file and line
+     * @param int $stepShift nesting level of method "dump", it is used whenever $displayPlaceInCode is equal to true
+     *
+     * @see Awesomite\VarDumper\Dumper::dump
+     */
     public function __construct($displayPlaceInCode = false, $stepShift = 0)
     {
         $this->displayPlaceInCode = $displayPlaceInCode;
@@ -52,7 +58,7 @@ class InternalVarDumper implements VarDumperInterface
 
         $step = $stackTrace[$num];
 
-        if (isset($step['file']) && $step['file']) {
+        if (isset($step['file']) && !empty($step['file'])) {
             echo $step['file'] . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
         }
     }

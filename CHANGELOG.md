@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+* Providers for `Awesomite\VarDumper\LightVarDumperTest` have been
+moved to separated classes.
+* `Awesomite\VarDumper\LightVarDumper` will not print space
+after `=>` anymore (e.g. output `=> ` has been changed to `=>`)
+
 ## 0.3.1
 
 Fixed bug in line `src/InternalVarDumper.php:43` - should be `version_compare(PHP_VERSION, '5.3.6') >= 0`

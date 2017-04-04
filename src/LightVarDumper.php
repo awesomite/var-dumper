@@ -19,6 +19,9 @@ class LightVarDumper extends InternalVarDumper
 
     private $canCompareArrays;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($displayPlaceInCode = false, $stepShift = 0)
     {
         parent::__construct($displayPlaceInCode, $stepShift);
@@ -155,7 +158,7 @@ class LightVarDumper extends InternalVarDumper
             foreach ($array as $key => $value) {
                 $valDump = str_replace("\n", "\n  ", $this->getDump($value));
                 $valDump = substr($valDump, 0, -2);
-                echo "  [{$key}] => \n  {$valDump}";
+                echo "  [{$key}] =>\n  {$valDump}";
                 if (!--$limit) {
                     if (count($array) > $this->maxChildren) {
                         echo "  (...)\n";
@@ -198,7 +201,7 @@ class LightVarDumper extends InternalVarDumper
                     $declaringClass = " @{$property->getDeclaringClass()}";
                 }
                 $name = $property->getName();
-                echo "  {$this->getTextTypePrefix($property)}\${$name}{$declaringClass} => \n  {$valDump}";
+                echo "  {$this->getTextTypePrefix($property)}\${$name}{$declaringClass} =>\n  {$valDump}";
                 if (!--$limit) {
                     if (count($properties) > $this->maxChildren) {
                         echo "  (...)\n";

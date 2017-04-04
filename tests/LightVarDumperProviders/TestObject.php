@@ -1,6 +1,6 @@
 <?php
 
-namespace Awesomite\VarDumper;
+namespace Awesomite\VarDumper\LightVarDumperProviders;
 
 /**
  * @internal

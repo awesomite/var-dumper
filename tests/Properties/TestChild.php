@@ -5,4 +5,6 @@ namespace Awesomite\VarDumper\Properties;
 /**
  * @internal
  */
-class TestChild extends TestParent {}
+class TestChild extends TestParent
+{
+}

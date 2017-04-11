@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1
+
+* Fixed bug - report could not be sent to [coveralls.io](https://coveralls.io/),
+because there is not a git repository in project directory (https://travis-ci.org/awesomite/var-dumper/jobs/221119856)
+
 ## 0.5.0
 
 * Added `examples` directory

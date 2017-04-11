@@ -2,6 +2,8 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
+use Awesomite\VarDumper\Objects\Hasher;
+
 /**
  * @internal
  */
@@ -9,12 +11,14 @@ class ProviderRecursive implements \IteratorAggregate
 {
     public function getIterator()
     {
+        $hasher = new Hasher();
+
         $recursiveObj = new \stdClass();
         $recursiveObj->self = $recursiveObj;
-        $objectDump = <<<'DUMP'
-object(stdClass) (1) {
-  $self =>
-  RECURSIVE object(stdClass)
+        $objectDump = <<<DUMP
+object(stdClass) #{$hasher->getHashId($recursiveObj)} (1) {
+  \$self =>
+  RECURSIVE object(stdClass) #{$hasher->getHashId($recursiveObj)}
 }
 
 DUMP;

@@ -2,6 +2,8 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
+use Awesomite\VarDumper\Objects\Hasher;
+
 /**
  * @internal
  */
@@ -50,27 +52,29 @@ DUMP;
 
     private function getObjects()
     {
+        $hasher = new Hasher();
+
         $object = new \stdClass();
         $object->foo = 'foo';
         $object->bar = 'bar';
         $object->foobar = 'foobar';
 
-        $objectDump1 = <<<'DUMP'
-object(stdClass) (3) {
-  $foo =>
+        $objectDump1 = <<<DUMP
+object(stdClass) #{$hasher->getHashId($object)} (3) {
+  \$foo =>
   string(3) 'foo'
   (...)
 }
 
 DUMP;
 
-        $objectDump2 = <<<'DUMP'
-object(stdClass) (3) {
-  $foo =>
+        $objectDump2 = <<<DUMP
+object(stdClass) #{$hasher->getHashId($object)} (3) {
+  \$foo =>
   string(3) 'foo'
-  $bar =>
+  \$bar =>
   string(3) 'bar'
-  $foobar =>
+  \$foobar =>
   string(6) 'foobar'
 }
 

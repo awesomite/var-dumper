@@ -2,6 +2,8 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
+use Awesomite\VarDumper\Objects\Hasher;
+
 /**
  * @internal
  */
@@ -18,31 +20,33 @@ class ProviderMaxDepth implements \IteratorAggregate
 
     private function getObjects()
     {
+        $hasher = new Hasher();
+
         $obj = new \stdClass();
         $obj->testInt = 5;
         $obj->foo = new \stdClass();
         $obj->foo->bar = new \stdClass();
 
-        $dump1 = <<<'DUMP'
-object(stdClass) (2) {
-  $testInt =>
+        $dump1 = <<<DUMP
+object(stdClass) #{$hasher->getHashId($obj)} (2) {
+  \$testInt =>
   int(5)
-  $foo =>
-  object(stdClass) (1) {
+  \$foo =>
+  object(stdClass) #{$hasher->getHashId($obj->foo)} (1) {
     ...
   }
 }
 
 DUMP;
 
-        $dump2 = <<<'DUMP'
-object(stdClass) (2) {
-  $testInt =>
+        $dump2 = <<<DUMP
+object(stdClass) #{$hasher->getHashId($obj)} (2) {
+  \$testInt =>
   int(5)
-  $foo =>
-  object(stdClass) (1) {
-    $bar =>
-    object(stdClass) (0) {
+  \$foo =>
+  object(stdClass) #{$hasher->getHashId($obj->foo)} (1) {
+    \$bar =>
+    object(stdClass) #{$hasher->getHashId($obj->foo->bar)} (0) {
     }
   }
 }

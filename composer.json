@@ -21,17 +21,17 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^5.3|^7.0"
+        "php": "^5.3 || ^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.35",
-        "satooshi/php-coveralls": "^1.0.1|^2.0.0",
-        "symfony/console": "^2.7|^3.0",
+        "satooshi/php-coveralls": "^1.0.1 || ^2.0.0",
+        "symfony/console": "^2.7 || ^3.0",
         "sebastian/comparator": ">=1.2.3"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.4-dev"
+            "dev-master": "0.5-dev"
         }
     }
 }

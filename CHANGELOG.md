@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.5.0
+
+* Added `examples` directory
+* Class `Awesomite\VarDumper\Dumper` is useless and has been removed
+* Class `Awesomite\VarDumper\Objects\Hasher` has been added.
+Human friendly id (based on [`spl_object_hash()`](http://php.net/manual/en/function.spl-object-hash.php))
+will be added to dump of object, e.g.:
+```
+object(stdClass) #1 (0) {
+}
+```
+instead of
+```
+object(stdClass) (0) {
+}
+```
+
 ## 0.4.0
 
 * Providers for `Awesomite\VarDumper\LightVarDumperTest` have been

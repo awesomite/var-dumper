@@ -16,7 +16,6 @@ To set limit size of output of printed variable.
 <?php
 
 use Awesomite\VarDumper\LightVarDumper;
-use Awesomite\VarDumper\Dumper;
 
 $varDumper = new LightVarDumper();
 $varDumper
@@ -25,9 +24,6 @@ $varDumper
     ->setMaxStringLength(200);
 
 $varDumper->dump($GLOBALS);
-
-// or easier way
-Dumper::dump($GLOBALS);
 ```
 
 ## Installation
@@ -37,3 +33,7 @@ Dumper::dump($GLOBALS);
 ## Versioning
 
 The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) scheme.
+
+## Examples
+
+[Examples](examples)

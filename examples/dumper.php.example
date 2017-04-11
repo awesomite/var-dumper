@@ -1,0 +1,44 @@
+<?php
+
+use Awesomite\VarDumper\LightVarDumper;
+
+require __DIR__ . DIRECTORY_SEPARATOR . 'init.php.example';
+
+/**
+ * The following class is just an example how to use LightVarDumper
+ */
+class Dumper
+{
+    /**
+     * @param mixed ...$args
+     */
+    public static function dump()
+    {
+        $dumper = new LightVarDumper(true, 1);
+        foreach (func_get_args() as $arg) {
+            $dumper->dump($arg);
+        }
+    }
+}
+
+$obj1 = new stdClass();
+$obj2 = new stdClass();
+$obj2->obj1 = $obj1;
+
+Dumper::dump($obj1, $obj2);
+
+/*
+
+Output:
+
+(...)/var-dumper/examples/dumper.php.example:28:
+object(stdClass) #1 (0) {
+}
+(...)/var-dumper/examples/dumper.php.example:28:
+object(stdClass) #2 (1) {
+  $obj1 =>
+  object(stdClass) #1 (0) {
+  }
+}
+
+*/

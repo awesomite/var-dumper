@@ -2,6 +2,8 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Objects\Hasher;
+use Awesomite\VarDumper\Objects\HasherInterface;
 use Awesomite\VarDumper\Properties\Properties;
 use Awesomite\VarDumper\Properties\PropertyInterface;
 
@@ -18,6 +20,8 @@ class LightVarDumper extends InternalVarDumper
     private $references = array();
 
     private $canCompareArrays;
+
+    private $hasher = null;
 
     /**
      * {@inheritdoc}
@@ -176,7 +180,7 @@ class LightVarDumper extends InternalVarDumper
     private function dumpObj($object)
     {
         if (in_array($object, $this->references, true)) {
-            echo 'RECURSIVE object(' . get_class($object) . ")\n";
+            echo 'RECURSIVE object(' . get_class($object) . ") #{$this->getHasher()->getHashId($object)}\n";
             return;
         }
 
@@ -189,7 +193,8 @@ class LightVarDumper extends InternalVarDumper
         $properties = $propertiesIterator->getProperties();
         $class = get_class($object);
         $count = count($properties);
-        echo 'object(' . $class . ') (' . count($properties) . ') {' . "\n";
+        $hashId = $this->getHasher()->getHashId($object);
+        echo 'object(' . $class . ') #' . $hashId . ' (' . count($properties) . ') {' . "\n";
         if ($count > 0 && $this->depth > $this->maxDepth) {
             echo "  ...\n";
         } else {
@@ -260,5 +265,17 @@ class LightVarDumper extends InternalVarDumper
         }
 
         return version_compare(PHP_VERSION, '5.3.15') >= 0;
+    }
+
+    /**
+     * @return HasherInterface
+     */
+    private function getHasher()
+    {
+        if (is_null($this->hasher)) {
+            $this->hasher = new Hasher();
+        }
+
+        return $this->hasher;
     }
 }

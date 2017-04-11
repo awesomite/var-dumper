@@ -2,6 +2,8 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
+use Awesomite\VarDumper\Objects\Hasher;
+
 /**
  * @internal
  */
@@ -22,25 +24,27 @@ class ProviderDump implements \IteratorAggregate
 
     private function getVisibilityModifiers()
     {
+        $hasher = new Hasher();
+
         $object = new TestObject();
         $object->setPrivate('private variable');
         $object->setProtected('protected variable');
         $object->public = 'public variable';
         $object->dynamicPublic = 'another public variable';
 
-        $objectDump = <<<'OBJECT'
-object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) (6) {
-  public static $static =>
+        $objectDump = <<<OBJECT
+object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHashId($object)} (6) {
+  public static \$static =>
   string(12) 'static value'
-  public $public =>
+  public \$public =>
   string(15) 'public variable'
-  protected $protected =>
+  protected \$protected =>
   string(18) 'protected variable'
-  protected static $protectedStatic @Awesomite\VarDumper\LightVarDumperProviders\TestParent =>
+  protected static \$protectedStatic @Awesomite\VarDumper\LightVarDumperProviders\TestParent =>
   string(22) 'protected static value'
-  $dynamicPublic =>
+  \$dynamicPublic =>
   string(23) 'another public variable'
-  private $private @Awesomite\VarDumper\LightVarDumperProviders\TestParent =>
+  private \$private @Awesomite\VarDumper\LightVarDumperProviders\TestParent =>
   string(16) 'private variable'
 }
 
@@ -51,19 +55,21 @@ OBJECT;
 
     private function getArrayObject()
     {
+        $hasher = new Hasher();
+
         $arrayObject = new \ArrayObject();
         $arrayObject['awesomite.varDumper'] = true;
 
-        $arrayObjectDump = <<<'DUMP'
-object(ArrayObject) (3) {
-  private $storage =>
+        $arrayObjectDump = <<<DUMP
+object(ArrayObject) #{$hasher->getHashId($arrayObject)} (3) {
+  private \$storage =>
   array(1) {
     [awesomite.varDumper] =>
     bool(true)
   }
-  private $flags =>
+  private \$flags =>
   int(0)
-  private $iteratorClass =>
+  private \$iteratorClass =>
   string(13) 'ArrayIterator'
 }
 
@@ -74,21 +80,23 @@ DUMP;
 
     private function getExtendedArrayObject()
     {
+        $hasher = new Hasher();
+
         $testArrayObject = new TestArrayObject();
         $testArrayObject['awesomite.varDumper'] = true;
 
-        $testArrayObjectDump = <<<'DUMP'
-object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) (4) {
-  private $privateProperty =>
+        $testArrayObjectDump = <<<DUMP
+object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject)} (4) {
+  private \$privateProperty =>
   string(13) 'private value'
-  private $storage @ArrayObject =>
+  private \$storage @ArrayObject =>
   array(1) {
     [awesomite.varDumper] =>
     bool(true)
   }
-  private $flags @ArrayObject =>
+  private \$flags @ArrayObject =>
   int(0)
-  private $iteratorClass @ArrayObject =>
+  private \$iteratorClass @ArrayObject =>
   string(13) 'ArrayIterator'
 }
 
@@ -99,24 +107,26 @@ DUMP;
 
     private function getExtendedArrayObject2()
     {
+        $hasher = new Hasher();
+
         $testArrayObject2 = new TestArrayObject();
         $testArrayObject2['privateProperty'] = 'public value';
         $testArrayObject2['secondProperty'] = 'second value';
 
-        $testArrayObjectDump2 = <<<'DUMP'
-object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) (4) {
-  private $privateProperty =>
+        $testArrayObjectDump2 = <<<DUMP
+object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject2)} (4) {
+  private \$privateProperty =>
   string(13) 'private value'
-  private $storage @ArrayObject =>
+  private \$storage @ArrayObject =>
   array(2) {
     [privateProperty] =>
     string(12) 'public value'
     [secondProperty] =>
     string(12) 'second value'
   }
-  private $flags @ArrayObject =>
+  private \$flags @ArrayObject =>
   int(0)
-  private $iteratorClass @ArrayObject =>
+  private \$iteratorClass @ArrayObject =>
   string(13) 'ArrayIterator'
 }
 

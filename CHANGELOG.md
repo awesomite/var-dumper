@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+* Support for PHPUnit ^5.7 and ^6.1
+
 ## 0.5.2
 
 * Fixed bug - bracket was placed in wrong place

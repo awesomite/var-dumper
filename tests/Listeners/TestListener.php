@@ -2,70 +2,52 @@
 
 namespace Awesomite\VarDumper\Listeners;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @internal
  */
-class TestListener implements \PHPUnit_Framework_TestListener
+class TestListener extends BridgeTestListener
 {
     private $offset = .1;
 
-    private $output;
+    private $messages = array();
 
-    public function __construct()
+    public function __destruct()
     {
-        $this->output = new ConsoleOutput();
+        $output = $this->getConsoleOutput();
+        foreach ($this->messages as $message) {
+            $output->writeln($message);
+        }
     }
 
-    public function startTest(\PHPUnit_Framework_Test $test)
-    {
-
-    }
-
-    public function endTest(\PHPUnit_Framework_Test $test, $time)
+    protected function _endTest($test, $time)
     {
         if ($time < $this->offset) {
             return;
         }
 
-        $name = $test instanceof \PHPUnit_Framework_TestCase
+        $name = ($test instanceof \PHPUnit_Framework_TestCase) || ($test instanceof TestCase)
             ? get_class($test) . '::' . $test->getName()
             : get_class($test);
 
-        $output = new ConsoleOutput();
-        $message = sprintf("\n<error>Test '%s' ended and took %0.2f seconds.</error>",
+        $this->messages[] = sprintf("<warning>Test '%s' took %0.2f seconds.</warning>",
             $name,
             $time
         );
-        $output->writeln($message);
     }
 
-    public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    private function getConsoleOutput()
     {
-    }
+        $style = new OutputFormatterStyle();
+        $style->setBackground('yellow');
+        $style->setForeground('black');
 
-    public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
-    {
-    }
+        $output = new ConsoleOutput();
+        $output->getFormatter()->setStyle('warning', $style);
 
-    public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
-    {
-    }
-
-    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
-    {
-    }
-
-    public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
-    {
-    }
-
-    public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
-    {
-    }
-
-    public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
-    {
+        return $output;
     }
 }

@@ -5,7 +5,7 @@ namespace Awesomite\VarDumper;
 /**
  * @internal
  */
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class BaseTestCase extends BridgeTestCase
 {
     protected function setUp()
     {

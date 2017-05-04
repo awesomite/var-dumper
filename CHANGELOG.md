@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+
+* Removed invalid doc comment
+
 ## 0.6.0
 
 * Support for PHPUnit ^5.7 and ^6.1

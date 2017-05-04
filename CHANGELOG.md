@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.2
+
+* Fixed bug - bracket was placed in wrong place
+
 ## 0.5.1
 
 * Fixed bug - report could not be sent to [coveralls.io](https://coveralls.io/),

@@ -255,7 +255,7 @@ class LightVarDumper extends InternalVarDumper
      */
     private function canCompareArrayReferences()
     {
-        if (version_compare(PHP_VERSION, '5.4.5' >= 0)) {
+        if (version_compare(PHP_VERSION, '5.4.5') >= 0) {
             return true;
         }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.2
+
+* Changed `.gitattributes` - do not remove whole `/bin` directory
+
 ## 0.6.1
 
 * Removed invalid doc comment

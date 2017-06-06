@@ -9,6 +9,7 @@ class Properties extends AbstractProperties
 {
     static private $mapping = array(
         '\ArrayObject' => '\Awesomite\VarDumper\Properties\PropertiesArrayObject',
+        '\Closure' => '\Awesomite\VarDumper\Properties\PropertiesClosure',
     );
 
     /**

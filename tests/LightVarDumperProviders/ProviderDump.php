@@ -18,6 +18,7 @@ class ProviderDump implements \IteratorAggregate
         $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
         $result['null'] = array(null, "NULL\n");
         $result['resource'] = array(tmpfile(), "resource of type stream\n");
+        $result['closure'] = $this->getClosure();
 
         return new \ArrayIterator($result);
     }
@@ -133,5 +134,33 @@ object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->g
 DUMP;
 
         return array($testArrayObject2, $testArrayObjectDump2);
+    }
+
+    private function getClosure()
+    {
+        $closure = function () {};
+        $dump =<<<'DUMP'
+object(Closure) #10 (5) {
+  $name =>
+  string(53) 'Awesomite\\VarDumper\\LightVarDumperProviders\\{closure}'
+  $filename =>
+  string(%%digit%%) '%%file%%'
+  $startLine =>
+  int(%%digit%%)
+  $endLine =>
+  int(%%digit%%)
+  $closureScopeClass =>
+  string(56) 'Awesomite\\VarDumper\\LightVarDumperProviders\\ProviderDump'
+}
+
+DUMP;
+        $replace = array(
+            '%%digit%%' => '[0-9]{1,}',
+            '%%file%%' => '.*',
+        );
+        $regex = '#^' . preg_quote($dump, '#') . '$#ms';
+        $regex = str_replace(array_keys($replace), array_values($replace), $regex);
+
+        return array($closure, $regex);
     }
 }

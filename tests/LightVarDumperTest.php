@@ -22,7 +22,11 @@ class LightVarDumperTest extends BaseTestCase
     public function testDump($var, $expectedDump)
     {
         $dumper = new LightVarDumper();
-        $this->assertSame($expectedDump, $dumper->getDump($var));
+        if ($expectedDump[0] === '#') {
+            $this->assertRegExp($expectedDump, $dumper->getDump($var));
+        } else {
+            $this->assertSame($expectedDump, $dumper->getDump($var));
+        }
     }
 
     public function providerDump()

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+* Added pretty dump for `Closure`
+
 ## 0.6.2
 
 * Changed `.gitattributes` - do not remove whole `/bin` directory

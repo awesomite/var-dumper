@@ -139,8 +139,10 @@ class PropertiesTest extends BaseTestCase
             $fnCreateProperty('filename', __FILE__),
             $fnCreateProperty('startLine', __LINE__ - 4),
             $fnCreateProperty('endLine', __LINE__ - 5),
-            $fnCreateProperty('closureScopeClass', get_class($this)),
         );
+        if (version_compare(PHP_VERSION, '5.4') >= 0) {
+            $properties[] = $fnCreateProperty('closureScopeClass', get_class($this));
+        }
 
         return array(
             $closure,

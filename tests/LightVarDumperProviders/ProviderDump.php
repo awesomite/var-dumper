@@ -140,7 +140,7 @@ DUMP;
     {
         $closure = function () {};
         $dump =<<<'DUMP'
-object(Closure) #10 (5) {
+object(Closure) #10 (%%digit%%) {
   $name =>
   string(53) 'Awesomite\\VarDumper\\LightVarDumperProviders\\{closure}'
   $filename =>

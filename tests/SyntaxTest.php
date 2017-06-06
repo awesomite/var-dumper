@@ -7,9 +7,6 @@ namespace Awesomite\VarDumper;
  */
 class SyntaxTest extends BaseTestCase
 {
-    /**
-     * @runInSeparateProcess
-     */
     public function testSyntax()
     {
         $path = realpath(implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'src')));

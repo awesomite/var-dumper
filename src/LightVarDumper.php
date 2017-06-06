@@ -193,12 +193,12 @@ class LightVarDumper extends InternalVarDumper
         $properties = $propertiesIterator->getProperties();
         $class = get_class($object);
 
-        /**
-         * @see https://github.com/facebook/hhvm/issues/7868
-         */
+        // @see https://github.com/facebook/hhvm/issues/7868
+        // @codeCoverageIgnoreStart
         if (defined('HHVM_VERSION') && $object instanceof \Closure) {
             $class = 'Closure';
         }
+        // @codeCoverageIgnoreEnd
 
         $count = count($properties);
         $hashId = $this->getHasher()->getHashId($object);

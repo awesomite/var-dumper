@@ -94,7 +94,7 @@ class PropertiesTest extends BaseTestCase
         $propertiesObj = new Properties($closure);
         $properties = $propertiesObj->getProperties();
         $this->assertSame(count($properties), count($expectedProperties));
-        $methods = [
+        $methods = array(
             'getName',
             'getValue',
             'getDeclaringClass',
@@ -103,7 +103,7 @@ class PropertiesTest extends BaseTestCase
             'isPublic',
             'isVirtual',
             'isStatic',
-        ];
+        );
         foreach ($properties as $key => $value) {
             foreach ($methods as $method) {
                 $this->assertSame(

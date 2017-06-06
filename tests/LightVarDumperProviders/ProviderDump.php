@@ -149,14 +149,22 @@ object(Closure) #10 (5) {
   int(%%digit%%)
   $endLine =>
   int(%%digit%%)
-  $closureScopeClass =>
-  string(56) 'Awesomite\\VarDumper\\LightVarDumperProviders\\ProviderDump'
-}
+%%scopeClass%%}
 
 DUMP;
+        $scopeClass =<<<'RAW'
+  $closureScopeClass =>
+  string(56) 'Awesomite\\VarDumper\\LightVarDumperProviders\\ProviderDump'
+
+RAW;
+        $scopeClass = version_compare(PHP_VERSION, '5.4')
+            ? preg_quote($scopeClass, '#')
+            : '';
+
         $replace = array(
             '%%digit%%' => '[0-9]{1,}',
             '%%file%%' => '.*',
+            '%%scopeClass%%' => $scopeClass,
         );
         $regex = '#^' . preg_quote($dump, '#') . '$#ms';
         $regex = str_replace(array_keys($replace), array_values($replace), $regex);

@@ -4,8 +4,10 @@ install:
   - mkdir -p build/logs
   - mv .git ~.git
 
+dist: trusty
+sudo: false
+
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
@@ -13,6 +15,11 @@ php:
   - 7.1
   - hhvm
   - nightly
+
+matrix:
+  include:
+    - php: 5.3
+      dist: precise
 
 script:
   - travis_wait composer update --prefer-lowest --no-interaction && vendor/bin/phpunit

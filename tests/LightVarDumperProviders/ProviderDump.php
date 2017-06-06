@@ -157,7 +157,7 @@ DUMP;
   string(56) 'Awesomite\\VarDumper\\LightVarDumperProviders\\ProviderDump'
 
 RAW;
-        $scopeClass = version_compare(PHP_VERSION, '5.4')
+        $scopeClass = version_compare(PHP_VERSION, '5.4') >= 0
             ? preg_quote($scopeClass, '#')
             : '';
 

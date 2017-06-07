@@ -120,7 +120,8 @@ class PropertiesTest extends BaseTestCase
             $this->getClosureData(),
         );
 
-        if (version_compare(PHP_VERSION, '7.1') >= 0) {
+        // https://travis-ci.org/awesomite/var-dumper/jobs/240526896
+        if (version_compare(PHP_VERSION, '7.1') >= 0 && !defined('HHVM_VERSION')) {
             $result[] = $this->getInternalClosureName();
         }
 

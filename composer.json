@@ -24,7 +24,7 @@
         "php": "^5.3 || ^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8.35 || ^5.7.19 || ^6.1.3",
+        "phpunit/phpunit": "^4.8.35",
         "satooshi/php-coveralls": "^1.0.1 || ^2.0.0",
         "symfony/console": "^2.7 || ^3.0",
         "sebastian/comparator": ">=1.2.3"

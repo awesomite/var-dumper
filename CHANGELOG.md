@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+* Removed support for PHPUnit ^5.0 && ^6.0 - there are issue with HHVM - `Exception` does not implement `Throwable` in HHVM
+
 ## 0.7.0
 
 * Added pretty dump for `Closure`

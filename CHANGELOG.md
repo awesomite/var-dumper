@@ -1,12 +1,9 @@
 # Changelog
 
-## 0.7.2
-
-* Fixed bug "Undefined property: ClassName::$propertyName" - property can be defined in code, but removed in runtime
-
 ## 0.7.1
 
 * Removed support for PHPUnit ^5.0 and ^6.0 - there are issue with HHVM - `Exception` does not implement `Throwable` in HHVM
+* Fixed bug "Undefined property: ClassName::$propertyName" - property can be defined in code, but removed in runtime
 
 ## 0.7.0
 

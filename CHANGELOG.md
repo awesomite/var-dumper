@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+* Fixed bug - `ReflectionProperty::getValue` can trigger error or throw an exception
+
 ## 0.2.0
 
 * Added `\Awesomite\VarDumper\Dumper`

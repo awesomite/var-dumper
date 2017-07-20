@@ -23,7 +23,14 @@ class ReflectionProperty implements PropertyInterface
     public function getValue()
     {
         $this->reflection->setAccessible(true);
-        $result = $this->reflection->getValue($this->object);
+        set_error_handler(function () {});
+        $result = null;
+        try {
+            $result = $this->reflection->getValue($this->object);
+        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+        }
+        restore_error_handler();
 
         return $result;
     }

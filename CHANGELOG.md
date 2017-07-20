@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+* Fixed bug - `ReflectionProperty::getValue` can trigger an error or throw an exception
+
 ## 0.3.1
 
 Fixed bug in line `src/InternalVarDumper.php:43` - should be `version_compare(PHP_VERSION, '5.3.6') >= 0`

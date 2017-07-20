@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+* Fixed bug - `ReflectionProperty::getValue` can trigger error or throw an exception
+
 ## 0.4.0
 
 * Providers for `Awesomite\VarDumper\LightVarDumperTest` have been

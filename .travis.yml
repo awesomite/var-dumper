@@ -16,6 +16,10 @@ php:
   - hhvm
   - nightly
 
+matrix:
+  allow_failures:
+    - php: hhvm
+
 script:
   - vendor/bin/phpunit
 

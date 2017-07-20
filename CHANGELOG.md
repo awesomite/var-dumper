@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.2
+
+* Fixed bug - `ReflectionProperty::getValue` can throw an exception
+
 ## 0.7.1
 
 * Removed support for PHPUnit ^5.0 and ^6.0 - there are issue with HHVM - `Exception` does not implement `Throwable` in HHVM

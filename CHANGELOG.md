@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.3
+
+* Fixed bug - `ReflectionProperty::getValue` can trigger error or throw an exception
+
 ## 0.6.2
 
 * Changed `.gitattributes` - do not remove whole `/bin` directory

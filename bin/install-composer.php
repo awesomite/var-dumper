@@ -3,7 +3,7 @@
 
 $destinationFile = 'composer-setup.php';
 copy('https://getcomposer.org/installer', $destinationFile);
-$checkSum = '55d6ead61b29c7bdee5cccfb50076874187bd9f21f65d8991d46ec5cc90518f447387fb9f76ebae1fbbacf329e583e30';
+$checkSum = trim(file_get_contents('https://composer.github.io/installer.sig'));
 if (hash_file('SHA384', 'composer-setup.php') === $checkSum) {
     echo 'Installer verified' . PHP_EOL;
     require_once $destinationFile;

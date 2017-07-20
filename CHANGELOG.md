@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.3
+
+* Fixed bug - `ReflectionProperty::getValue` can trigger error or throw an exception
+
 ## 0.5.2
 
 * Fixed bug - bracket was placed in wrong place

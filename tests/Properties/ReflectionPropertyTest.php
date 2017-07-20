@@ -61,4 +61,11 @@ class ReflectionPropertyTest extends BaseTestCase
         $property = new ReflectionProperty(new \ReflectionProperty($obj, 'property'), $obj);
         $this->assertNull($property->getValue());
     }
+
+    public function testExceptionProperty()
+    {
+        $obj = new ExceptionProperty();
+        $property = new ReflectionProperty(new \ReflectionProperty($obj, 'property'), $obj);
+        $this->assertNull($property->getValue());
+    }
 }

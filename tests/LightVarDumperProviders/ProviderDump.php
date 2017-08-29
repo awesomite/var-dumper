@@ -15,9 +15,9 @@ class ProviderDump implements \IteratorAggregate
         $result['visibilityModifiers'] = $this->getVisibilityModifiers();
         if (defined('HHVM_VERSION')) {
             $result['arrayObject'] = $this->getArrayObject();
+            $result['extendedArrayObject'] = $this->getExtendedArrayObject();
+            $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
         }
-        $result['extendedArrayObject'] = $this->getExtendedArrayObject();
-        $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
         $result['null'] = array(null, "NULL\n");
         $result['resource'] = array(tmpfile(), "resource of type stream\n");
         $result['closure'] = $this->getClosure();

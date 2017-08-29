@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0 (????-??-??)
+
+* Do not display values of private properties in parent class - it can cause unexpected error,
+because it can call __call() function
+
 ## 0.7.2 (2017-07-20)
 
 * Fixed bug - `ReflectionProperty::getValue` can throw an exception

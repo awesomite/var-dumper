@@ -3,9 +3,6 @@ language: php
 dist: trusty
 sudo: false
 
-git:
-  depth: 1
-
 php:
   - 5.4
   - 5.5

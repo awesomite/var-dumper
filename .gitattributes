@@ -1,5 +1,4 @@
-/bin/coveralls.sh export-ignore
-/bin/composer-set-config.php export-ignore
+/bin export-ignore
 /examples export-ignore
 /tests export-ignore
 /.coveralls.yml export-ignore

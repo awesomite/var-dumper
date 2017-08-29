@@ -2,6 +2,8 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Helpers\KeyValuePrinter;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Objects\Hasher;
 use Awesomite\VarDumper\Objects\HasherInterface;
 use Awesomite\VarDumper\Properties\Properties;
@@ -22,6 +24,8 @@ class LightVarDumper extends InternalVarDumper
     private $canCompareArrays;
 
     private $hasher = null;
+
+    private $indent = '    ';
 
     /**
      * {@inheritdoc}
@@ -74,8 +78,8 @@ class LightVarDumper extends InternalVarDumper
         $this->displayPlaceInCode = false;
         parent::dump($var);
         $this->displayPlaceInCode = $prev;
-    }
         // @codeCoverageIgnoreEnd
+    }
 
     /**
      * @param int $limit
@@ -117,30 +121,37 @@ class LightVarDumper extends InternalVarDumper
 
     private function dumpScalar($scalar)
     {
-        $mapping = array(
-            'boolean' => 'bool',
-            'integer' => 'int',
-        );
-        $type = gettype($scalar);
-        if (isset($mapping[$type])) {
-            $type = $mapping[$type];
-        }
-
-        echo $type . '(' . var_export($scalar, true) . ")\n";
+        echo var_export($scalar, true) . "\n";
     }
 
     private function dumpString($string)
     {
-        $len = strlen($string);
-        $suffix = '';
+        $len = mb_strlen($string);
+        $withSuffix = false;
+
         if ($len > $this->maxStringLength) {
-            $string = substr($string, 0, $this->maxStringLength);
-            $suffix = '...';
+            $string = mb_substr($string, 0, $this->maxStringLength);
+            $withSuffix = true;
         }
 
-        echo "string({$len}) ";
-        var_export($string);
-        echo $suffix . "\n";
+        $containsNewLine = strpos($string, "\n") !== false;
+
+        if ($withSuffix || $containsNewLine) {
+            echo "string({$len})";
+        }
+        if (!$containsNewLine) {
+            if ($withSuffix) {
+                echo ' ';
+            }
+            echo Strings::SYMBOL_LEFT_QUOT, $string, Strings::SYMBOL_RIGHT_QUOT;
+        } else {
+            echo "\n", $this->indent, Strings::SYMBOL_CITE, ' ',
+                str_replace("\n", "\n{$this->indent}" . Strings::SYMBOL_CITE . ' ', $string);
+        }
+        if ($withSuffix) {
+            echo '...';
+        }
+        echo "\n";
     }
 
     private function dumpArray(&$array)
@@ -155,21 +166,33 @@ class LightVarDumper extends InternalVarDumper
 
         $limit = $this->maxChildren;
         $count = count($array);
-        echo 'array(' . $count . ') {' . "\n";
+        echo 'array(' . $count . ') {';
         if ($count > 0 && $this->depth > $this->maxDepth) {
-            echo "  ...\n";
-        } else {
+            echo "...";
+        } else if ($count > 0) {
+            echo "\n";
+            $printer = new KeyValuePrinter();
             foreach ($array as $key => $value) {
-                $valDump = str_replace("\n", "\n  ", $this->getDump($value));
-                $valDump = substr($valDump, 0, -2);
-                echo "  [{$key}] =>\n  {$valDump}";
+                $key = str_replace("\n", Strings::SYMBOL_NEW_LINE, $key);
+                $valDump = $this->getDump($value);
+                $valDump = mb_substr($valDump, 0, -1);
+                if (strpos($valDump, "\n") === false) {
+                    $printer->add("{$this->indent}[{$key}] => ", $valDump, mb_strlen("{$this->indent}[{$key}] => "));
+                } else {
+                    $printer->flush();
+                    $valDump = str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
+                    echo "{$this->indent}[{$key}] =>\n{$this->indent}{$this->indent}$valDump\n";
+                }
+
                 if (!--$limit) {
+                    $printer->flush();
                     if (count($array) > $this->maxChildren) {
-                        echo "  (...)\n";
+                        echo "{$this->indent}(...)\n";
                     }
                     break;
                 }
             }
+            $printer->flush();
         }
         echo '}' . "\n";
 
@@ -202,26 +225,39 @@ class LightVarDumper extends InternalVarDumper
 
         $count = count($properties);
         $hashId = $this->getHasher()->getHashId($object);
-        echo 'object(' . $class . ') #' . $hashId . ' (' . count($properties) . ') {' . "\n";
+        echo 'object(' . $class . ') #' . $hashId . ' (' . count($properties) . ') {';
         if ($count > 0 && $this->depth > $this->maxDepth) {
-            echo "  ...\n";
-        } else {
+            echo "...";
+        } else if ($count > 0) {
+            echo "\n";
+            $printer = new KeyValuePrinter();
             foreach ($properties as $property) {
-                $valDump = str_replace("\n", "\n  ", $this->getDump($property->getValue()));
-                $valDump = substr($valDump, 0, -2);
                 $declaringClass = '';
                 if ($property->getDeclaringClass() !== $class) {
-                    $declaringClass = " @{$property->getDeclaringClass()}";
+//                    $declaringClass = " @{$property->getDeclaringClass()}";
                 }
-                $name = $property->getName();
-                echo "  {$this->getTextTypePrefix($property)}\${$name}{$declaringClass} =>\n  {$valDump}";
+                $propName = str_replace("\n", Strings::SYMBOL_NEW_LINE, $property->getName());
+                $key = "{$this->getTextTypePrefix($property)}\${$propName}{$declaringClass}";
+
+                $valDump = $this->getDump($property->getValue());
+                $valDump = mb_substr($valDump, 0, -1);
+                if (strpos($valDump, "\n") === false) {
+                    $printer->add("{$this->indent}{$key} => ", $valDump, mb_strlen("{$this->indent}{$key} => "));
+                } else {
+                    $printer->flush();
+                    $valDump = str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
+                    echo "{$this->indent}{$key} =>\n{$this->indent}{$this->indent}$valDump\n";
+                }
+
                 if (!--$limit) {
+                    $printer->flush();
                     if (count($properties) > $this->maxChildren) {
-                        echo "  (...)\n";
+                        echo "{$this->indent}(...)\n";
                     }
                     break;
                 }
             }
+            $printer->flush();
         }
         echo '}' . "\n";
 

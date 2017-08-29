@@ -34,19 +34,12 @@ class ProviderDump implements \IteratorAggregate
         $object->dynamicPublic = 'another public variable';
 
         $objectDump = <<<OBJECT
-object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHashId($object)} (6) {
-  public static \$static =>
-  string(12) 'static value'
-  public \$public =>
-  string(15) 'public variable'
-  protected \$protected =>
-  string(18) 'protected variable'
-  protected static \$protectedStatic @Awesomite\VarDumper\LightVarDumperProviders\TestParent =>
-  string(22) 'protected static value'
-  \$dynamicPublic =>
-  string(23) 'another public variable'
-  private \$private @Awesomite\VarDumper\LightVarDumperProviders\TestParent =>
-  string(16) 'private variable'
+object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHashId($object)} (5) {
+    public static \$static =>             «static value»
+    public \$public =>                    «public variable»
+    protected \$protected =>              «protected variable»
+    protected static \$protectedStatic => «protected static value»
+    \$dynamicPublic =>                    «another public variable»
 }
 
 OBJECT;
@@ -63,15 +56,12 @@ OBJECT;
 
         $arrayObjectDump = <<<DUMP
 object(ArrayObject) #{$hasher->getHashId($arrayObject)} (3) {
-  private \$storage =>
-  array(1) {
-    [awesomite.varDumper] =>
-    bool(true)
-  }
-  private \$flags =>
-  int(0)
-  private \$iteratorClass =>
-  string(13) 'ArrayIterator'
+    private \$storage =>
+        array(1) {
+            [awesomite.varDumper] => true
+        }
+    private \$flags =>         0
+    private \$iteratorClass => «ArrayIterator»
 }
 
 DUMP;
@@ -88,17 +78,13 @@ DUMP;
 
         $testArrayObjectDump = <<<DUMP
 object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject)} (4) {
-  private \$privateProperty =>
-  string(13) 'private value'
-  private \$storage @ArrayObject =>
-  array(1) {
-    [awesomite.varDumper] =>
-    bool(true)
-  }
-  private \$flags @ArrayObject =>
-  int(0)
-  private \$iteratorClass @ArrayObject =>
-  string(13) 'ArrayIterator'
+    private \$privateProperty => «private value»
+    private \$storage =>
+        array(1) {
+            [awesomite.varDumper] => true
+        }
+    private \$flags =>         0
+    private \$iteratorClass => «ArrayIterator»
 }
 
 DUMP;
@@ -116,19 +102,14 @@ DUMP;
 
         $testArrayObjectDump2 = <<<DUMP
 object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject2)} (4) {
-  private \$privateProperty =>
-  string(13) 'private value'
-  private \$storage @ArrayObject =>
-  array(2) {
-    [privateProperty] =>
-    string(12) 'public value'
-    [secondProperty] =>
-    string(12) 'second value'
-  }
-  private \$flags @ArrayObject =>
-  int(0)
-  private \$iteratorClass @ArrayObject =>
-  string(13) 'ArrayIterator'
+    private \$privateProperty => «private value»
+    private \$storage =>
+        array(2) {
+            [privateProperty] => «public value»
+            [secondProperty] =>  «second value»
+        }
+    private \$flags =>         0
+    private \$iteratorClass => «ArrayIterator»
 }
 
 DUMP;
@@ -139,32 +120,22 @@ DUMP;
     private function getClosure()
     {
         $closure = function () {};
+
         $dump =<<<'DUMP'
 object(Closure) #10 (%%digit%%) {
-  $name =>
-  string(53) 'Awesomite\\VarDumper\\LightVarDumperProviders\\{closure}'
-  $filename =>
-  string(%%digit%%) '%%file%%'
-  $startLine =>
-  int(%%digit%%)
-  $endLine =>
-  int(%%digit%%)
-%%scopeClass%%}
+    $name =>              %%any%%«Awesomite\VarDumper\LightVarDumperProviders\{closure}»
+    $filename =>          %%any%%«%%file%%»
+    $startLine =>         %%digit%%
+    $endLine =>           %%digit%%
+    $closureScopeClass => «Awesomite\VarDumper\LightVarDumperProviders\ProviderDump»
+}
 
 DUMP;
-        $scopeClass =<<<'RAW'
-  $closureScopeClass =>
-  string(56) 'Awesomite\\VarDumper\\LightVarDumperProviders\\ProviderDump'
-
-RAW;
-        $scopeClass = version_compare(PHP_VERSION, '5.4') >= 0
-            ? preg_quote($scopeClass, '#')
-            : '';
 
         $replace = array(
             '%%digit%%' => '[0-9]{1,}',
             '%%file%%' => '.*',
-            '%%scopeClass%%' => $scopeClass,
+            '%%any%%' => '.*',
         );
         $regex = '#^' . preg_quote($dump, '#') . '$#ms';
         $regex = str_replace(array_keys($replace), array_values($replace), $regex);

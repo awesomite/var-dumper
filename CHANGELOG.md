@@ -5,6 +5,64 @@
 * Do not display values of private properties in parent class - it can cause unexpected error,
 because it can call __call() function
 * Use __debugInfo() whenever it is possible
+* Excluded useless files from Github dists and `git archive`
+* Changed format of printed data:
+  * Display value in one line whenever it is possible:
+  ```
+  array(0) {}
+  ```
+  * Single line text:
+  ```
+  «Hello world!»
+  ```
+  * Multi line text:
+  ```
+  string(12)
+      » Hello
+      » world!
+  ```
+  * Increased indent to 4 spaces for objects and arrays
+  ```
+  array(1) {
+      [0] => array(0) {}
+  }
+  ```
+  * Added indent for values of arrays and properties of objects
+  ```
+  array(1) {
+      [0] =>
+          array(2) {
+              [0] => array(0) {}
+              [1] =>
+                  array(1) {
+                      [0] => array(0) {}
+                  }
+          }
+  }
+  ```
+  * Display adjacent lines in tabular format
+  ```
+  array(9) {
+      [a] =>            string(11) «Hello world»
+      [ab] =>           string(11) «Hello world»
+      [abc] =>          string(11) «Hello world»
+      [abcd] =>         string(11) «Hello world»
+      [abcdefghijkl] => string(11) «Hello world»
+      [array] =>
+          array(1) {
+              [0] => string(11) «Hello world»
+          }
+      [x] =>   string(11) «Hello world»
+      [xy] =>  string(11) «Hello world»
+      [xyz] => string(11) «Hello world»
+  }
+  ```
+  * Convert new-line character to visible form in keys/properties
+  ```
+  array(1) {
+      [multi↵line↵key] => string(11) «Hello world»
+  }
+  ```
 
 ## 0.7.2 (2017-07-20)
 

@@ -2,7 +2,7 @@
 
 use Awesomite\VarDumper\LightVarDumper;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php.example';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
 
 /**
  * The following class is just an example how to use LightVarDumper
@@ -31,14 +31,11 @@ Dumper::dump($obj1, $obj2);
 
 Output:
 
-(...)/var-dumper/examples/dumper.php.example:28:
-object(stdClass) #1 (0) {
-}
-(...)/var-dumper/examples/dumper.php.example:28:
+(...)/var-dumper/examples/dumper.php:28:
+object(stdClass) #1 (0) {}
+(...)/var-dumper/examples/dumper.php:28:
 object(stdClass) #2 (1) {
-  $obj1 =>
-  object(stdClass) #1 (0) {
-  }
+    $obj1 => object(stdClass) #1 (0) {}
 }
 
 */

@@ -2,7 +2,7 @@
 
 use Awesomite\VarDumper\LightVarDumper;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php.example';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
 
 $dumper = new LightVarDumper();
 $dumper
@@ -50,27 +50,18 @@ $dumper->dump($object);
 
 Output:
 
-object(Foobar) #1 (3) {
-  protected $propFooBar =>
-  array(4) {
-    [First] =>
-    object(stdClass) #2 (0) {
-    }
-    [Second] =>
-    int(2)
-    [Third] =>
-    array(1) {
-      [0] =>
-      array(1) {
-        ...
-      }
-    }
-    (...)
-  }
-  public $propBar @Bar =>
-  string(12) 'Hello'...
-  private $self @Foo =>
-  RECURSIVE object(Foobar) #1
+object(Foobar) #1 (2) {
+    protected $propFooBar =>
+        array(4) {
+            [First] =>  object(stdClass) #2 (0) {}
+            [Second] => 2
+            [Third] =>
+                array(1) {
+                    [0] => array(1) {...}
+                }
+            (...)
+        }
+    public $propBar => string(12) «Hello»...
 }
 
 */

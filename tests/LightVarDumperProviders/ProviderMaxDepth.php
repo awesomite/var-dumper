@@ -29,26 +29,19 @@ class ProviderMaxDepth implements \IteratorAggregate
 
         $dump1 = <<<DUMP
 object(stdClass) #{$hasher->getHashId($obj)} (2) {
-  \$testInt =>
-  int(5)
-  \$foo =>
-  object(stdClass) #{$hasher->getHashId($obj->foo)} (1) {
-    ...
-  }
+    \$testInt => 5
+    \$foo =>     object(stdClass) #{$hasher->getHashId($obj->foo)} (1) {...}
 }
 
 DUMP;
 
         $dump2 = <<<DUMP
 object(stdClass) #{$hasher->getHashId($obj)} (2) {
-  \$testInt =>
-  int(5)
-  \$foo =>
-  object(stdClass) #{$hasher->getHashId($obj->foo)} (1) {
-    \$bar =>
-    object(stdClass) #{$hasher->getHashId($obj->foo->bar)} (0) {
-    }
-  }
+    \$testInt => 5
+    \$foo =>
+        object(stdClass) #{$hasher->getHashId($obj->foo)} (1) {
+            \$bar => object(stdClass) #{$hasher->getHashId($obj->foo->bar)} (0) {}
+        }
 }
 
 DUMP;
@@ -70,10 +63,7 @@ DUMP;
 
         $dumpArray = <<<'DUMP'
 array(1) {
-  [foo] =>
-  array(1) {
-    ...
-  }
+    [foo] => array(1) {...}
 }
 
 DUMP;

@@ -24,21 +24,17 @@ class ProviderMaxChildren implements \IteratorAggregate
 
         $arrayDump1 = <<<'DUMP'
 array(3) {
-  [0] =>
-  int(1)
-  (...)
+    [0] => 1
+    (...)
 }
 
 DUMP;
 
         $arrayDump2 = <<<'DUMP'
 array(3) {
-  [0] =>
-  int(1)
-  [1] =>
-  int(2)
-  [2] =>
-  int(3)
+    [0] => 1
+    [1] => 2
+    [2] => 3
 }
 
 DUMP;
@@ -61,21 +57,17 @@ DUMP;
 
         $objectDump1 = <<<DUMP
 object(stdClass) #{$hasher->getHashId($object)} (3) {
-  \$foo =>
-  string(3) 'foo'
-  (...)
+    \$foo => «foo»
+    (...)
 }
 
 DUMP;
 
         $objectDump2 = <<<DUMP
 object(stdClass) #{$hasher->getHashId($object)} (3) {
-  \$foo =>
-  string(3) 'foo'
-  \$bar =>
-  string(3) 'bar'
-  \$foobar =>
-  string(6) 'foobar'
+    \$foo =>    «foo»
+    \$bar =>    «bar»
+    \$foobar => «foobar»
 }
 
 DUMP;

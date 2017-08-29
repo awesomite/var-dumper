@@ -16,12 +16,6 @@ To set limit size of printed variable and produce more readable output than buil
 
 use Awesomite\VarDumper\LightVarDumper;
 
-$varDumper = new LightVarDumper();
-$varDumper
-    ->setMaxChildren(20)
-    ->setMaxDepth(5)
-    ->setMaxStringLength(200);
-
 $loremIpsum = <<<LOREM_IPSUM
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi.
 Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus.
@@ -33,7 +27,11 @@ Praesent sodales velit quis augue.
 Cras suscipit, urna at aliquam rhoncus, urna quam viverra nisi, in interdum massa nibh nec erat.
 LOREM_IPSUM;
 
-
+$varDumper = new LightVarDumper();
+$varDumper
+    ->setMaxChildren(20)
+    ->setMaxDepth(5)
+    ->setMaxStringLength(200);
 $varDumper->dump($loremIpsum);
 ```
 

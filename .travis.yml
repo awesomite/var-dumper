@@ -65,6 +65,7 @@ before_script:
 script:
   - php ${PHP_ARGS} vendor/bin/phpunit
   - php examples/big-dump.php
+  - php examples/debug-info.php
   - php examples/dumper.php
   - php examples/object.php
 

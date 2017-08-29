@@ -13,7 +13,6 @@ class Properties extends AbstractProperties
     );
 
     /**
-     * Properties constructor.
      * @param $object
      */
     public function __construct($object)
@@ -28,6 +27,17 @@ class Properties extends AbstractProperties
     {
         $object = $this->object;
 
+        if ($reflection = $this->getDebugInfoReflection()) {
+            return array(
+                new VarProperty(
+                    '__debugInfo()',
+                    $object->__debugInfo(),
+                    VarProperty::VISIBILITY_PUBLIC,
+                    get_class($object)
+                ),
+            );
+        }
+
         foreach (self::$mapping as $classInterface => $classReader) {
             if ($object instanceof $classInterface) {
                 /** @var PropertiesInterface $reader */
@@ -40,5 +50,20 @@ class Properties extends AbstractProperties
         return array_map(function ($property) use ($object) {
             return new ReflectionProperty($property, $object);
         }, $this->getDeclaredProperties());
+    }
+
+    /**
+     * @return \ReflectionMethod|null
+     */
+    private function getDebugInfoReflection()
+    {
+        if (method_exists($this->object, '__debugInfo')) {
+            $reflection = new \ReflectionMethod($this->object, '__debugInfo');
+            if (!$reflection->isStatic() && $reflection->isPublic() && $reflection->getNumberOfParameters() === 0) {
+                return $reflection;
+            }
+        }
+
+        return null;
     }
 }

@@ -4,6 +4,7 @@
 
 * Do not display values of private properties in parent class - it can cause unexpected error,
 because it can call __call() function
+* Use __debugInfo() whenever it is possible
 
 ## 0.7.2 (2017-07-20)
 

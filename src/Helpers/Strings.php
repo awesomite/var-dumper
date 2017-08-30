@@ -8,7 +8,7 @@ namespace Awesomite\VarDumper\Helpers;
 class Strings
 {
     const SYMBOL_NEW_LINE = '↵';
-    const SYMBOL_LEFT_QUOT = '«';
-    const SYMBOL_RIGHT_QUOT = '»';
-    const SYMBOL_CITE = '»';
+    const SYMBOL_LEFT_QUOT = '“';
+    const SYMBOL_RIGHT_QUOT = '”';
+    const SYMBOL_CITE = '›';
 }

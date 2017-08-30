@@ -28,8 +28,8 @@ Output:
 object(MyClass) #1 (1) {
     public $__debugInfo() =>
         array(2) {
-            [key] =>  «value»
-            [some] => «output»
+            [key] =>  “value”
+            [some] => “output”
         }
 }
 

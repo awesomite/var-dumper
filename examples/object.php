@@ -61,7 +61,7 @@ object(Foobar) #1 (2) {
                 }
             (...)
         }
-    public $propBar => string(12) «Hello»...
+    public $propBar => string(12) “Hello”...
 }
 
 */

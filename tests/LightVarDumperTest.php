@@ -6,6 +6,7 @@ use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxChildren;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxDepth;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxStringLength;
+use Awesomite\VarDumper\LightVarDumperProviders\ProviderMultiLine;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderRecursive;
 
 /**
@@ -113,5 +114,29 @@ class LightVarDumperTest extends BaseTestCase
     public function providerRecursive()
     {
         return iterator_to_array(new ProviderRecursive());
+    }
+
+    /**
+     * @dataProvider providerMultiLine
+     *
+     * @param int $stringLimit
+     * @param int $lineLimit
+     * @param string $input
+     * @param string $expected
+     */
+    public function testMultiLine($stringLimit, $lineLimit, $input, $expected)
+    {
+        $dumper = new LightVarDumper();
+        $dumper
+            ->setMaxStringLength($stringLimit)
+            ->setMaxLineLength($lineLimit);
+        $dump = $dumper->getDump($input);
+        $this->assertInternalType('string', $dump);
+        $this->assertSame($expected, $dump);
+    }
+
+    public function providerMultiLine()
+    {
+        return iterator_to_array(new ProviderMultiLine());
     }
 }

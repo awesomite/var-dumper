@@ -37,11 +37,11 @@ class ProviderDump implements \IteratorAggregate
 
         $objectDump = <<<OBJECT
 object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHashId($object)} (5) {
-    public static \$static =>             «static value»
-    public \$public =>                    «public variable»
-    protected \$protected =>              «protected variable»
-    protected static \$protectedStatic => «protected static value»
-    \$dynamicPublic =>                    «another public variable»
+    public static \$static =>             “static value”
+    public \$public =>                    “public variable”
+    protected \$protected =>              “protected variable”
+    protected static \$protectedStatic => “protected static value”
+    \$dynamicPublic =>                    “another public variable”
 }
 
 OBJECT;
@@ -63,7 +63,7 @@ object(ArrayObject) #{$hasher->getHashId($arrayObject)} (3) {
             [awesomite.varDumper] => true
         }
     private \$flags =>         0
-    private \$iteratorClass => «ArrayIterator»
+    private \$iteratorClass => “ArrayIterator”
 }
 
 DUMP;
@@ -80,13 +80,13 @@ DUMP;
 
         $testArrayObjectDump = <<<DUMP
 object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject)} (4) {
-    private \$privateProperty => «private value»
+    private \$privateProperty => “private value”
     private \$storage =>
         array(1) {
             [awesomite.varDumper] => true
         }
     private \$flags =>         0
-    private \$iteratorClass => «ArrayIterator»
+    private \$iteratorClass => “ArrayIterator”
 }
 
 DUMP;
@@ -104,14 +104,14 @@ DUMP;
 
         $testArrayObjectDump2 = <<<DUMP
 object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject2)} (4) {
-    private \$privateProperty => «private value»
+    private \$privateProperty => “private value”
     private \$storage =>
         array(2) {
-            [privateProperty] => «public value»
-            [secondProperty] =>  «second value»
+            [privateProperty] => “public value”
+            [secondProperty] =>  “second value”
         }
     private \$flags =>         0
-    private \$iteratorClass => «ArrayIterator»
+    private \$iteratorClass => “ArrayIterator”
 }
 
 DUMP;
@@ -124,12 +124,12 @@ DUMP;
         $closure = function () {};
 
         $dump =<<<'DUMP'
-object(Closure) #10 (%%digit%%) {
-    $name =>              %%any%%«Awesomite\VarDumper\LightVarDumperProviders\{closure}»
-    $filename =>          %%any%%«%%file%%»
+object(Closure) #%%digit%% (%%digit%%) {
+    $name =>              %%any%%“Awesomite\VarDumper\LightVarDumperProviders\{closure}”
+    $filename =>          %%any%%“%%file%%”
     $startLine =>         %%digit%%
     $endLine =>           %%digit%%
-    $closureScopeClass => «Awesomite\VarDumper\LightVarDumperProviders\ProviderDump»
+    $closureScopeClass => “Awesomite\VarDumper\LightVarDumperProviders\ProviderDump”
 }
 
 DUMP;

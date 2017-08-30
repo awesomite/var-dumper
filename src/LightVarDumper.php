@@ -15,6 +15,8 @@ class LightVarDumper extends InternalVarDumper
 
     private $maxStringLength = 200;
 
+    private $maxLineLength = 130;
+
     private $depth = 0;
 
     private $maxDepth = 5;
@@ -104,6 +106,17 @@ class LightVarDumper extends InternalVarDumper
     }
 
     /**
+     * @param $limit
+     * @return $this
+     */
+    public function setMaxLineLength($limit)
+    {
+        $this->maxLineLength = $limit;
+
+        return $this;
+    }
+
+    /**
      * @param int $limit
      * @return $this
      */
@@ -127,31 +140,53 @@ class LightVarDumper extends InternalVarDumper
     private function dumpString($string)
     {
         $len = mb_strlen($string);
-        $withSuffix = false;
+        $withPrefixSuffix = false;
+
+        $containsNewLine = strpos($string, "\n") !== false;
+        $isMultiLine = $len > $this->maxLineLength || $containsNewLine;
+
+        if ($isMultiLine) {
+            $withPrefixSuffix = true;
+        }
 
         if ($len > $this->maxStringLength) {
             $string = mb_substr($string, 0, $this->maxStringLength);
-            $withSuffix = true;
+            $withPrefixSuffix = true;
         }
 
-        $containsNewLine = strpos($string, "\n") !== false;
-
-        if ($withSuffix || $containsNewLine) {
+        if ($withPrefixSuffix || $containsNewLine) {
             echo "string({$len})";
         }
-        if (!$containsNewLine) {
-            if ($withSuffix) {
+        if (!$isMultiLine) {
+            if ($withPrefixSuffix) {
                 echo ' ';
             }
             echo Strings::SYMBOL_LEFT_QUOT, $string, Strings::SYMBOL_RIGHT_QUOT;
+            if ($withPrefixSuffix) {
+                echo '...';
+            }
+            echo "\n";
         } else {
-            echo "\n", $this->indent, Strings::SYMBOL_CITE, ' ',
-                str_replace("\n", "\n{$this->indent}" . Strings::SYMBOL_CITE . ' ', $string);
+            foreach (explode("\n", $string) as $line) {
+                while (true) {
+                    if (mb_strlen($line) > $this->maxLineLength) {
+                        $storage = mb_substr($line, $this->maxLineLength);
+                        $line = mb_substr($line, 0, $this->maxLineLength);
+                    } else {
+                        $storage = '';
+                    }
+                    echo "\n", $this->indent, Strings::SYMBOL_CITE, ' ', $line;
+                    if ('' === $storage) {
+                        break;
+                    }
+                    $line = $storage;
+                }
+            }
+            if ($withPrefixSuffix) {
+                echo '...';
+            }
+            echo "\n";
         }
-        if ($withSuffix) {
-            echo '...';
-        }
-        echo "\n";
     }
 
     private function dumpArray(&$array)

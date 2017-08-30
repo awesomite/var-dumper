@@ -6,6 +6,7 @@
 because it can call [`__get()`](http://php.net/manual/en/language.oop5.overloading.php#object.get) function
 * Use __debugInfo() whenever it is possible
 * Excluded useless files from Github dists and `git archive`
+* Added method `Awesomite\VarDumper\LightVarDumper::setMaxLineLength`
 * Changed format of printed data:
   * Display value in one line whenever it is possible:
   ```
@@ -13,13 +14,13 @@ because it can call [`__get()`](http://php.net/manual/en/language.oop5.overloadi
   ```
   * Single line text:
   ```
-  «Hello world!»
+  “Hello world!”
   ```
   * Multi line text:
   ```
   string(12)
-      » Hello
-      » world!
+      › Hello
+      › world!
   ```
   * Increased indent to 4 spaces for objects and arrays
   ```
@@ -43,24 +44,24 @@ because it can call [`__get()`](http://php.net/manual/en/language.oop5.overloadi
   * Display adjacent lines in tabular format
   ```
   array(9) {
-      [a] =>            string(11) «Hello world»
-      [ab] =>           string(11) «Hello world»
-      [abc] =>          string(11) «Hello world»
-      [abcd] =>         string(11) «Hello world»
-      [abcdefghijkl] => string(11) «Hello world»
+      [a] =>            “Hello world”
+      [ab] =>           “Hello world”
+      [abc] =>          “Hello world”
+      [abcd] =>         “Hello world”
+      [abcdefghijkl] => “Hello world”
       [array] =>
           array(1) {
-              [0] => string(11) «Hello world»
+              [0] => “Hello world”
           }
-      [x] =>   string(11) «Hello world»
-      [xy] =>  string(11) «Hello world»
-      [xyz] => string(11) «Hello world»
+      [x] =>   “Hello world”
+      [xy] =>  “Hello world”
+      [xyz] => “Hello world”
   }
   ```
   * Convert new-line character to visible form in keys/properties
   ```
   array(1) {
-      [multi↵line↵key] => string(11) «Hello world»
+      [multi↵line↵key] => “Hello world”
   }
   ```
 

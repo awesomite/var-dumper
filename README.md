@@ -27,23 +27,57 @@ Praesent sodales velit quis augue.
 Cras suscipit, urna at aliquam rhoncus, urna quam viverra nisi, in interdum massa nibh nec erat.
 LOREM_IPSUM;
 
+$array = array(
+    'a' => 'a',
+    'ab' => 'b',
+    'abc' => 'abc',
+    'abcd' => 'abcd',
+    'abcde' => 'abcde',
+    'abcdef' => 'abcdef',
+    'abcdefg' => 'abcdefg',
+    'abcdefgh' => 'abcdefgh',
+);
+
 $varDumper = new LightVarDumper();
 $varDumper
     ->setMaxChildren(20)
     ->setMaxDepth(5)
-    ->setMaxStringLength(200);
-$varDumper->dump($loremIpsum);
+    ->setMaxStringLength(400)
+    ->setMaxLineLength(50);
+
+$varDumper->dump(array($loremIpsum, $array));
 ```
 
 Output:
 
 ```text
-string(769)
-    » Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi.
-    » Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac d...
+array(2) {
+    [0] =>
+        string(768)
+            › Lorem ipsum dolor sit amet, consectetur adipiscing
+            ›  elit. Proin nibh augue, suscipit a, scelerisque s
+            › ed, lacinia in, mi.
+            › Cras vel lorem. Etiam pellentesque aliquet tellus.
+            ›  Phasellus pharetra nulla ac diam. Quisque semper
+            › justo at risus.
+            › Donec venenatis, turpis vel hendrerit interdum, du
+            › i ligula ultricies purus, sed posuere libero dui i
+            › d orci.
+            › Nam congue, pede vitae dapibus aliquet, elit magna
+            ›  vulpu...
+    [1] =>
+        array(8) {
+            [a] =>        “a”
+            [ab] =>       “b”
+            [abc] =>      “abc”
+            [abcd] =>     “abcd”
+            [abcde] =>    “abcde”
+            [abcdef] =>   “abcdef”
+            [abcdefg] =>  “abcdefg”
+            [abcdefgh] => “abcdefgh”
+        }
+}
 ```
-
-[See more examples](examples)
 
 ## Installation
 

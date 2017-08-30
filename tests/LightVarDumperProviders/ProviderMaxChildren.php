@@ -57,7 +57,7 @@ DUMP;
 
         $objectDump1 = <<<DUMP
 object(stdClass) #{$hasher->getHashId($object)} (3) {
-    \$foo => «foo»
+    \$foo => “foo”
     (...)
 }
 
@@ -65,9 +65,9 @@ DUMP;
 
         $objectDump2 = <<<DUMP
 object(stdClass) #{$hasher->getHashId($object)} (3) {
-    \$foo =>    «foo»
-    \$bar =>    «bar»
-    \$foobar => «foobar»
+    \$foo =>    “foo”
+    \$bar =>    “bar”
+    \$foobar => “foobar”
 }
 
 DUMP;

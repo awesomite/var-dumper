@@ -160,7 +160,7 @@ DUMP;
         );
 
         $expected = <<<'EXPECTED'
-object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #11 (1) {
+object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%s (1) {
     public $__debugInfo() =>
         array(2) {
             [greeting] => “hello world”
@@ -170,8 +170,11 @@ object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #11 (1) {
 
 EXPECTED;
 
+        $hasher = new Hasher();
+        $obj = new TestDebugInfo($data);
+        $expected = sprintf($expected, $hasher->getHashId($obj));
 
-        return array(new TestDebugInfo($data), $expected);
+        return array($obj, $expected);
     }
 
     private function getBrokenAlign()

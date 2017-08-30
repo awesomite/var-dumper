@@ -80,6 +80,7 @@ class LightVarDumper extends InternalVarDumper
         $this->displayPlaceInCode = false;
         parent::dump($var);
         $this->displayPlaceInCode = $prev;
+        return;
         // @codeCoverageIgnoreEnd
     }
 

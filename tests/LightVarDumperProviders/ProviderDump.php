@@ -25,6 +25,9 @@ class ProviderDump implements \IteratorAggregate
         }
         $result['debugInfo'] = $this->getDebugInfo();
         $result['brokenAlign'] = $this->getBrokenAlign();
+        if (version_compare(PHP_VERSION, '5.6') < 0) {
+            $result['invalidDebugInfo'] = $this->getInvalidDebugInfo();
+        }
 
         return new \ArrayIterator($result);
     }
@@ -209,5 +212,15 @@ EXPECTED;
 
 
         return array($data, $expected);
+    }
+
+    private function getInvalidDebugInfo()
+    {
+        $obj = new TestInvalidDebugInfo();
+        $hasher = new Hasher();
+
+        $expected = sprintf('object(%s) #%d (0) {}', get_class($obj), $hasher->getHashId($obj));
+
+        return array($obj, $expected);
     }
 }

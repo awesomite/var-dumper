@@ -53,19 +53,4 @@ class ReflectionPropertyTest extends BaseTestCase
             array(new ReflectionProperty(new \ReflectionProperty($childClass, 'foo'), new TestChild()), $parentClass),
         );
     }
-
-    public function testUnsetProperty()
-    {
-        $obj = new UnsetProperty();
-        unset($obj->property);
-        $property = new ReflectionProperty(new \ReflectionProperty($obj, 'property'), $obj);
-        $this->assertNull($property->getValue());
-    }
-
-    public function testExceptionProperty()
-    {
-        $obj = new ExceptionProperty();
-        $property = new ReflectionProperty(new \ReflectionProperty($obj, 'property'), $obj);
-        $this->assertNull($property->getValue());
-    }
 }

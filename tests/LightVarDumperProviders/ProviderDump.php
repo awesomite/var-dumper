@@ -13,7 +13,7 @@ class ProviderDump implements \IteratorAggregate
     {
         $result = array();
         $result['visibilityModifiers'] = $this->getVisibilityModifiers();
-        if (defined('HHVM_VERSION')) {
+        if (!defined('HHVM_VERSION')) {
             $result['arrayObject'] = $this->getArrayObject();
             $result['extendedArrayObject'] = $this->getExtendedArrayObject();
             $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();

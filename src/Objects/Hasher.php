@@ -27,6 +27,6 @@ class Hasher implements HasherInterface
             self::$hashes[$splHash] = ++self::$counter;
         }
 
-        return self::$hashes[$splHash];
+        return (string) self::$hashes[$splHash];
     }
 }

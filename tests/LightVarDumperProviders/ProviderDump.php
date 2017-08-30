@@ -20,7 +20,9 @@ class ProviderDump implements \IteratorAggregate
         }
         $result['null'] = array(null, "NULL\n");
         $result['resource'] = array(tmpfile(), "resource of type stream\n");
-        $result['closure'] = $this->getClosure();
+        if (!defined('HHVM_VERSION')) {
+            $result['closure'] = $this->getClosure();
+        }
 
         return new \ArrayIterator($result);
     }

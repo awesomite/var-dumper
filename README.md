@@ -9,6 +9,7 @@
 ## Why?
 
 To set limit size of printed variable and produce more readable output than built-in [`var_dump`](http://php.net/manual/en/function.var-dump.php) function.
+
 ## Usage
 
 ```php

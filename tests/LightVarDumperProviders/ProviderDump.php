@@ -222,7 +222,7 @@ EXPECTED;
         $obj = new TestInvalidDebugInfo();
         $hasher = new Hasher();
 
-        $expected = sprintf('object(%s) #%d (0) {}', get_class($obj), $hasher->getHashId($obj));
+        $expected = sprintf("object(%s) #%d (0) {}\n", get_class($obj), $hasher->getHashId($obj));
 
         return array($obj, $expected);
     }

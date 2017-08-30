@@ -24,6 +24,7 @@ class ProviderDump implements \IteratorAggregate
             $result['closure'] = $this->getClosure();
         }
         $result['debugInfo'] = $this->getDebugInfo();
+        $result['brokenAlign'] = $this->getBrokenAlign();
 
         return new \ArrayIterator($result);
     }
@@ -168,5 +169,45 @@ EXPECTED;
 
 
         return array(new TestDebugInfo($data), $expected);
+    }
+
+    private function getBrokenAlign()
+    {
+        $data = array(
+            'a' => 'a',
+            'ab' => 'ab',
+            'abc' => 'abc',
+            'subarray' => range('a', 'm'),
+            'abcd' => 'abcd',
+        );
+
+        $expected = <<<'EXPECTED'
+array(5) {
+    [a] =>   “a”
+    [ab] =>  “ab”
+    [abc] => “abc”
+    [subarray] =>
+        array(13) {
+            [0] =>  “a”
+            [1] =>  “b”
+            [2] =>  “c”
+            [3] =>  “d”
+            [4] =>  “e”
+            [5] =>  “f”
+            [6] =>  “g”
+            [7] =>  “h”
+            [8] =>  “i”
+            [9] =>  “j”
+            [10] => “k”
+            [11] => “l”
+            [12] => “m”
+        }
+    [abcd] => “abcd”
+}
+
+EXPECTED;
+
+
+        return array($data, $expected);
     }
 }

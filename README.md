@@ -18,14 +18,10 @@ To set limit size of printed variable and produce more readable output than buil
 use Awesomite\VarDumper\LightVarDumper;
 
 $loremIpsum = <<<LOREM_IPSUM
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi.
-Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus.
-Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci.
-Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est.
-Etiam sit amet lectus quis est congue mollis. Phasellus congue lacus eget neque.
-Phasellus ornare, ante vitae consectetuer consequat, purus sapien ultricies dolor, et mollis pede metus eget nisi.
-Praesent sodales velit quis augue.
-Cras suscipit, urna at aliquam rhoncus, urna quam viverra nisi, in interdum massa nibh nec erat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus.
+Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci. Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est.
+Etiam sit amet lectus quis est congue mollis. Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat, purus sapien ultricies dolor, et mollis pede metus eget nisi.
+Praesent sodales velit quis augue. Cras suscipit, urna at aliquam rhoncus, urna quam viverra nisi, in interdum massa nibh nec erat.
 LOREM_IPSUM;
 
 $array = array(
@@ -57,15 +53,13 @@ array(2) {
         string(768)
             › Lorem ipsum dolor sit amet, consectetur adipiscing
             ›  elit. Proin nibh augue, suscipit a, scelerisque s
-            › ed, lacinia in, mi.
-            › Cras vel lorem. Etiam pellentesque aliquet tellus.
-            ›  Phasellus pharetra nulla ac diam. Quisque semper
-            › justo at risus.
+            › ed, lacinia in, mi. Cras vel lorem. Etiam pellente
+            › sque aliquet tellus. Phasellus pharetra nulla ac d
+            › iam. Quisque semper justo at risus.
             › Donec venenatis, turpis vel hendrerit interdum, du
             › i ligula ultricies purus, sed posuere libero dui i
-            › d orci.
-            › Nam congue, pede vitae dapibus aliquet, elit magna
-            ›  vulpu...
+            › d orci. Nam congue, pede vitae dapibus aliquet, el
+            › it magna vulpu...
     [1] =>
         array(8) {
             [a] =>        “a”

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.0 (????-??-??)
+## 0.8.0 (2017-08-30)
 
 * Do not display values of private properties in parent class - it can cause unexpected error,
 because it can call [`__get()`](http://php.net/manual/en/language.oop5.overloading.php#object.get) function

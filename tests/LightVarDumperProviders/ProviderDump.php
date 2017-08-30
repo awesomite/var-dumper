@@ -23,6 +23,7 @@ class ProviderDump implements \IteratorAggregate
         if (!defined('HHVM_VERSION') && version_compare(PHP_VERSION, '5.4') >= 0) {
             $result['closure'] = $this->getClosure();
         }
+        $result['debugInfo'] = $this->getDebugInfo();
 
         return new \ArrayIterator($result);
     }
@@ -145,5 +146,27 @@ DUMP;
         $regex = str_replace(array_keys($replace), array_values($replace), $regex);
 
         return array($closure, $regex);
+    }
+
+    private function getDebugInfo()
+    {
+        $data = array(
+            'greeting' => 'hello world',
+            'class' => get_class(new TestDebugInfo(array()))
+        );
+
+        $expected = <<<'EXPECTED'
+object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #11 (1) {
+    public $__debugInfo() =>
+        array(2) {
+            [greeting] => “hello world”
+            [class] =>    “Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo”
+        }
+}
+
+EXPECTED;
+
+
+        return array(new TestDebugInfo($data), $expected);
     }
 }

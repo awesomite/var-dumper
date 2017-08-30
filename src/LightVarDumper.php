@@ -232,12 +232,8 @@ class LightVarDumper extends InternalVarDumper
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($properties as $property) {
-                $declaringClass = '';
-                if ($property->getDeclaringClass() !== $class) {
-//                    $declaringClass = " @{$property->getDeclaringClass()}";
-                }
                 $propName = str_replace("\n", Strings::SYMBOL_NEW_LINE, $property->getName());
-                $key = "{$this->getTextTypePrefix($property)}\${$propName}{$declaringClass}";
+                $key = "{$this->getTextTypePrefix($property)}\${$propName}";
 
                 $valDump = $this->getDump($property->getValue());
                 $valDump = mb_substr($valDump, 0, -1);

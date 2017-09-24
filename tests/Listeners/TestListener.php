@@ -70,7 +70,8 @@ class TestListener implements \PHPUnit_Framework_TestListener
             ? get_class($test) . '::' . $test->getName()
             : get_class($test);
 
-        $this->messages[] = sprintf("<warning>Test '%s' took %0.2f seconds.</warning>",
+        $this->messages[] = sprintf(
+            "<warning>Test '%s' took %0.2f seconds.</warning>",
             $name,
             $time
         );

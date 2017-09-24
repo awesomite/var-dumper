@@ -128,7 +128,8 @@ DUMP;
 
     private function getClosure()
     {
-        $closure = function () {};
+        $closure = function () {
+        };
 
         $dump =<<<'DUMP'
 object(Closure) #%%digit%% (%%digit%%) {

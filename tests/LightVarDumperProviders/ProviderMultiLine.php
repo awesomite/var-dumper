@@ -2,8 +2,6 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
-use Traversable;
-
 /**
  * @internal
  */

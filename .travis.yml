@@ -9,7 +9,6 @@ php:
   - 5.6
   - 7.0
   - 7.1
-  - nightly
   - hhvm
   - hhvm-3.3
   - hhvm-3.6
@@ -17,7 +16,6 @@ php:
   - hhvm-3.12
   - hhvm-3.15
   - hhvm-3.18
-  - hhvm-nightly
 
 env:
   matrix:
@@ -25,6 +23,10 @@ env:
     - DEPENDENCIES="low"
 
 matrix:
+  allow_failures:
+    - php: nightly
+    - php: hhvm-nightly
+
   include:
     - php: 5.3
       dist: precise
@@ -54,12 +56,18 @@ install:
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") && travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
+      composer global require friendsofphp/php-cs-fixer:@stable;
+      export PHP_CS_FIXER="${HOME}/.composer/vendor/bin/php-cs-fixer";
+      export RUN_CS_FIXER="true";
+    fi
 
 before_script:
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); else export PHP_ARGS=''; fi
 
 script:
+  - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v fix; fi
   - php ${PHP_ARGS} vendor/bin/phpunit
   - php examples/big-dump.php
   - php examples/debug-info.php

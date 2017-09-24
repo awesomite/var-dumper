@@ -143,7 +143,8 @@ class PropertiesTest extends BaseTestCase
             return new VarProperty($name, $value, VarProperty::VISIBILITY_PUBLIC, 'Closure', false, true);
         };
 
-        $closure = function () {};
+        $closure = function () {
+        };
         $properties = array(
             $fnCreateProperty('name', __NAMESPACE__ . '\\{closure}'),
             $fnCreateProperty('filename', __FILE__),

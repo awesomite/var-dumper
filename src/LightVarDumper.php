@@ -40,7 +40,7 @@ class LightVarDumper extends InternalVarDumper
 
     public function dump($var)
     {
-        if ($this->displayPlaceInCode && $this->depth === 0) {
+        if ($this->displayPlaceInCode && 0 === $this->depth) {
             $this->dumpPlaceInCode(0);
         }
 
@@ -143,7 +143,7 @@ class LightVarDumper extends InternalVarDumper
         $len = mb_strlen($string);
         $withPrefixSuffix = false;
 
-        $containsNewLine = strpos($string, "\n") !== false;
+        $containsNewLine = false !== strpos($string, "\n");
         $isMultiLine = $len > $this->maxLineLength || $containsNewLine;
 
         if ($isMultiLine) {
@@ -205,14 +205,14 @@ class LightVarDumper extends InternalVarDumper
         echo 'array(' . $count . ') {';
         if ($count > 0 && $this->depth > $this->maxDepth) {
             echo "...";
-        } else if ($count > 0) {
+        } elseif ($count > 0) {
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($array as $key => $value) {
                 $key = str_replace("\n", Strings::SYMBOL_NEW_LINE, $key);
                 $valDump = $this->getDump($value);
                 $valDump = mb_substr($valDump, 0, -1);
-                if (strpos($valDump, "\n") === false) {
+                if (false === strpos($valDump, "\n")) {
                     $printer->add("{$this->indent}[{$key}] => ", $valDump, mb_strlen("{$this->indent}[{$key}] => "));
                 } else {
                     $printer->flush();
@@ -264,7 +264,7 @@ class LightVarDumper extends InternalVarDumper
         echo 'object(' . $class . ') #' . $hashId . ' (' . count($properties) . ') {';
         if ($count > 0 && $this->depth > $this->maxDepth) {
             echo "...";
-        } else if ($count > 0) {
+        } elseif ($count > 0) {
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($properties as $property) {
@@ -273,7 +273,7 @@ class LightVarDumper extends InternalVarDumper
 
                 $valDump = $this->getDump($property->getValue());
                 $valDump = mb_substr($valDump, 0, -1);
-                if (strpos($valDump, "\n") === false) {
+                if (false === strpos($valDump, "\n")) {
                     $printer->add("{$this->indent}{$key} => ", $valDump, mb_strlen("{$this->indent}{$key} => "));
                 } else {
                     $printer->flush();

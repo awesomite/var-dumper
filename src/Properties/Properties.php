@@ -7,7 +7,7 @@ namespace Awesomite\VarDumper\Properties;
  */
 class Properties extends AbstractProperties
 {
-    static private $mapping = array(
+    private static $mapping = array(
         '\ArrayObject' => '\Awesomite\VarDumper\Properties\PropertiesArrayObject',
         '\Closure' => '\Awesomite\VarDumper\Properties\PropertiesClosure',
     );
@@ -59,7 +59,7 @@ class Properties extends AbstractProperties
     {
         if (method_exists($this->object, '__debugInfo')) {
             $reflection = new \ReflectionMethod($this->object, '__debugInfo');
-            if (!$reflection->isStatic() && $reflection->isPublic() && $reflection->getNumberOfParameters() === 0) {
+            if (!$reflection->isStatic() && $reflection->isPublic() && 0 === $reflection->getNumberOfParameters()) {
                 return $reflection;
             }
         }

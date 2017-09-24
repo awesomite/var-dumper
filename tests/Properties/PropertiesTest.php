@@ -101,6 +101,7 @@ class PropertiesTest extends BaseTestCase
         }
 
         $propertiesObj = new Properties($closure);
+        /** @var PropertyInterface[] $properties */
         $properties = $propertiesObj->getProperties();
         $this->assertSame(count($properties), count($expectedProperties));
         $methods = array(
@@ -117,7 +118,8 @@ class PropertiesTest extends BaseTestCase
             foreach ($methods as $method) {
                 $this->assertSame(
                     call_user_func(array($expectedProperties[$key], $method)),
-                    call_user_func(array($value, $method))
+                    call_user_func(array($value, $method)),
+                    sprintf('%s [getName() === %s]', $method, $value->getName())
                 );
             }
         }
@@ -148,7 +150,7 @@ class PropertiesTest extends BaseTestCase
         $properties = array(
             $fnCreateProperty('name', __NAMESPACE__ . '\\{closure}'),
             $fnCreateProperty('filename', __FILE__),
-            $fnCreateProperty('startLine', __LINE__ - 4),
+            $fnCreateProperty('startLine', __LINE__ - 5),
             $fnCreateProperty('endLine', __LINE__ - 5),
         );
         if (version_compare(PHP_VERSION, '5.4') >= 0) {

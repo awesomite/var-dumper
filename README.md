@@ -26,7 +26,7 @@ LOREM_IPSUM;
 
 $array = array(
     'a' => 'a',
-    'ab' => 'b',
+    'ab' => 'ab',
     'abc' => 'abc',
     'abcd' => 'abcd',
     'abcde' => 'abcde',
@@ -63,7 +63,7 @@ array(2) {
     [1] =>
         array(8) {
             [a] =>        “a”
-            [ab] =>       “b”
+            [ab] =>       “ab”
             [abc] =>      “abc”
             [abcd] =>     “abcd”
             [abcde] =>    “abcde”

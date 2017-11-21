@@ -4,7 +4,7 @@ namespace Awesomite\VarDumper;
 
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
 use Awesomite\VarDumper\Helpers\Strings;
-use Awesomite\VarDumper\Objects\Hasher;
+use Awesomite\VarDumper\Objects\HasherFactory;
 use Awesomite\VarDumper\Objects\HasherInterface;
 use Awesomite\VarDumper\Properties\Properties;
 use Awesomite\VarDumper\Properties\PropertyInterface;
@@ -349,7 +349,7 @@ class LightVarDumper extends InternalVarDumper
     private function getHasher()
     {
         if (is_null($this->hasher)) {
-            $this->hasher = new Hasher();
+            $this->hasher = HasherFactory::create();
         }
 
         return $this->hasher;

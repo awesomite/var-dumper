@@ -8,7 +8,7 @@ class HasherTest extends BaseTestCase
 {
     public function testHash()
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $object1 = new \stdClass();
         $object2 = clone $object1;
@@ -38,7 +38,7 @@ class HasherTest extends BaseTestCase
      */
     public function testInvalidArgument($object)
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
         $hasher->getHashId($object);
     }
 

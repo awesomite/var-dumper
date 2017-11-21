@@ -3,6 +3,7 @@
 ## 0.9.0 (????-??-??)
 
 * Excluded phpunit.xml.dist from `git archive`
+* Use `spl_object_id` whenever it is possible
 
 ## 0.8.0 (2017-08-30)
 

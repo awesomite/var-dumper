@@ -5,7 +5,7 @@ namespace Awesomite\VarDumper\Objects;
 /**
  * @internal
  */
-class Hasher implements HasherInterface
+class Hasher extends BaseHasher
 {
     private static $hashes = array();
 
@@ -13,13 +13,7 @@ class Hasher implements HasherInterface
 
     public function getHashId($object)
     {
-        if (!is_object($object)) {
-            throw new \InvalidArgumentException(sprintf(
-                '%s expects parameter 1 to be object, %s given',
-                __METHOD__,
-                gettype($object)
-            ));
-        }
+        $this->validateObject($object);
 
         $splHash = spl_object_hash($object);
 

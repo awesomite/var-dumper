@@ -238,7 +238,7 @@ EXPECTED;
 
         $array = array(
             'first' => array(tmpfile()),
-            'second' => NULL,
+            'second' => null,
             'third' => $zeros,
         );
         $expected = <<<EXPECTED
@@ -261,7 +261,7 @@ EXPECTED;
 
         $array = array(
             'first' => array(tmpfile()),
-            'second' => NULL,
+            'second' => null,
             'third' => $zeros,
         );
 

@@ -11,6 +11,6 @@ class SplHasher extends BaseHasher
     {
         $this->validateObject($object);
 
-        return spl_object_id($object);
+        return (string) spl_object_id($object);
     }
 }

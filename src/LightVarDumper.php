@@ -141,29 +141,31 @@ class LightVarDumper extends InternalVarDumper
     private function dumpString($string)
     {
         $len = mb_strlen($string);
-        $withPrefixSuffix = false;
+        $withPrefix = false;
+        $withSuffix = false;
 
         $containsNewLine = false !== strpos($string, "\n");
         $isMultiLine = $len > $this->maxLineLength || $containsNewLine;
 
         if ($isMultiLine) {
-            $withPrefixSuffix = true;
+            $withPrefix = true;
         }
 
         if ($len > $this->maxStringLength) {
             $string = mb_substr($string, 0, $this->maxStringLength);
-            $withPrefixSuffix = true;
+            $withPrefix = true;
+            $withSuffix = true;
         }
 
-        if ($withPrefixSuffix || $containsNewLine) {
+        if ($withPrefix || $containsNewLine) {
             echo "string({$len})";
         }
         if (!$isMultiLine) {
-            if ($withPrefixSuffix) {
+            if ($withPrefix) {
                 echo ' ';
             }
             echo Strings::SYMBOL_LEFT_QUOT, $string, Strings::SYMBOL_RIGHT_QUOT;
-            if ($withPrefixSuffix) {
+            if ($withSuffix) {
                 echo '...';
             }
             echo "\n";
@@ -183,7 +185,7 @@ class LightVarDumper extends InternalVarDumper
                     $line = $storage;
                 }
             }
-            if ($withPrefixSuffix) {
+            if ($withSuffix) {
                 echo '...';
             }
             echo "\n";
@@ -203,9 +205,29 @@ class LightVarDumper extends InternalVarDumper
         $limit = $this->maxChildren;
         $count = count($array);
         echo 'array(' . $count . ') {';
+
+        $done = false;
+
         if ($count > 0 && $this->depth > $this->maxDepth) {
             echo "...";
-        } elseif ($count > 0) {
+            $done = true;
+        }
+
+        if (
+            !$done
+            && 1 === $count
+            && array_key_exists(0, $array)
+            && (!is_array($array[0]) && !is_object($array[0]))
+            && (
+                !is_string($array[0])
+                || (mb_strlen($array[0])) <= $this->maxLineLength && false === mb_strpos($array[0], "\n")
+            )
+        ) {
+            echo rtrim($this->getDump($array[0]), "\n");
+            $done = true;
+        }
+
+        if (!$done && $count > 0) {
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($array as $key => $value) {
@@ -230,6 +252,7 @@ class LightVarDumper extends InternalVarDumper
             }
             $printer->flush();
         }
+
         echo '}' . "\n";
 
         array_pop($this->references);

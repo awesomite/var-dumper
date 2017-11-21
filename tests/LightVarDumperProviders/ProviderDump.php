@@ -2,7 +2,7 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
-use Awesomite\VarDumper\Objects\Hasher;
+use Awesomite\VarDumper\Objects\HasherFactory;
 
 /**
  * @internal
@@ -28,13 +28,17 @@ class ProviderDump implements \IteratorAggregate
         if (version_compare(PHP_VERSION, '5.6') < 0) {
             $result['invalidDebugInfo'] = $this->getInvalidDebugInfo();
         }
+        $result['1-element_array'] = $this->get1ElementArray();
+        $result['1-element_long_array'] = $this->get1ElementLongArray();
+        $result['single_line_short_text'] = $this->getSingleLineShortText();
+        $result['single_line_long_text'] = $this->getSingleLineLongText();
 
         return new \ArrayIterator($result);
     }
 
     private function getVisibilityModifiers()
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $object = new TestObject();
         $object->setPrivate('private variable');
@@ -58,7 +62,7 @@ OBJECT;
 
     private function getArrayObject()
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $arrayObject = new \ArrayObject();
         $arrayObject['awesomite.varDumper'] = true;
@@ -80,7 +84,7 @@ DUMP;
 
     private function getExtendedArrayObject()
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $testArrayObject = new TestArrayObject();
         $testArrayObject['awesomite.varDumper'] = true;
@@ -103,7 +107,7 @@ DUMP;
 
     private function getExtendedArrayObject2()
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $testArrayObject2 = new TestArrayObject();
         $testArrayObject2['privateProperty'] = 'public value';
@@ -171,7 +175,7 @@ object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%s (1) {
 
 EXPECTED;
 
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
         $obj = new TestDebugInfo($data);
         $expected = sprintf($expected, $hasher->getHashId($obj));
 
@@ -221,10 +225,88 @@ EXPECTED;
     private function getInvalidDebugInfo()
     {
         $obj = new TestInvalidDebugInfo();
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $expected = sprintf("object(%s) #%d (0) {}\n", get_class($obj), $hasher->getHashId($obj));
 
         return array($obj, $expected);
+    }
+
+    private function get1ElementArray()
+    {
+        $zeros = implode('', array_fill(0, $this->getDefaultLineLength(), '0'));
+
+        $array = array(
+            'first' => array(tmpfile()),
+            'second' => NULL,
+            'third' => $zeros,
+        );
+        $expected = <<<EXPECTED
+array(3) {
+    [first] =>  array(1) {resource of type stream}
+    [second] => NULL
+    [third] =>  “{$zeros}”
+}
+
+EXPECTED;
+        return array($array, $expected);
+    }
+
+    private function get1ElementLongArray()
+    {
+        $lineLength = $this->getDefaultLineLength();
+        $textLength = $lineLength + 5;
+
+        $zeros = implode('', array_fill(0, $textLength, '0'));
+
+        $array = array(
+            'first' => array(tmpfile()),
+            'second' => NULL,
+            'third' => $zeros,
+        );
+
+        $zerosLine = implode('', array_fill(0, $lineLength, '0'));
+        $expected = <<<EXPECTED
+array(3) {
+    [first] =>  array(1) {resource of type stream}
+    [second] => NULL
+    [third] =>
+        string({$textLength})
+            › {$zerosLine}
+            › 00000
+}
+
+EXPECTED;
+        return array($array, $expected);
+    }
+
+    private function getSingleLineShortText()
+    {
+        $zeros = implode('', array_fill(0, $this->getDefaultLineLength(), '0'));
+
+        return array($zeros, "“{$zeros}”\n");
+    }
+
+    private function getSingleLineLongText()
+    {
+        $lineLength = $this->getDefaultLineLength();
+        $textLength = $lineLength + 5;
+
+        $zeros = implode('', array_fill(0, $textLength, '0'));
+        $zerosLine = implode('', array_fill(0, $lineLength, '0'));
+
+        $expected = <<<EXPECTED
+string({$textLength})
+    › {$zerosLine}
+    › 00000
+
+EXPECTED;
+
+        return array($zeros, $expected);
+    }
+
+    private function getDefaultLineLength()
+    {
+        return 130;
     }
 }

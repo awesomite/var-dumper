@@ -69,7 +69,7 @@ before_script:
   - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); else export PHP_ARGS=''; fi
 
 script:
-  - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v fix; fi
+  - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix; fi
   - php ${PHP_ARGS} vendor/bin/phpunit
   - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
       composer global require infection/infection:^0.6;

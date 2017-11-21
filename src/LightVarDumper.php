@@ -149,7 +149,7 @@ class LightVarDumper extends InternalVarDumper
         $withPrefix = false;
         $withSuffix = false;
 
-        $containsNewLine = false !== strpos($string, "\n");
+        $containsNewLine = false !== mb_strpos($string, "\n");
         $isMultiLine = $len > $this->maxLineLength || $containsNewLine;
 
         if ($isMultiLine) {
@@ -239,7 +239,7 @@ class LightVarDumper extends InternalVarDumper
                 $key = str_replace("\n", Symbols::SYMBOL_NEW_LINE, $key);
                 $valDump = $this->getDump($value);
                 $valDump = mb_substr($valDump, 0, -1);
-                if (false === strpos($valDump, "\n")) {
+                if (false === mb_strpos($valDump, "\n")) {
                     $printer->add("{$this->indent}[{$key}] => ", $valDump, mb_strlen("{$this->indent}[{$key}] => "));
                 } else {
                     $printer->flush();
@@ -301,7 +301,7 @@ class LightVarDumper extends InternalVarDumper
 
                 $valDump = $this->getDump($property->getValue());
                 $valDump = mb_substr($valDump, 0, -1);
-                if (false === strpos($valDump, "\n")) {
+                if (false === mb_strpos($valDump, "\n")) {
                     $printer->add("{$this->indent}{$key} => ", $valDump, mb_strlen("{$this->indent}{$key} => "));
                 } else {
                     $printer->flush();

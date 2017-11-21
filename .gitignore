@@ -4,3 +4,4 @@
 composer.lock
 composer-setup.php
 composer.phar
+infection-log.txt

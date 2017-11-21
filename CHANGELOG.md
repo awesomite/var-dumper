@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0 (????-??-??)
+
+* Excluded phpunit.xml.dist from `git archive`
+
 ## 0.8.0 (2017-08-30)
 
 * Do not display values of private properties in parent class - it can cause unexpected error,

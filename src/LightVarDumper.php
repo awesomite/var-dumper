@@ -3,7 +3,7 @@
 namespace Awesomite\VarDumper;
 
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
-use Awesomite\VarDumper\Helpers\Strings;
+use Awesomite\VarDumper\Helpers\Symbols;
 use Awesomite\VarDumper\Objects\HasherFactory;
 use Awesomite\VarDumper\Objects\HasherInterface;
 use Awesomite\VarDumper\Properties\Properties;
@@ -164,7 +164,7 @@ class LightVarDumper extends InternalVarDumper
             if ($withPrefix) {
                 echo ' ';
             }
-            echo Strings::SYMBOL_LEFT_QUOT, $string, Strings::SYMBOL_RIGHT_QUOT;
+            echo Symbols::SYMBOL_LEFT_QUOT, $string, Symbols::SYMBOL_RIGHT_QUOT;
             if ($withSuffix) {
                 echo '...';
             }
@@ -178,7 +178,7 @@ class LightVarDumper extends InternalVarDumper
                     } else {
                         $storage = '';
                     }
-                    echo "\n", $this->indent, Strings::SYMBOL_CITE, ' ', $line;
+                    echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $line;
                     if ('' === $storage) {
                         break;
                     }
@@ -231,7 +231,7 @@ class LightVarDumper extends InternalVarDumper
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($array as $key => $value) {
-                $key = str_replace("\n", Strings::SYMBOL_NEW_LINE, $key);
+                $key = str_replace("\n", Symbols::SYMBOL_NEW_LINE, $key);
                 $valDump = $this->getDump($value);
                 $valDump = mb_substr($valDump, 0, -1);
                 if (false === strpos($valDump, "\n")) {
@@ -291,7 +291,7 @@ class LightVarDumper extends InternalVarDumper
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($properties as $property) {
-                $propName = str_replace("\n", Strings::SYMBOL_NEW_LINE, $property->getName());
+                $propName = str_replace("\n", Symbols::SYMBOL_NEW_LINE, $property->getName());
                 $key = "{$this->getTextTypePrefix($property)}\${$propName}";
 
                 $valDump = $this->getDump($property->getValue());

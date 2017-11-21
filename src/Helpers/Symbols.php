@@ -5,7 +5,7 @@ namespace Awesomite\VarDumper\Helpers;
 /**
  * @internal
  */
-class Strings
+class Symbols
 {
     const SYMBOL_NEW_LINE = '↵';
     const SYMBOL_LEFT_QUOT = '“';

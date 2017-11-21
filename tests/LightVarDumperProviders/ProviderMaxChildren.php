@@ -2,7 +2,7 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
-use Awesomite\VarDumper\Objects\Hasher;
+use Awesomite\VarDumper\Objects\HasherFactory;
 
 /**
  * @internal
@@ -48,7 +48,7 @@ DUMP;
 
     private function getObjects()
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $object = new \stdClass();
         $object->foo = 'foo';

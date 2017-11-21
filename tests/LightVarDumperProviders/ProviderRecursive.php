@@ -2,7 +2,7 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
-use Awesomite\VarDumper\Objects\Hasher;
+use Awesomite\VarDumper\Objects\HasherFactory;
 
 /**
  * @internal
@@ -11,7 +11,7 @@ class ProviderRecursive implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $hasher = new Hasher();
+        $hasher = HasherFactory::create();
 
         $recursiveObj = new \stdClass();
         $recursiveObj->self = $recursiveObj;

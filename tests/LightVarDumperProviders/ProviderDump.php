@@ -2,6 +2,7 @@
 
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
+use Awesomite\VarDumper\LightVarDumper;
 use Awesomite\VarDumper\Objects\HasherFactory;
 
 /**
@@ -307,6 +308,6 @@ EXPECTED;
 
     private function getDefaultLineLength()
     {
-        return 130;
+        return LightVarDumper::DEFAULT_MAX_LINE_LENGTH;
     }
 }

@@ -11,15 +11,20 @@ use Awesomite\VarDumper\Properties\PropertyInterface;
 
 class LightVarDumper extends InternalVarDumper
 {
-    private $maxChildren = 20;
+    const DEFAULT_MAX_CHILDREN = 20;
+    const DEFAULT_MAX_STRING_LENGTH = 200;
+    const DEFAULT_MAX_LINE_LENGTH = 130;
+    const DEFAULT_MAX_DEPTH = 5;
 
-    private $maxStringLength = 200;
+    private $maxChildren = self::DEFAULT_MAX_CHILDREN;
 
-    private $maxLineLength = 130;
+    private $maxStringLength = self::DEFAULT_MAX_STRING_LENGTH;
+
+    private $maxLineLength = self::DEFAULT_MAX_LINE_LENGTH;
+
+    private $maxDepth = self::DEFAULT_MAX_DEPTH;
 
     private $depth = 0;
-
-    private $maxDepth = 5;
 
     private $references = array();
 

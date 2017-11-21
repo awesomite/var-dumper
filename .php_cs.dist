@@ -10,7 +10,6 @@ $finder = PhpCsFixer\Finder::create()
 return PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2' => true,
-        'strict_param' => false,
         'array_syntax' => ['syntax' => 'long'],
         'no_unused_imports' => true,
         'yoda_style' => true,

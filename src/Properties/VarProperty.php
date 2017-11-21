@@ -24,7 +24,6 @@ class VarProperty implements PropertyInterface
     private $declaringClass;
 
     /**
-     * VarProperty constructor.
      * @param string $name
      * @param $value
      * @param string $visibility

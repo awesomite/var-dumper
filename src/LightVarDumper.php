@@ -44,6 +44,11 @@ class LightVarDumper extends InternalVarDumper
 
     private static $canCompareArrays;
 
+    /**
+     * @var HasherInterface
+     */
+    private static $hasher;
+
     private $maxChildren = self::DEFAULT_MAX_CHILDREN;
 
     private $maxStringLength = self::DEFAULT_MAX_STRING_LENGTH;
@@ -55,8 +60,6 @@ class LightVarDumper extends InternalVarDumper
     private $depth = 0;
 
     private $references = array();
-
-    private $hasher = null;
 
     private $indent = '    ';
 
@@ -170,6 +173,8 @@ class LightVarDumper extends InternalVarDumper
         }
 
         self::$canCompareArrays = self::canCompareArrayReferences();
+
+        self::$hasher = HasherFactory::create();
 
         self::$inited = true;
     }
@@ -349,7 +354,7 @@ class LightVarDumper extends InternalVarDumper
     private function dumpObj($object)
     {
         if (in_array($object, $this->references, true)) {
-            echo 'RECURSIVE object(' . get_class($object) . ") #{$this->getHasher()->getHashId($object)}\n";
+            echo 'RECURSIVE object(', get_class($object), ') #', self::$hasher->getHashId($object), "\n";
             return;
         }
 
@@ -370,8 +375,7 @@ class LightVarDumper extends InternalVarDumper
         // @codeCoverageIgnoreEnd
 
         $count = count($properties);
-        $hashId = $this->getHasher()->getHashId($object);
-        echo 'object(' . $class . ') #' . $hashId . ' (' . count($properties) . ') {';
+        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', count($properties), ') {';
         if ($count > 0 && $this->depth > $this->maxDepth) {
             echo "...";
         } elseif ($count > 0) {
@@ -424,17 +428,5 @@ class LightVarDumper extends InternalVarDumper
         }
 
         return 'private ' . $suffix;
-    }
-
-    /**
-     * @return HasherInterface
-     */
-    private function getHasher()
-    {
-        if (is_null($this->hasher)) {
-            $this->hasher = HasherFactory::create();
-        }
-
-        return $this->hasher;
     }
 }

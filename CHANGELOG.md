@@ -20,7 +20,7 @@ array(2) {
 
 * Do not display values of private properties in parent class - it can cause unexpected error,
 because it can call [`__get()`](http://php.net/manual/en/language.oop5.overloading.php#object.get) function
-* Use __debugInfo() whenever it is possible
+* Use [`__debugInfo()`](http://php.net/manual/en/language.oop5.magic.php#object.debuginfo) whenever it is possible
 * Excluded useless files from Github dists and `git archive`
 * Added method `Awesomite\VarDumper\LightVarDumper::setMaxLineLength`
 * Changed format of printed data:

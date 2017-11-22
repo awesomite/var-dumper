@@ -23,10 +23,11 @@ class LightVarDumperTest extends BaseTestCase
      */
     public function testDump($var, $expectedDump)
     {
-        $dumper = new LightVarDumper();
-        $reflectionInit = new \ReflectionProperty(get_class($dumper), 'inited');
+        $reflectionInit = new \ReflectionProperty('Awesomite\VarDumper\LightVarDumper', 'inited');
         $reflectionInit->setAccessible(true);
         $reflectionInit->setValue(false);
+
+        $dumper = new LightVarDumper();
         if ('#' === $expectedDump[0]) {
             $this->assertRegExp($expectedDump, $dumper->getDump($var));
         } else {

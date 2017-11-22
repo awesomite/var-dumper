@@ -2,6 +2,7 @@
     "name": "awesomite/var-dumper",
     "description": "The alternative for var_dump function",
     "license": "MIT",
+    "keywords": ["dump", "var_dump", "debug", "var-dumper"],
     "authors": [
         {
             "name": "Bartłomiej Krukowski",

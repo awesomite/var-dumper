@@ -168,9 +168,7 @@ class LightVarDumper extends InternalVarDumper
             return;
         }
 
-        if (defined('PHP_INT_MIN')) {
-            self::$intMapping[PHP_INT_MIN] = 'PHP_INT_MIN';
-        }
+        self::$intMapping[-PHP_INT_MAX - 1] = 'PHP_INT_MIN';
 
         self::$canCompareArrays = self::canCompareArrayReferences();
 

@@ -58,7 +58,8 @@ install:
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") && travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       composer global require friendsofphp/php-cs-fixer:@stable;
       export PHP_CS_FIXER="${HOME}/.composer/vendor/bin/php-cs-fixer";
       export RUN_CS_FIXER="true";
@@ -71,7 +72,8 @@ before_script:
 script:
   - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix; fi
   - php ${PHP_ARGS} vendor/bin/phpunit
-  - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
       composer global require infection/infection:^0.6;
       export PHP_INFECTION="${HOME}/.composer/vendor/bin/infection";
       ${PHP_INFECTION};

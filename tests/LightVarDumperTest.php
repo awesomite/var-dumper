@@ -15,6 +15,8 @@ use Awesomite\VarDumper\LightVarDumperProviders\ProviderRecursive;
  */
 class LightVarDumperTest extends BaseTestCase
 {
+    private $wasDumperReseted = false;
+
     /**
      * @dataProvider providerDump
      *
@@ -23,9 +25,12 @@ class LightVarDumperTest extends BaseTestCase
      */
     public function testDump($var, $expectedDump)
     {
-        $reflectionInit = new \ReflectionProperty('Awesomite\VarDumper\LightVarDumper', 'inited');
-        $reflectionInit->setAccessible(true);
-        $reflectionInit->setValue(false);
+        if (!$this->wasDumperReseted) {
+            $reflectionInit = new \ReflectionProperty('Awesomite\VarDumper\LightVarDumper', 'inited');
+            $reflectionInit->setAccessible(true);
+            $reflectionInit->setValue(false);
+            $this->wasDumperReseted = true;
+        }
 
         $dumper = new LightVarDumper();
         if ('#' === $expectedDump[0]) {

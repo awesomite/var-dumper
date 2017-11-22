@@ -2,10 +2,11 @@
 
 ## 0.9.0 (????-??-??)
 
-* Excluded phpunit.xml.dist from `git archive`
+* Excluded `phpunit.xml.dist` from `git archive`
 * Use `spl_object_id` whenever it is possible
 * Do not add `...` to the end of text whenever text is not shortened
 * Added constants `Awesomite\VarDumper\LightVarDumper::DEFAULT_*`
+* Display constant's name instead of value for the following constants: `M_*`, `PHP_INT_MIN`, `PHP_INT_MIN`
 * Allow displaying array in single line whenever array contains only 1 element,
 element has index 0 and output is not too long e.g.
 ```

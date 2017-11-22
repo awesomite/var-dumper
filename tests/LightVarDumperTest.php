@@ -3,6 +3,7 @@
 namespace Awesomite\VarDumper;
 
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
+use Awesomite\VarDumper\LightVarDumperProviders\ProviderDumpConstants;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxChildren;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxDepth;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxStringLength;
@@ -32,7 +33,10 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerDump()
     {
-        return iterator_to_array(new ProviderDump());
+        return array_merge(
+            iterator_to_array(new ProviderDump()),
+            iterator_to_array(new ProviderDumpConstants())
+        );
     }
 
     /**

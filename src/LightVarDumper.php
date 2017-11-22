@@ -16,6 +16,31 @@ class LightVarDumper extends InternalVarDumper
     const DEFAULT_MAX_LINE_LENGTH = 130;
     const DEFAULT_MAX_DEPTH = 5;
 
+    private static $floatMapping = array(
+        'M_PI' => M_PI,
+        'M_E' => M_E,
+        'M_LOG2E' => M_LOG2E,
+        'M_LOG10E' => M_LOG10E,
+        'M_LN2' => M_LN2,
+        'M_LN10' => M_LN10,
+        'M_PI_2' => M_PI_2,
+        'M_PI_4' => M_PI_4,
+        'M_1_PI' => M_1_PI,
+        'M_2_PI' => M_2_PI,
+        'M_SQRTPI' => M_SQRTPI,
+        'M_2_SQRTPI' => M_2_SQRTPI,
+        'M_SQRT2' => M_SQRT2,
+        'M_SQRT3' => M_SQRT3,
+        'M_SQRT1_2' => M_SQRT1_2,
+        'M_LNPI' => M_LNPI,
+        'M_EULER' => M_EULER,
+    );
+
+    private static $intMapping = array(
+        PHP_INT_MIN => 'PHP_INT_MIN',
+        PHP_INT_MAX => 'PHP_INT_MAX',
+    );
+
     private $maxChildren = self::DEFAULT_MAX_CHILDREN;
 
     private $maxStringLength = self::DEFAULT_MAX_STRING_LENGTH;
@@ -140,7 +165,21 @@ class LightVarDumper extends InternalVarDumper
 
     private function dumpScalar($scalar)
     {
-        echo var_export($scalar, true) . "\n";
+        if (is_float($scalar)) {
+            foreach (self::$floatMapping as $key => $value) {
+                if ($value === $scalar) {
+                    echo $key, "\n";
+                    return;
+                }
+            }
+        }
+
+        if (is_int($scalar) && array_key_exists($scalar, self::$intMapping)) {
+            echo self::$intMapping[$scalar], "\n";
+            return;
+        }
+
+        echo var_export($scalar, true), "\n";
     }
 
     private function dumpString($string)

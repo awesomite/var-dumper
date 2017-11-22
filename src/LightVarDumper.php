@@ -37,9 +37,12 @@ class LightVarDumper extends InternalVarDumper
     );
 
     private static $intMapping = array(
-        PHP_INT_MIN => 'PHP_INT_MIN',
         PHP_INT_MAX => 'PHP_INT_MAX',
     );
+
+    private static $inited = false;
+
+    private static $canCompareArrays;
 
     private $maxChildren = self::DEFAULT_MAX_CHILDREN;
 
@@ -53,8 +56,6 @@ class LightVarDumper extends InternalVarDumper
 
     private $references = array();
 
-    private $canCompareArrays;
-
     private $hasher = null;
 
     private $indent = '    ';
@@ -65,7 +66,7 @@ class LightVarDumper extends InternalVarDumper
     public function __construct($displayPlaceInCode = false, $stepShift = 0)
     {
         parent::__construct($displayPlaceInCode, $stepShift);
-        $this->canCompareArrays = $this->canCompareArrayReferences();
+        self::init();
     }
 
     public function dump($var)
@@ -158,6 +159,48 @@ class LightVarDumper extends InternalVarDumper
         return $this;
     }
 
+    private static function init()
+    {
+        if (self::$inited) {
+            return;
+        }
+
+        if (defined('PHP_INT_MIN')) {
+            self::$intMapping[PHP_INT_MIN] = 'PHP_INT_MIN';
+        }
+
+        self::$canCompareArrays = self::canCompareArrayReferences();
+
+        self::$inited = true;
+    }
+
+    /**
+     * Code:
+     *
+     * $a = array();
+     * $b = &$a;
+     * $a[] = $b;
+     * var_dump(in_array($b, array($a), true));
+     *
+     * throws fatal error "Nesting level too deep - recursive dependency?"
+     * in PHP <= 5.3.14 || (PHP >= 5.4 && PHP <= 5.4.4)
+     *
+     * @codeCoverageIgnore
+     */
+    private static function canCompareArrayReferences()
+    {
+        if (version_compare(PHP_VERSION, '5.4.5') >= 0) {
+            return true;
+        }
+
+        // 5.4.* && < 5.4.5
+        if (PHP_MINOR_VERSION === 4) {
+            return false;
+        }
+
+        return version_compare(PHP_VERSION, '5.3.15') >= 0;
+    }
+
     private function dumpResource($resource)
     {
         echo 'resource of type ', get_resource_type($resource), "\n";
@@ -238,7 +281,7 @@ class LightVarDumper extends InternalVarDumper
 
     private function dumpArray(&$array)
     {
-        if ($this->canCompareArrays && in_array($array, $this->references, true)) {
+        if (self::$canCompareArrays && in_array($array, $this->references, true)) {
             echo 'RECURSIVE array(' . count($array) . ")\n";
             return;
         }
@@ -381,33 +424,6 @@ class LightVarDumper extends InternalVarDumper
         }
 
         return 'private ' . $suffix;
-    }
-
-    /**
-     * Code:
-     *
-     * $a = array();
-     * $b = &$a;
-     * $a[] = $b;
-     * var_dump(in_array($b, array($a), true));
-     *
-     * throws fatal error "Nesting level too deep - recursive dependency?"
-     * in PHP <= 5.3.14 || (PHP >= 5.4 && PHP <= 5.4.4)
-     *
-     * @codeCoverageIgnore
-     */
-    private function canCompareArrayReferences()
-    {
-        if (version_compare(PHP_VERSION, '5.4.5') >= 0) {
-            return true;
-        }
-
-        // 5.4.* && < 5.4.5
-        if (PHP_MINOR_VERSION === 4) {
-            return false;
-        }
-
-        return version_compare(PHP_VERSION, '5.3.15') >= 0;
     }
 
     /**

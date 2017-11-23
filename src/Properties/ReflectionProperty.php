@@ -14,7 +14,7 @@ class ReflectionProperty implements PropertyInterface
     public function __construct(\ReflectionProperty $property, $object)
     {
         $this->reflection = $property;
-        if (!is_object($object)) {
+        if (!\is_object($object)) {
             throw new \InvalidArgumentException('Argument $object is not an object!');
         }
         $this->object = $object;
@@ -41,7 +41,7 @@ class ReflectionProperty implements PropertyInterface
     public function isVirtual()
     {
         // new \ReflectionClass($this->object) sees also virtual properties in HHVM
-        $class = new \ReflectionClass(get_class($this->object));
+        $class = new \ReflectionClass(\get_class($this->object));
 
         do {
             if ($class->hasProperty($this->getName())) {

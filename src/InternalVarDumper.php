@@ -21,31 +21,31 @@ class InternalVarDumper implements VarDumperInterface
     public function dump($var)
     {
         $iniKey = 'xdebug.overload_var_dump';
-        $previousVal = ini_get($iniKey);
-        ini_set($iniKey, 0);
+        $previousVal = \ini_get($iniKey);
+        \ini_set($iniKey, 0);
 
         if ($this->displayPlaceInCode) {
             $this->dumpPlaceInCode(0);
         }
-        var_dump($var);
+        \var_dump($var);
 
-        ini_set($iniKey, $previousVal);
+        \ini_set($iniKey, $previousVal);
     }
 
     public function getDump($var)
     {
-        ob_start();
+        \ob_start();
         $this->dump($var);
-        $result = ob_get_contents();
-        ob_end_clean();
+        $result = \ob_get_contents();
+        \ob_end_clean();
 
         return $result;
     }
     
     protected function dumpPlaceInCode($number)
     {
-        $options = version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;
-        $stackTrace = debug_backtrace($options);
+        $options = \version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;
+        $stackTrace = \debug_backtrace($options);
         $num = 1 + $number + $this->shift;
 
         // @codeCoverageIgnoreStart

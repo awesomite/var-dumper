@@ -17,7 +17,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
 
     public function __construct()
     {
-        $this->getConsoleOutput()->writeln(sprintf('PHP %s', phpversion()));
+        $this->getConsoleOutput()->writeln(\sprintf('PHP %s', \phpversion()));
     }
 
     public function __destruct()
@@ -67,10 +67,10 @@ class TestListener implements \PHPUnit_Framework_TestListener
         }
 
         $name = ($test instanceof \PHPUnit_Framework_TestCase) || ($test instanceof TestCase)
-            ? get_class($test) . '::' . $test->getName()
-            : get_class($test);
+            ? \get_class($test) . '::' . $test->getName()
+            : \get_class($test);
 
-        $this->messages[] = sprintf(
+        $this->messages[] = \sprintf(
             "<warning>Test '%s' took %0.2f seconds.</warning>",
             $name,
             $time

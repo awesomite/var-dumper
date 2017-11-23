@@ -18,14 +18,14 @@ class VarPropertyTest extends BaseTestCase
     public function testInvalidConstructor()
     {
         $reflection = new \ReflectionClass('Awesomite\VarDumper\Properties\VarProperty');
-        $reflection->newInstanceArgs(func_get_args());
+        $reflection->newInstanceArgs(\func_get_args());
     }
 
     public function providerInvalidConstructor()
     {
         return array(
-            array('name', 'value', false, get_class($this)),
-            array('name', 'value', new \stdClass(), get_class($this)),
+            array('name', 'value', false, \get_class($this)),
+            array('name', 'value', new \stdClass(), \get_class($this)),
         );
     }
 }

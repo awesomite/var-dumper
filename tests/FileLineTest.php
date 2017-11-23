@@ -15,11 +15,11 @@ class FileLineTest extends BaseTestCase
      */
     public function testFileLine(VarDumperInterface $dumper, $displayLines)
     {
-        ob_start();
+        \ob_start();
         $dumper->dump(1);
-        $contents = ob_get_contents();
-        ob_end_clean();
-        list($firstLine) = explode("\n", $contents);
+        $contents = \ob_get_contents();
+        \ob_end_clean();
+        list($firstLine) = \explode("\n", $contents);
         $this->assertSame($displayLines, __FILE__ . ':' . (__LINE__ - 4) . ':' === $firstLine, $contents);
     }
 
@@ -60,11 +60,11 @@ class FileLineTest extends BaseTestCase
             2 => 15,
         );
 
-        ob_start();
+        \ob_start();
         $dump3();
-        $contents = ob_get_contents();
-        ob_end_clean();
-        list($firstLine) = explode("\n", $contents);
+        $contents = \ob_get_contents();
+        \ob_end_clean();
+        list($firstLine) = \explode("\n", $contents);
 
         $this->assertSame(__FILE__ . ':' . (__LINE__ - $nestingMapping[$nestingLevel]) . ':', $firstLine, $contents);
     }

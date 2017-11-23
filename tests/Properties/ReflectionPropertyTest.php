@@ -20,7 +20,7 @@ class ReflectionPropertyTest extends BaseTestCase
     public function testInvalidConstructor()
     {
         $reflection = new \ReflectionClass('Awesomite\VarDumper\Properties\ReflectionProperty');
-        $reflection->newInstanceArgs(func_get_args());
+        $reflection->newInstanceArgs(\func_get_args());
     }
 
     public function providerInvalidConstructor()
@@ -29,7 +29,7 @@ class ReflectionPropertyTest extends BaseTestCase
         return array(
             array($reflection, false),
             array($reflection, 1),
-            array($reflection, get_class($this)),
+            array($reflection, \get_class($this)),
         );
     }
 
@@ -46,8 +46,8 @@ class ReflectionPropertyTest extends BaseTestCase
 
     public function providerGetDeclaringClass()
     {
-        $childClass = get_class(new TestChild());
-        $parentClass = get_class(new TestParent());
+        $childClass = \get_class(new TestChild());
+        $parentClass = \get_class(new TestParent());
 
         return array(
             array(new ReflectionProperty(new \ReflectionProperty($childClass, 'foo'), new TestChild()), $parentClass),

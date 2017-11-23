@@ -14,19 +14,19 @@ class ProviderDump implements \IteratorAggregate
     {
         $result = array();
         $result['visibilityModifiers'] = $this->getVisibilityModifiers();
-        if (!defined('HHVM_VERSION')) {
+        if (!\defined('HHVM_VERSION')) {
             $result['arrayObject'] = $this->getArrayObject();
             $result['extendedArrayObject'] = $this->getExtendedArrayObject();
             $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
         }
         $result['null'] = array(null, "NULL\n");
-        $result['resource'] = array(tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
-        if (!defined('HHVM_VERSION') && version_compare(PHP_VERSION, '5.4') >= 0) {
+        $result['resource'] = array(\tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
+        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '5.4') >= 0) {
             $result['closure'] = $this->getClosure();
         }
         $result['debugInfo'] = $this->getDebugInfo();
         $result['brokenAlign'] = $this->getBrokenAlign();
-        if (version_compare(PHP_VERSION, '5.6') < 0) {
+        if (\version_compare(PHP_VERSION, '5.6') < 0) {
             $result['invalidDebugInfo'] = $this->getInvalidDebugInfo();
         }
         $result['1-element_array'] = $this->get1ElementArray();
@@ -152,8 +152,8 @@ DUMP;
             '%%file%%' => '.*',
             '%%any%%' => '.*',
         );
-        $regex = '#^' . preg_quote($dump, '#') . '$#ms';
-        $regex = str_replace(array_keys($replace), array_values($replace), $regex);
+        $regex = '#^' . \preg_quote($dump, '#') . '$#ms';
+        $regex = \str_replace(\array_keys($replace), \array_values($replace), $regex);
 
         return array($closure, $regex);
     }
@@ -162,7 +162,7 @@ DUMP;
     {
         $data = array(
             'greeting' => 'hello world',
-            'class' => get_class(new TestDebugInfo(array()))
+            'class' => \get_class(new TestDebugInfo(array()))
         );
 
         $expected = <<<'EXPECTED'
@@ -178,7 +178,7 @@ EXPECTED;
 
         $hasher = HasherFactory::create();
         $obj = new TestDebugInfo($data);
-        $expected = sprintf($expected, $hasher->getHashId($obj));
+        $expected = \sprintf($expected, $hasher->getHashId($obj));
 
         return array($obj, $expected);
     }
@@ -189,7 +189,7 @@ EXPECTED;
             'a' => 'a',
             'ab' => 'ab',
             'abc' => 'abc',
-            'subarray' => range('a', 'm'),
+            'subarray' => \range('a', 'm'),
             'abcd' => 'abcd',
         );
 
@@ -228,14 +228,14 @@ EXPECTED;
         $obj = new TestInvalidDebugInfo();
         $hasher = HasherFactory::create();
 
-        $expected = sprintf("object(%s) #%d (0) {}\n", get_class($obj), $hasher->getHashId($obj));
+        $expected = \sprintf("object(%s) #%d (0) {}\n", \get_class($obj), $hasher->getHashId($obj));
 
         return array($obj, $expected);
     }
 
     private function get1ElementArray()
     {
-        $zeros = implode('', array_fill(0, $this->getDefaultLineLength(), '0'));
+        $zeros = \implode('', \array_fill(0, $this->getDefaultLineLength(), '0'));
 
         $array = array(
             'first' => array(null),
@@ -258,7 +258,7 @@ EXPECTED;
         $lineLength = $this->getDefaultLineLength();
         $textLength = $lineLength + 5;
 
-        $zeros = implode('', array_fill(0, $textLength, '0'));
+        $zeros = \implode('', \array_fill(0, $textLength, '0'));
 
         $array = array(
             'first' => array(1),
@@ -266,7 +266,7 @@ EXPECTED;
             'third' => $zeros,
         );
 
-        $zerosLine = implode('', array_fill(0, $lineLength, '0'));
+        $zerosLine = \implode('', \array_fill(0, $lineLength, '0'));
         $expected = <<<EXPECTED
 array(3) {
     [first] =>  array(1) {1}
@@ -283,7 +283,7 @@ EXPECTED;
 
     private function getSingleLineShortText()
     {
-        $zeros = implode('', array_fill(0, $this->getDefaultLineLength(), '0'));
+        $zeros = \implode('', \array_fill(0, $this->getDefaultLineLength(), '0'));
 
         return array($zeros, "“{$zeros}”\n");
     }
@@ -293,8 +293,8 @@ EXPECTED;
         $lineLength = $this->getDefaultLineLength();
         $textLength = $lineLength + 5;
 
-        $zeros = implode('', array_fill(0, $textLength, '0'));
-        $zerosLine = implode('', array_fill(0, $lineLength, '0'));
+        $zeros = \implode('', \array_fill(0, $textLength, '0'));
+        $zerosLine = \implode('', \array_fill(0, $lineLength, '0'));
 
         $expected = <<<EXPECTED
 string({$textLength})

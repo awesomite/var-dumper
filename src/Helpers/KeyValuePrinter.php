@@ -28,7 +28,7 @@ class KeyValuePrinter
     {
         foreach ($this->rows as $data) {
             list($key, $value) = $data;
-            echo str_pad($key, $this->maxLength, ' '), $value, "\n";
+            echo \str_pad($key, $this->maxLength, ' '), $value, "\n";
         }
         $this->rows = array();
         $this->maxLength = 0;

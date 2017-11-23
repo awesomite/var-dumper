@@ -15,7 +15,7 @@ class Hasher extends BaseHasher
     {
         $this->validateObject($object);
 
-        $splHash = spl_object_hash($object);
+        $splHash = \spl_object_hash($object);
 
         if (!isset(self::$hashes[$splHash])) {
             self::$hashes[$splHash] = ++self::$counter;

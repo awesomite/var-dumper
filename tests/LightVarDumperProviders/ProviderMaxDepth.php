@@ -12,7 +12,7 @@ class ProviderMaxDepth implements \IteratorAggregate
     public function getIterator()
     {
         $result = array();
-        $result = array_merge($result, $this->getObjects());
+        $result = \array_merge($result, $this->getObjects());
         $result['array'] = $this->getArray();
 
         return new \ArrayIterator($result);

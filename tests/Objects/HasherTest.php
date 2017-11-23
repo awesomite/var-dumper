@@ -49,7 +49,7 @@ class HasherTest extends BaseTestCase
             array(null),
             array(false),
             array('hello'),
-            array(tmpfile()),
+            array(\tmpfile()),
         );
     }
 }

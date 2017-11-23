@@ -12,7 +12,7 @@ class HasherFactory
      */
     public static function create()
     {
-        return function_exists('spl_object_id')
+        return \function_exists('spl_object_id')
             ? new SplHasher()
             : new Hasher();
     }

@@ -78,32 +78,32 @@ class LightVarDumper extends InternalVarDumper
             $this->dumpPlaceInCode(0);
         }
 
-        if (is_string($var)) {
+        if (\is_string($var)) {
             $this->dumpString($var);
             return;
         }
 
-        if (is_null($var)) {
+        if (\is_null($var)) {
             echo "NULL\n";
             return;
         }
 
-        if (is_scalar($var)) {
+        if (\is_scalar($var)) {
             $this->dumpScalar($var);
             return;
         }
 
-        if (is_object($var)) {
+        if (\is_object($var)) {
             $this->dumpObj($var);
             return;
         }
 
-        if (is_array($var)) {
+        if (\is_array($var)) {
             $this->dumpArray($var);
             return;
         }
 
-        if (is_resource($var)) {
+        if (\is_resource($var)) {
             $this->dumpResource($var);
             return;
         }
@@ -192,7 +192,7 @@ class LightVarDumper extends InternalVarDumper
      */
     private static function canCompareArrayReferences()
     {
-        if (version_compare(PHP_VERSION, '5.4.5') >= 0) {
+        if (\version_compare(PHP_VERSION, '5.4.5') >= 0) {
             return true;
         }
 
@@ -201,19 +201,19 @@ class LightVarDumper extends InternalVarDumper
             return false;
         }
 
-        return version_compare(PHP_VERSION, '5.3.15') >= 0;
+        return \version_compare(PHP_VERSION, '5.3.15') >= 0;
     }
 
     private function dumpResource($resource)
     {
         $id = $this->getResourceId($resource);
         if (false !== $id) {
-            echo 'resource #', $id, ' of type ', get_resource_type($resource), "\n";
+            echo 'resource #', $id, ' of type ', \get_resource_type($resource), "\n";
             return;
         }
 
         // @codeCoverageIgnoreStart
-        echo 'resource of type ', get_resource_type($resource), "\n";
+        echo 'resource of type ', \get_resource_type($resource), "\n";
         // @codeCoverageIgnoreEnd
     }
 
@@ -223,28 +223,28 @@ class LightVarDumper extends InternalVarDumper
      */
     private function getResourceId($resource)
     {
-        if (function_exists('get_resources')) {
-            foreach (get_resources(get_resource_type($resource)) as  $id => $val) {
+        if (\function_exists('get_resources')) {
+            foreach (\get_resources(\get_resource_type($resource)) as  $id => $val) {
                 if ($val === $resource) {
                     return $id;
                 }
             }
         }
 
-        ob_start();
-        var_dump($resource);
-        $contents = ob_get_contents();
-        ob_end_clean();
+        \ob_start();
+        \var_dump($resource);
+        $contents = \ob_get_contents();
+        \ob_end_clean();
 
         $matches = array();
-        if (preg_match('#resource\((?<id>[0-9]+)\) of type#', $contents, $matches)) {
+        if (\preg_match('#resource\((?<id>[0-9]+)\) of type#', $contents, $matches)) {
             return $matches['id'];
         }
 
         // @codeCoverageIgnoreStart
-        $contents = strip_tags($contents);
+        $contents = \strip_tags($contents);
         $matches = array();
-        if (preg_match('#resource\((?<id>[0-9]+),#', $contents, $matches)) {
+        if (\preg_match('#resource\((?<id>[0-9]+),#', $contents, $matches)) {
             return $matches['id'];
         }
 
@@ -254,7 +254,7 @@ class LightVarDumper extends InternalVarDumper
 
     private function dumpScalar($scalar)
     {
-        if (is_float($scalar)) {
+        if (\is_float($scalar)) {
             foreach (self::$floatMapping as $key => $value) {
                 if ($value === $scalar) {
                     echo $key, "\n";
@@ -263,21 +263,21 @@ class LightVarDumper extends InternalVarDumper
             }
         }
 
-        if (is_int($scalar) && array_key_exists($scalar, self::$intMapping)) {
+        if (\is_int($scalar) && \array_key_exists($scalar, self::$intMapping)) {
             echo self::$intMapping[$scalar], "\n";
             return;
         }
 
-        echo var_export($scalar, true), "\n";
+        echo \var_export($scalar, true), "\n";
     }
 
     private function dumpString($string)
     {
-        $len = mb_strlen($string);
+        $len = \mb_strlen($string);
         $withPrefix = false;
         $withSuffix = false;
 
-        $containsNewLine = false !== mb_strpos($string, "\n");
+        $containsNewLine = false !== \mb_strpos($string, "\n");
         $isMultiLine = $len > $this->maxLineLength || $containsNewLine;
 
         if ($isMultiLine) {
@@ -285,7 +285,7 @@ class LightVarDumper extends InternalVarDumper
         }
 
         if ($len > $this->maxStringLength) {
-            $string = mb_substr($string, 0, $this->maxStringLength);
+            $string = \mb_substr($string, 0, $this->maxStringLength);
             $withPrefix = true;
             $withSuffix = true;
         }
@@ -303,11 +303,11 @@ class LightVarDumper extends InternalVarDumper
             }
             echo "\n";
         } else {
-            foreach (explode("\n", $string) as $line) {
+            foreach (\explode("\n", $string) as $line) {
                 while (true) {
-                    if (mb_strlen($line) > $this->maxLineLength) {
-                        $storage = mb_substr($line, $this->maxLineLength);
-                        $line = mb_substr($line, 0, $this->maxLineLength);
+                    if (\mb_strlen($line) > $this->maxLineLength) {
+                        $storage = \mb_substr($line, $this->maxLineLength);
+                        $line = \mb_substr($line, 0, $this->maxLineLength);
                     } else {
                         $storage = '';
                     }
@@ -327,8 +327,8 @@ class LightVarDumper extends InternalVarDumper
 
     private function dumpArray(&$array)
     {
-        if (self::$canCompareArrays && in_array($array, $this->references, true)) {
-            echo 'RECURSIVE array(' . count($array) . ")\n";
+        if (self::$canCompareArrays && \in_array($array, $this->references, true)) {
+            echo 'RECURSIVE array(' . \count($array) . ")\n";
             return;
         }
 
@@ -336,7 +336,7 @@ class LightVarDumper extends InternalVarDumper
         $this->references[] = &$array;
 
         $limit = $this->maxChildren;
-        $count = count($array);
+        $count = \count($array);
         echo 'array(' . $count . ') {';
 
         $done = false;
@@ -349,14 +349,14 @@ class LightVarDumper extends InternalVarDumper
         if (
             !$done
             && 1 === $count
-            && array_key_exists(0, $array)
-            && (!is_array($array[0]) && !is_object($array[0]))
+            && \array_key_exists(0, $array)
+            && (!\is_array($array[0]) && !\is_object($array[0]))
             && (
-                !is_string($array[0])
-                || (mb_strlen($array[0])) <= $this->maxLineLength && false === mb_strpos($array[0], "\n")
+                !\is_string($array[0])
+                || (\mb_strlen($array[0])) <= $this->maxLineLength && false === \mb_strpos($array[0], "\n")
             )
         ) {
-            echo rtrim($this->getDump($array[0]), "\n");
+            echo \rtrim($this->getDump($array[0]), "\n");
             $done = true;
         }
 
@@ -364,20 +364,20 @@ class LightVarDumper extends InternalVarDumper
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($array as $key => $value) {
-                $key = str_replace("\n", Symbols::SYMBOL_NEW_LINE, $key);
+                $key = \str_replace("\n", Symbols::SYMBOL_NEW_LINE, $key);
                 $valDump = $this->getDump($value);
-                $valDump = mb_substr($valDump, 0, -1);
-                if (false === mb_strpos($valDump, "\n")) {
-                    $printer->add("{$this->indent}[{$key}] => ", $valDump, mb_strlen("{$this->indent}[{$key}] => "));
+                $valDump = \mb_substr($valDump, 0, -1);
+                if (false === \mb_strpos($valDump, "\n")) {
+                    $printer->add("{$this->indent}[{$key}] => ", $valDump, \mb_strlen("{$this->indent}[{$key}] => "));
                 } else {
                     $printer->flush();
-                    $valDump = str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
+                    $valDump = \str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
                     echo "{$this->indent}[{$key}] =>\n{$this->indent}{$this->indent}$valDump\n";
                 }
 
                 if (!--$limit) {
                     $printer->flush();
-                    if (count($array) > $this->maxChildren) {
+                    if (\count($array) > $this->maxChildren) {
                         echo "{$this->indent}(...)\n";
                     }
                     break;
@@ -388,14 +388,14 @@ class LightVarDumper extends InternalVarDumper
 
         echo '}' . "\n";
 
-        array_pop($this->references);
+        \array_pop($this->references);
         $this->depth--;
     }
 
     private function dumpObj($object)
     {
-        if (in_array($object, $this->references, true)) {
-            echo 'RECURSIVE object(', get_class($object), ') #', self::$hasher->getHashId($object), "\n";
+        if (\in_array($object, $this->references, true)) {
+            echo 'RECURSIVE object(', \get_class($object), ') #', self::$hasher->getHashId($object), "\n";
             return;
         }
 
@@ -406,39 +406,39 @@ class LightVarDumper extends InternalVarDumper
         $propertiesIterator = new Properties($object);
         /** @var PropertyInterface[] $properties */
         $properties = $propertiesIterator->getProperties();
-        $class = get_class($object);
+        $class = \get_class($object);
 
         // @see https://github.com/facebook/hhvm/issues/7868
         // @codeCoverageIgnoreStart
-        if (defined('HHVM_VERSION') && $object instanceof \Closure) {
+        if (\defined('HHVM_VERSION') && $object instanceof \Closure) {
             $class = 'Closure';
         }
         // @codeCoverageIgnoreEnd
 
-        $count = count($properties);
-        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', count($properties), ') {';
+        $count = \count($properties);
+        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', \count($properties), ') {';
         if ($count > 0 && $this->depth > $this->maxDepth) {
             echo "...";
         } elseif ($count > 0) {
             echo "\n";
             $printer = new KeyValuePrinter();
             foreach ($properties as $property) {
-                $propName = str_replace("\n", Symbols::SYMBOL_NEW_LINE, $property->getName());
+                $propName = \str_replace("\n", Symbols::SYMBOL_NEW_LINE, $property->getName());
                 $key = "{$this->getTextTypePrefix($property)}\${$propName}";
 
                 $valDump = $this->getDump($property->getValue());
-                $valDump = mb_substr($valDump, 0, -1);
-                if (false === mb_strpos($valDump, "\n")) {
-                    $printer->add("{$this->indent}{$key} => ", $valDump, mb_strlen("{$this->indent}{$key} => "));
+                $valDump = \mb_substr($valDump, 0, -1);
+                if (false === \mb_strpos($valDump, "\n")) {
+                    $printer->add("{$this->indent}{$key} => ", $valDump, \mb_strlen("{$this->indent}{$key} => "));
                 } else {
                     $printer->flush();
-                    $valDump = str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
+                    $valDump = \str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
                     echo "{$this->indent}{$key} =>\n{$this->indent}{$this->indent}$valDump\n";
                 }
 
                 if (!--$limit) {
                     $printer->flush();
-                    if (count($properties) > $this->maxChildren) {
+                    if (\count($properties) > $this->maxChildren) {
                         echo "{$this->indent}(...)\n";
                     }
                     break;
@@ -448,7 +448,7 @@ class LightVarDumper extends InternalVarDumper
         }
         echo '}' . "\n";
 
-        array_pop($this->references);
+        \array_pop($this->references);
         $this->depth--;
     }
 

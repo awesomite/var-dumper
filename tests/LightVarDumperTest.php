@@ -42,9 +42,9 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerDump()
     {
-        return array_merge(
-            iterator_to_array(new ProviderDump()),
-            iterator_to_array(new ProviderDumpConstants())
+        return \array_merge(
+            \iterator_to_array(new ProviderDump()),
+            \iterator_to_array(new ProviderDumpConstants())
         );
     }
 
@@ -65,7 +65,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMaxDepth()
     {
-        return iterator_to_array(new ProviderMaxDepth());
+        return \iterator_to_array(new ProviderMaxDepth());
     }
 
     /**
@@ -85,7 +85,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMaxStringLength()
     {
-        return iterator_to_array(new ProviderMaxStringLength());
+        return \iterator_to_array(new ProviderMaxStringLength());
     }
 
     /**
@@ -105,7 +105,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMaxChildren()
     {
-        return iterator_to_array(new ProviderMaxChildren());
+        return \iterator_to_array(new ProviderMaxChildren());
     }
 
     /**
@@ -126,7 +126,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerRecursive()
     {
-        return iterator_to_array(new ProviderRecursive());
+        return \iterator_to_array(new ProviderRecursive());
     }
 
     /**
@@ -150,6 +150,6 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMultiLine()
     {
-        return iterator_to_array(new ProviderMultiLine());
+        return \iterator_to_array(new ProviderMultiLine());
     }
 }

@@ -22,11 +22,11 @@ class PropertiesArrayObject extends AbstractProperties
         $flags = $reflectionClass->getMethod('getFlags')->invoke($object);
         $reflectionClass->getMethod('setFlags')->invoke($object, \ArrayObject::STD_PROP_LIST);
 
-        $properties = array_map(function (\ReflectionProperty $property) use ($object) {
+        $properties = \array_map(function (\ReflectionProperty $property) use ($object) {
             return new ReflectionProperty($property, $object);
         }, $this->getDeclaredProperties());
 
-        if (!defined('HHVM_VERSION')) {
+        if (!\defined('HHVM_VERSION')) {
             $properties[] = new VarProperty(
                 'storage',
                 $reflectionClass->getMethod('getArrayCopy')->invoke($object),

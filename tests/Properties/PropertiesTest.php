@@ -62,7 +62,7 @@ class PropertiesTest extends BaseTestCase
      */
     public function testArrayObject(\ArrayObject $array, array $expectedNames)
     {
-        if (defined('HHVM_VERSION')) {
+        if (\defined('HHVM_VERSION')) {
             $this->assertTrue(true);
             return;
         }
@@ -72,9 +72,9 @@ class PropertiesTest extends BaseTestCase
             /** @var PropertyInterface $property */
             $names[] = $property->getName();
         }
-        $this->assertSame(count($expectedNames), count($names));
-        $diff = array_diff($names, $expectedNames);
-        $this->assertSame(0, count($diff), 'Diff: "' . implode('", "', $diff) . '".');
+        $this->assertSame(\count($expectedNames), \count($names));
+        $diff = \array_diff($names, $expectedNames);
+        $this->assertSame(0, \count($diff), 'Diff: "' . \implode('", "', $diff) . '".');
     }
 
     public function providerArrayObject()
@@ -95,7 +95,7 @@ class PropertiesTest extends BaseTestCase
      */
     public function testClosure(\Closure $closure, array $expectedProperties)
     {
-        if (defined('HHVM_VERSION')) {
+        if (\defined('HHVM_VERSION')) {
             $this->assertTrue(true);
             return;
         }
@@ -103,7 +103,7 @@ class PropertiesTest extends BaseTestCase
         $propertiesObj = new Properties($closure);
         /** @var PropertyInterface[] $properties */
         $properties = $propertiesObj->getProperties();
-        $this->assertSame(count($properties), count($expectedProperties));
+        $this->assertSame(\count($properties), \count($expectedProperties));
         $methods = array(
             'getName',
             'getValue',
@@ -117,9 +117,9 @@ class PropertiesTest extends BaseTestCase
         foreach ($properties as $key => $value) {
             foreach ($methods as $method) {
                 $this->assertSame(
-                    call_user_func(array($expectedProperties[$key], $method)),
-                    call_user_func(array($value, $method)),
-                    sprintf('%s [getName() === %s]', $method, $value->getName())
+                    \call_user_func(array($expectedProperties[$key], $method)),
+                    \call_user_func(array($value, $method)),
+                    \sprintf('%s [getName() === %s]', $method, $value->getName())
                 );
             }
         }
@@ -132,7 +132,7 @@ class PropertiesTest extends BaseTestCase
         );
 
         // https://travis-ci.org/awesomite/var-dumper/jobs/240526896
-        if (version_compare(PHP_VERSION, '7.1') >= 0 && !defined('HHVM_VERSION')) {
+        if (\version_compare(PHP_VERSION, '7.1') >= 0 && !\defined('HHVM_VERSION')) {
             $result[] = $this->getInternalClosureName();
         }
 
@@ -153,8 +153,8 @@ class PropertiesTest extends BaseTestCase
             $fnCreateProperty('startLine', __LINE__ - 5),
             $fnCreateProperty('endLine', __LINE__ - 5),
         );
-        if (version_compare(PHP_VERSION, '5.4') >= 0) {
-            $properties[] = $fnCreateProperty('closureScopeClass', get_class($this));
+        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
+            $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
         }
 
         return array(

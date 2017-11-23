@@ -17,7 +17,7 @@ class Properties extends AbstractProperties
      */
     public function __construct($object)
     {
-        if (!is_object($object)) {
+        if (!\is_object($object)) {
             throw new \InvalidArgumentException('Argument $object is not an object!');
         }
         $this->object = $object;
@@ -33,7 +33,7 @@ class Properties extends AbstractProperties
                     '__debugInfo()',
                     $object->__debugInfo(),
                     VarProperty::VISIBILITY_PUBLIC,
-                    get_class($object)
+                    \get_class($object)
                 ),
             );
         }
@@ -47,7 +47,7 @@ class Properties extends AbstractProperties
             }
         }
 
-        return array_map(function ($property) use ($object) {
+        return \array_map(function ($property) use ($object) {
             return new ReflectionProperty($property, $object);
         }, $this->getDeclaredProperties());
     }
@@ -57,7 +57,7 @@ class Properties extends AbstractProperties
      */
     private function getDebugInfoReflection()
     {
-        if (method_exists($this->object, '__debugInfo')) {
+        if (\method_exists($this->object, '__debugInfo')) {
             $reflection = new \ReflectionMethod($this->object, '__debugInfo');
             if (!$reflection->isStatic() && $reflection->isPublic() && 0 === $reflection->getNumberOfParameters()) {
                 return $reflection;

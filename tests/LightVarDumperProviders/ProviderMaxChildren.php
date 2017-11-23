@@ -12,8 +12,8 @@ class ProviderMaxChildren implements \IteratorAggregate
     public function getIterator()
     {
         $result = array();
-        $result = array_merge($result, $this->getArrays());
-        $result = array_merge($result, $this->getObjects());
+        $result = \array_merge($result, $this->getArrays());
+        $result = \array_merge($result, $this->getObjects());
 
         return new \ArrayIterator($result);
     }

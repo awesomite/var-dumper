@@ -25,7 +25,7 @@ class PropertiesClosure implements PropertiesInterface
         );
 
         if (!$reflection->isInternal()) {
-            $result = array_merge($result, $this->getNonInternalProperties($reflection));
+            $result = \array_merge($result, $this->getNonInternalProperties($reflection));
         }
 
         return $result;
@@ -39,7 +39,7 @@ class PropertiesClosure implements PropertiesInterface
             $this->createProperty('endLine', $reflection->getEndLine()),
         );
 
-        if (version_compare(PHP_VERSION, '5.4') >= 0) {
+        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
             if ($scopeClass = $reflection->getClosureScopeClass()) {
                 $result[] = $this->createProperty('closureScopeClass', $scopeClass->getName());
             }

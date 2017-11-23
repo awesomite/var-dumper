@@ -223,13 +223,31 @@ class LightVarDumper extends InternalVarDumper
      */
     private function getResourceId($resource)
     {
-        foreach (get_resources(get_resource_type($resource)) as  $id => $val) {
-            if ($val === $resource) {
-                return $id;
+        if (function_exists('get_resources')) {
+            foreach (get_resources(get_resource_type($resource)) as  $id => $val) {
+                if ($val === $resource) {
+                    return $id;
+                }
             }
         }
 
+        ob_start();
+        var_dump($resource);
+        $contents = ob_get_contents();
+        ob_end_clean();
+
+        $matches = array();
+        if (preg_match('#resource\((?<id>[0-9]+)\) of type#', $contents, $matches)) {
+            return $matches['id'];
+        }
+
         // @codeCoverageIgnoreStart
+        $contents = strip_tags($contents);
+        $matches = array();
+        if (preg_match('#resource\((?<id>[0-9]+),#', $contents, $matches)) {
+            return $matches['id'];
+        }
+
         return false;
         // @codeCoverageIgnoreEnd
     }

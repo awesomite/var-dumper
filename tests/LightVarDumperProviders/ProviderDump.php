@@ -20,7 +20,7 @@ class ProviderDump implements \IteratorAggregate
             $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
         }
         $result['null'] = array(null, "NULL\n");
-        $result['resource'] = array(tmpfile(), "resource of type stream\n");
+        $result['resource'] = array(tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
         if (!defined('HHVM_VERSION') && version_compare(PHP_VERSION, '5.4') >= 0) {
             $result['closure'] = $this->getClosure();
         }
@@ -238,13 +238,13 @@ EXPECTED;
         $zeros = implode('', array_fill(0, $this->getDefaultLineLength(), '0'));
 
         $array = array(
-            'first' => array(tmpfile()),
+            'first' => array(null),
             'second' => null,
             'third' => $zeros,
         );
         $expected = <<<EXPECTED
 array(3) {
-    [first] =>  array(1) {resource of type stream}
+    [first] =>  array(1) {NULL}
     [second] => NULL
     [third] =>  “{$zeros}”
 }
@@ -261,7 +261,7 @@ EXPECTED;
         $zeros = implode('', array_fill(0, $textLength, '0'));
 
         $array = array(
-            'first' => array(tmpfile()),
+            'first' => array(1),
             'second' => null,
             'third' => $zeros,
         );
@@ -269,7 +269,7 @@ EXPECTED;
         $zerosLine = implode('', array_fill(0, $lineLength, '0'));
         $expected = <<<EXPECTED
 array(3) {
-    [first] =>  array(1) {resource of type stream}
+    [first] =>  array(1) {1}
     [second] => NULL
     [third] =>
         string({$textLength})

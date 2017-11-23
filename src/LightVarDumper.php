@@ -206,7 +206,32 @@ class LightVarDumper extends InternalVarDumper
 
     private function dumpResource($resource)
     {
+        $id = $this->getResourceId($resource);
+        if (false !== $id) {
+            echo 'resource #', $id, ' of type ', get_resource_type($resource), "\n";
+            return;
+        }
+
+        // @codeCoverageIgnoreStart
         echo 'resource of type ', get_resource_type($resource), "\n";
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @param resource $resource
+     * @return int|false
+     */
+    private function getResourceId($resource)
+    {
+        foreach (get_resources(get_resource_type($resource)) as  $id => $val) {
+            if ($val === $resource) {
+                return $id;
+            }
+        }
+
+        // @codeCoverageIgnoreStart
+        return false;
+        // @codeCoverageIgnoreEnd
     }
 
     private function dumpScalar($scalar)

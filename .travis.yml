@@ -76,6 +76,7 @@ script:
   - php ${PHP_ARGS} vendor/bin/phpunit
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
+      rm -rf ${HOME}/.composer/vendor
       composer global require infection/infection:^0.6;
       export PHP_INFECTION="${HOME}/.composer/vendor/bin/infection";
       ${PHP_INFECTION};

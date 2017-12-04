@@ -77,6 +77,8 @@ script:
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
       rm -rf ${HOME}/.composer/vendor
+      rm -rf ${HOME}/.composer/composer.json
+      rm -rf ${HOME}/.composer/composer.lock
       composer global require infection/infection:^0.6;
       export PHP_INFECTION="${HOME}/.composer/vendor/bin/infection";
       ${PHP_INFECTION};

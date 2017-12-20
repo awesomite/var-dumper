@@ -11,8 +11,6 @@
 
 namespace Awesomite\VarDumper\Listeners;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -20,21 +18,73 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  */
 class TestListener implements \PHPUnit_Framework_TestListener
 {
-    private $offset = .01;
+    private static $times = array();
 
-    private $messages = array();
+    public static function flush()
+    {
+        $times = self::$times;
+        self::$times = array();
+
+        if (empty($times)) {
+            return;
+        }
+
+        \usort($times, function ($left, $right) {
+            return $left[0] == $right[0]
+                ? 0
+                : ($left[0] < $right[0] ? 1 : -1);
+        });
+
+
+        $wholeTime = 0;
+        \array_walk($times, function ($element) use (&$wholeTime) {
+            $wholeTime += $element[0];
+        });
+
+        $cpTimes = \array_slice($times, 0, 10);
+
+        $maxLength = 0;
+        \array_walk($cpTimes, function ($element) use (&$maxLength) {
+            $len = \mb_strlen($element[1]);
+            if ($len > $maxLength) {
+                $maxLength = $len;
+            }
+        });
+
+        $output = new ConsoleOutput();
+        $header = '<bg=yellow;fg=black>ms         %        ' . \str_pad('name', $maxLength, ' ') . '</>';
+        $output->writeln($header);
+        foreach ($cpTimes as $timeData) {
+            list($time, $name) = $timeData;
+            $output->writeln(\sprintf(
+                '<bg=yellow;fg=black>% 7.2f    % 5.2f    %s</>',
+                $time * 1000,
+                $time / $wholeTime * 100,
+                \str_pad($name, $maxLength, ' ')
+            ));
+        }
+    }
 
     public function __construct()
     {
-        $this->getConsoleOutput()->writeln(\sprintf('PHP %s', \phpversion()));
+        \register_shutdown_function(function () {
+            TestListener::flush();
+        });
+        $output = new ConsoleOutput();
+        $output->writeln(\sprintf('PHP %s', \phpversion()));
     }
 
-    public function __destruct()
+    public function startTest(\PHPUnit_Framework_Test $test)
     {
-        $output = $this->getConsoleOutput();
-        foreach ($this->messages as $message) {
-            $output->writeln($message);
-        }
+    }
+
+    public function endTest(\PHPUnit_Framework_Test $test, $time)
+    {
+        $name = $test instanceof \PHPUnit_Framework_TestCase
+            ? \get_class($test) . '::' . $test->getName()
+            : \get_class($test);
+
+        self::$times[] = array($time, $name);
     }
 
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
@@ -57,44 +107,11 @@ class TestListener implements \PHPUnit_Framework_TestListener
     {
     }
 
-    public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
-    {
-    }
-
     public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
     }
 
-    public function startTest(\PHPUnit_Framework_Test $test)
+    public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
-    }
-
-    public function endTest(\PHPUnit_Framework_Test $test, $time)
-    {
-        if ($time < $this->offset) {
-            return;
-        }
-
-        $name = ($test instanceof \PHPUnit_Framework_TestCase) || ($test instanceof TestCase)
-            ? \get_class($test) . '::' . $test->getName()
-            : \get_class($test);
-
-        $this->messages[] = \sprintf(
-            "<warning>Test '%s' took %0.2f seconds.</warning>",
-            $name,
-            $time
-        );
-    }
-
-    private function getConsoleOutput()
-    {
-        $style = new OutputFormatterStyle();
-        $style->setBackground('yellow');
-        $style->setForeground('black');
-
-        $output = new ConsoleOutput();
-        $output->getFormatter()->setStyle('warning', $style);
-
-        return $output;
     }
 }

@@ -17,22 +17,22 @@ namespace Awesomite\VarDumper\Helpers;
 class IntValue
 {
     private $value;
-    
+
     public function __construct($value = 0)
     {
         $this->value = $value;
     }
-    
+
     public function getValue()
     {
         return $this->value;
     }
-    
+
     public function incr()
     {
         ++$this->value;
     }
-    
+
     public function decr()
     {
         --$this->value;

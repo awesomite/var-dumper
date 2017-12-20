@@ -30,6 +30,6 @@ class Hasher extends BaseHasher
             self::$hashes[$splHash] = ++self::$counter;
         }
 
-        return (string) self::$hashes[$splHash];
+        return (string)self::$hashes[$splHash];
     }
 }

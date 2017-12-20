@@ -17,7 +17,7 @@ namespace Awesomite\VarDumper\Helpers;
 class Stack
 {
     private $array = array();
-    
+
     public function pop()
     {
         return \array_pop($this->array);
@@ -27,7 +27,7 @@ class Stack
     {
         return \array_push($this->array, $item);
     }
-    
+
     public function getAll()
     {
         return $this->array;

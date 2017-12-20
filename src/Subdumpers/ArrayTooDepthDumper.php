@@ -20,9 +20,9 @@ use Awesomite\VarDumper\Helpers\IntValue;
 class ArrayTooDepthDumper implements SubdumperInterface
 {
     private $config;
-    
+
     private $depth;
-    
+
     public function __construct(IntValue $depth, Config $config)
     {
         $this->depth = $depth;

@@ -20,9 +20,9 @@ use Awesomite\VarDumper\LightVarDumper;
 class ArraySingleElementDumper implements SubdumperInterface
 {
     private $dumper;
-    
+
     private $config;
-    
+
     public function __construct(LightVarDumper $dumper, Config $config)
     {
         $this->dumper = $dumper;
@@ -34,16 +34,15 @@ class ArraySingleElementDumper implements SubdumperInterface
         if (!\is_array($array)) {
             return false;
         }
-        
+
         $count = \count($array);
-        
+
         return 1 === $count
             && \array_key_exists(0, $array)
-            && (!\is_array($array[0]) && !\is_object($array[0]))
-            && (
-                !\is_string($array[0])
-                || (\mb_strlen($array[0])) <= $this->config->getMaxLineLength() && false === \mb_strpos($array[0], "\n")
-            );
+            && \is_string($array[0])
+            && \mb_strlen($array[0]) <= $this->config->getMaxLineLength()
+            && false === \mb_strpos($array[0], "\n")
+        ;
     }
 
     public function dump(&$array)

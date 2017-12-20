@@ -26,6 +26,7 @@ class ResourceDumper implements SubdumperInterface
         $id = $this->getResourceId($resource);
         if (false !== $id) {
             echo 'resource #', $id, ' of type ', \get_resource_type($resource), "\n";
+
             return;
         }
 
@@ -35,13 +36,14 @@ class ResourceDumper implements SubdumperInterface
     }
 
     /**
-     * @param  resource  $resource
+     * @param resource $resource
+     *
      * @return int|false
      */
     private function getResourceId($resource)
     {
         if (\function_exists('get_resources')) {
-            foreach (\get_resources(\get_resource_type($resource)) as  $id => $val) {
+            foreach (\get_resources(\get_resource_type($resource)) as $id => $val) {
                 if ($val === $resource) {
                     return $id;
                 }

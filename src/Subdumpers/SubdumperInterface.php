@@ -17,6 +17,6 @@ namespace Awesomite\VarDumper\Subdumpers;
 interface SubdumperInterface
 {
     public function supports(&$var);
-    
+
     public function dump(&$var);
 }

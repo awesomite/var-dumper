@@ -30,7 +30,7 @@ class ArrayBigDumper implements SubdumperInterface
     private $indent;
 
     private $depth;
-    
+
     private $config;
 
     public function __construct(
@@ -70,7 +70,7 @@ class ArrayBigDumper implements SubdumperInterface
         $this->references->pop();
         $this->depth->decr();
     }
-    
+
     private function dumpBody(array &$array)
     {
         $limit = $this->config->getMaxChildren();

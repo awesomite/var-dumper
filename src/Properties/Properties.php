@@ -16,10 +16,11 @@ namespace Awesomite\VarDumper\Properties;
  */
 class Properties extends AbstractProperties
 {
-    private static $mapping = array(
-        '\ArrayObject' => '\Awesomite\VarDumper\Properties\PropertiesArrayObject',
-        '\Closure' => '\Awesomite\VarDumper\Properties\PropertiesClosure',
-    );
+    private static $mapping
+        = array(
+            '\ArrayObject' => '\Awesomite\VarDumper\Properties\PropertiesArrayObject',
+            '\Closure'     => '\Awesomite\VarDumper\Properties\PropertiesClosure',
+        );
 
     /**
      * @param $object

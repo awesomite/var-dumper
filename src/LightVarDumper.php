@@ -18,6 +18,7 @@ use Awesomite\VarDumper\Subdumpers\ArrayBigDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper;
 use Awesomite\VarDumper\Subdumpers\ArraySimpleView;
 use Awesomite\VarDumper\Subdumpers\ArraySingleElementDumper;
+use Awesomite\VarDumper\Subdumpers\ArrayTooDepthDumper;
 use Awesomite\VarDumper\Subdumpers\NullDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectBigDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectRecursiveDumper;
@@ -26,14 +27,13 @@ use Awesomite\VarDumper\Subdumpers\ResourceDumper;
 use Awesomite\VarDumper\Subdumpers\ScalarDumper;
 use Awesomite\VarDumper\Subdumpers\StringDumper;
 use Awesomite\VarDumper\Subdumpers\SubdumperInterface;
-use Awesomite\VarDumper\Subdumpers\ArrayTooDepthDumper;
 
 final class LightVarDumper extends InternalVarDumper
 {
-    const DEFAULT_MAX_CHILDREN = 20;
+    const DEFAULT_MAX_CHILDREN      = 20;
     const DEFAULT_MAX_STRING_LENGTH = 200;
-    const DEFAULT_MAX_LINE_LENGTH = 130;
-    const DEFAULT_MAX_DEPTH = 5;
+    const DEFAULT_MAX_LINE_LENGTH   = 130;
+    const DEFAULT_MAX_DEPTH         = 5;
 
     /**
      * @var EditableConfig
@@ -76,7 +76,7 @@ final class LightVarDumper extends InternalVarDumper
             new ArraySimpleView($this, $this->config),
             new ArraySingleElementDumper($this, $this->config),
             new ArrayBigDumper($this, $references, $this->indent, $this->depth, $this->config),
-            new ResourceDumper()
+            new ResourceDumper(),
         );
     }
 
@@ -89,6 +89,7 @@ final class LightVarDumper extends InternalVarDumper
         foreach ($this->subdumpers as $subdumper) {
             if ($subdumper->supports($var)) {
                 $subdumper->dump($var);
+
                 return;
             }
         }
@@ -99,12 +100,14 @@ final class LightVarDumper extends InternalVarDumper
         $this->displayPlaceInCode = false;
         parent::dump($var);
         $this->displayPlaceInCode = $prev;
+
         return;
         // @codeCoverageIgnoreEnd
     }
 
     /**
-     * @param  int   $limit
+     * @param int $limit
+     *
      * @return $this
      */
     public function setMaxDepth($limit)
@@ -115,7 +118,8 @@ final class LightVarDumper extends InternalVarDumper
     }
 
     /**
-     * @param  int   $limit
+     * @param int $limit
+     *
      * @return $this
      */
     public function setMaxStringLength($limit)
@@ -126,7 +130,8 @@ final class LightVarDumper extends InternalVarDumper
     }
 
     /**
-     * @param  int   $limit
+     * @param int $limit
+     *
      * @return $this
      */
     public function setMaxLineLength($limit)
@@ -137,7 +142,8 @@ final class LightVarDumper extends InternalVarDumper
     }
 
     /**
-     * @param  int   $limit
+     * @param int $limit
+     *
      * @return $this
      */
     public function setMaxChildren($limit)

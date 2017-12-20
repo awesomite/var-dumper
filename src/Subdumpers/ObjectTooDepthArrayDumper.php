@@ -20,16 +20,16 @@ use Awesomite\VarDumper\Helpers\IntValue;
 class ObjectTooDepthArrayDumper extends AbstractObjectDumper
 {
     private $depth;
-    
+
     private $config;
-    
+
     public function __construct(IntValue $depth, Config $config)
     {
         $this->depth = $depth;
         $this->config = $config;
         parent::__construct();
     }
-    
+
     public function supports(&$var)
     {
         return \is_object($var) && $this->depth->getValue() === $this->config->getMaxDepth();
@@ -39,7 +39,7 @@ class ObjectTooDepthArrayDumper extends AbstractObjectDumper
     {
         $class = $this->getClassName($object);
         $properties = $this->getProperties($object);
-        
+
         echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', \count($properties), ') {';
         echo \count($properties) ? '...' : '';
         echo "}\n";

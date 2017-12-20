@@ -19,7 +19,7 @@ use Awesomite\VarDumper\Helpers\Stack;
 class ObjectRecursiveDumper extends AbstractObjectDumper
 {
     private $references;
-    
+
     public function __construct(Stack $references)
     {
         $this->references = $references;

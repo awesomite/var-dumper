@@ -20,9 +20,9 @@ use Awesomite\VarDumper\Helpers\Symbols;
 class StringDumper implements SubdumperInterface
 {
     private $indent;
-    
+
     private $config;
-    
+
     public function __construct($indent, Config $config)
     {
         $this->indent = $indent;

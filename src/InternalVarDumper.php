@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper;
 class InternalVarDumper implements VarDumperInterface
 {
     protected $displayPlaceInCode;
-    
+
     private $shift;
 
     /**
@@ -50,7 +50,7 @@ class InternalVarDumper implements VarDumperInterface
 
         return $result;
     }
-    
+
     protected function dumpPlaceInCode($number)
     {
         $options = \version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;

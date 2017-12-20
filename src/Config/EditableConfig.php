@@ -19,28 +19,28 @@ class EditableConfig extends Config
     public function setMaxChildren($limit)
     {
         $this->maxChildren = $limit;
-        
+
         return $this;
     }
-    
+
     public function setMaxDepth($limit)
     {
         $this->maxDepth = $limit;
-        
+
         return $this;
     }
-    
+
     public function setMaxStringLength($limit)
     {
         $this->maxStringLen = $limit;
-        
+
         return $this;
     }
-    
+
     public function setMaxLineLength($limit)
     {
         $this->maxLineLen = $limit;
-        
+
         return $this;
     }
 }

@@ -21,7 +21,7 @@ use Awesomite\VarDumper\LightVarDumper;
 class ArraySimpleView implements SubdumperInterface
 {
     const COUNT_LIMIT = 5;
-    const KEY_LIMIT = 20;
+    const KEY_LIMIT   = 20;
 
     private $dumper;
 
@@ -50,7 +50,7 @@ class ArraySimpleView implements SubdumperInterface
             if (!\is_int($key) && \mb_strlen((string)$key) > static::KEY_LIMIT) {
                 return false;
             }
-            
+
             if (\is_array($value) && empty($value)) {
                 continue;
             }

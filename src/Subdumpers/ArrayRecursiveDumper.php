@@ -19,11 +19,11 @@ use Awesomite\VarDumper\Helpers\Stack;
 class ArrayRecursiveDumper implements SubdumperInterface
 {
     private $references;
-    
+
     private static $inited = false;
-    
+
     private static $canCompareArrays = null;
-    
+
     public function __construct(Stack $references)
     {
         $this->references = $references;
@@ -39,13 +39,13 @@ class ArrayRecursiveDumper implements SubdumperInterface
     {
         echo 'RECURSIVE array(' . \count($array) . ")\n";
     }
-    
+
     private static function init()
     {
         if (self::$inited) {
             return;
         }
-        
+
         self::$canCompareArrays = self::canCompareArrayReferences();
         self::$inited = true;
     }

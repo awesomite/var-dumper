@@ -31,7 +31,7 @@ class ObjectBigDumper extends AbstractObjectDumper
     private $indent;
 
     private $depth;
-    
+
     private $config;
 
     public function __construct(
@@ -58,7 +58,7 @@ class ObjectBigDumper extends AbstractObjectDumper
     {
         $this->depth->incr();
         $this->references->push($object);
-        
+
         $properties = $this->getProperties($object);
         $class = $this->getClassName($object);
 

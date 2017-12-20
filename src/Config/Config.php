@@ -17,13 +17,13 @@ namespace Awesomite\VarDumper\Config;
 class Config
 {
     protected $maxChildren;
-    
+
     protected $maxDepth;
-    
+
     protected $maxStringLen;
-    
+
     protected $maxLineLen;
-    
+
     public function __construct($maxChildren, $maxDepth, $maxStringLen, $maxLineLen)
     {
         $this->maxChildren = $maxChildren;

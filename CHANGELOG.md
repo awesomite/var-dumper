@@ -10,7 +10,8 @@
 * Display constant's name instead of value for the following constants: `M_*`, `PHP_INT_MIN`, `PHP_INT_MAX`
 * Display resource's id, e.g. `resource #1 of type stream`
 * Allow displaying array in single line whenever array contains only 1 element,
-element has index 0 and output is not too long e.g.
+element has index 0, elementy is type of string, element does not contain `\n`
+and output is not too long e.g.
 ```
 array(2) {
     [0] => array(1) {“hello”}

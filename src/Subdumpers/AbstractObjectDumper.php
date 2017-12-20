@@ -25,9 +25,9 @@ abstract class AbstractObjectDumper implements SubdumperInterface
      * @var HasherInterface
      */
     protected static $hasher;
-    
+
     private static $inited = false;
-    
+
     public function __construct()
     {
         self::init();
@@ -35,15 +35,16 @@ abstract class AbstractObjectDumper implements SubdumperInterface
 
     /**
      * @param $object
+     *
      * @return PropertyInterface[]|\Traversable
      */
     protected function getProperties($object)
     {
         $propertiesIterator = new Properties($object);
-        
+
         return $propertiesIterator->getProperties();
     }
-    
+
     protected function getClassName($object)
     {
         $class = \get_class($object);
@@ -53,11 +54,12 @@ abstract class AbstractObjectDumper implements SubdumperInterface
         if (\defined('HHVM_VERSION') && $object instanceof \Closure) {
             $class = 'Closure';
         }
+
         // @codeCoverageIgnoreEnd
-        
+
         return $class;
     }
-    
+
     private static function init()
     {
         if (self::$inited) {

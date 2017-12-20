@@ -45,6 +45,7 @@ class ProviderDump implements \IteratorAggregate
         $result['short_array'] = $this->getShortArray();
         $result['short_array2'] = $this->getShortArray2();
         $result['short_array3'] = $this->getShortArray3();
+        $result['short_array_long_key'] = $this->getShortArrayLongKey();
 
         return new \ArrayIterator($result);
     }
@@ -347,6 +348,21 @@ array(4) {[a] => 0, [b] => 1, [2] => NULL, [3] => 3}
 
 DUMP;
         
+        return array($data, $dump);
+    }
+
+    private function getShortArrayLongKey()
+    {
+        $data = array(
+            'very_very_very_long_key' => 'value',
+        );
+        $dump = <<<'DUMP'
+array(1) {
+    [very_very_very_long_key] => “value”
+}
+
+DUMP;
+
         return array($data, $dump);
     }
 

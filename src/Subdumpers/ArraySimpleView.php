@@ -35,10 +35,14 @@ class ArraySimpleView implements SubdumperInterface
 
     public function supports(&$var)
     {
+        if (!\is_array($var)) {
+            return false;
+        }
+
         $count = \count($var);
         $limit = \min(static::COUNT_LIMIT, $this->config->getMaxChildren());
 
-        if (!\is_array($var) || $count > $limit || 0 === $count) {
+        if ($count > $limit || 0 === $count) {
             return false;
         }
 

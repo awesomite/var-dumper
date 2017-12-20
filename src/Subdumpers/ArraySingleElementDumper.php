@@ -31,13 +31,8 @@ class ArraySingleElementDumper implements SubdumperInterface
 
     public function supports(&$array)
     {
-        if (!\is_array($array)) {
-            return false;
-        }
-
-        $count = \count($array);
-
-        return 1 === $count
+        return \is_array($array)
+            && 1 === \count($array)
             && \array_key_exists(0, $array)
             && \is_string($array[0])
             && \mb_strlen($array[0]) <= $this->config->getMaxLineLength()

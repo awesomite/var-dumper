@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper\Properties;
 
 use Awesomite\VarDumper\BaseTestCase;
@@ -37,7 +46,7 @@ class ReflectionPropertyTest extends BaseTestCase
      * @dataProvider providerGetDeclaringClass
      *
      * @param ReflectionProperty $property
-     * @param string $expectedClass
+     * @param string             $expectedClass
      */
     public function testGetDeclaringClass(ReflectionProperty $property, $expectedClass)
     {

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper\Properties;
 
 /**
@@ -28,8 +37,8 @@ class VarProperty implements PropertyInterface
      * @param $value
      * @param string $visibility
      * @param string $declaringClass
-     * @param bool $static
-     * @param bool $virtual
+     * @param bool   $static
+     * @param bool   $virtual
      */
     public function __construct($name, $value, $visibility, $declaringClass, $static = false, $virtual = false)
     {

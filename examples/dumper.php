@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Awesomite\VarDumper\LightVarDumper;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
@@ -31,9 +40,9 @@ Dumper::dump($obj1, $obj2);
 
 Output:
 
-(...)/var-dumper/examples/dumper.php:28:
+(...)/var-dumper/examples/dumper.php:37:
 object(stdClass) #1 (0) {}
-(...)/var-dumper/examples/dumper.php:28:
+(...)/var-dumper/examples/dumper.php:37:
 object(stdClass) #2 (1) {
     $obj1 => object(stdClass) #1 (0) {}
 }

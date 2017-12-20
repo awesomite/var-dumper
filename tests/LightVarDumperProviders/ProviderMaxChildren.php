@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
 use Awesomite\VarDumper\Objects\HasherFactory;
@@ -20,10 +29,10 @@ class ProviderMaxChildren implements \IteratorAggregate
 
     private function getArrays()
     {
-        $array = array(1, 2, 3);
+        $array = \range(1, 11);
 
         $arrayDump1 = <<<'DUMP'
-array(3) {
+array(11) {
     [0] => 1
     (...)
 }
@@ -31,18 +40,26 @@ array(3) {
 DUMP;
 
         $arrayDump2 = <<<'DUMP'
-array(3) {
-    [0] => 1
-    [1] => 2
-    [2] => 3
+array(11) {
+    [0] =>  1
+    [1] =>  2
+    [2] =>  3
+    [3] =>  4
+    [4] =>  5
+    [5] =>  6
+    [6] =>  7
+    [7] =>  8
+    [8] =>  9
+    [9] =>  10
+    [10] => 11
 }
 
 DUMP;
 
         return array(
             'arrayMax1' => array(1, $array, $arrayDump1),
-            'arrayMax3' => array(3, $array, $arrayDump2),
-            'arrayMax4' => array(4, $array, $arrayDump2),
+            'arrayMax11' => array(11, $array, $arrayDump2),
+            'arrayMax12' => array(12, $array, $arrayDump2),
         );
     }
 

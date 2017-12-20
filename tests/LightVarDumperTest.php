@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper;
 
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
@@ -20,16 +29,13 @@ class LightVarDumperTest extends BaseTestCase
     /**
      * @dataProvider providerDump
      *
-     * @param mixed $var
+     * @param mixed  $var
      * @param string $expectedDump
      */
     public function testDump($var, $expectedDump)
     {
         if (!$this->wasDumperReset) {
-            $reflectionInit = new \ReflectionProperty('Awesomite\VarDumper\LightVarDumper', 'inited');
-            $reflectionInit->setAccessible(true);
-            $reflectionInit->setValue(false);
-            $this->wasDumperReset = true;
+            $this->reinitAllDumpers();
         }
 
         $dumper = new LightVarDumper();
@@ -71,7 +77,7 @@ class LightVarDumperTest extends BaseTestCase
     /**
      * @dataProvider providerMaxStringLength
      *
-     * @param int $limit
+     * @param int    $limit
      * @param string $string
      * @param string $dump
      */
@@ -132,8 +138,8 @@ class LightVarDumperTest extends BaseTestCase
     /**
      * @dataProvider providerMultiLine
      *
-     * @param int $stringLimit
-     * @param int $lineLimit
+     * @param int    $stringLimit
+     * @param int    $lineLimit
      * @param string $input
      * @param string $expected
      */
@@ -151,5 +157,20 @@ class LightVarDumperTest extends BaseTestCase
     public function providerMultiLine()
     {
         return \iterator_to_array(new ProviderMultiLine());
+    }
+    
+    private function reinitAllDumpers()
+    {
+        $classes = array(
+            'Awesomite\VarDumper\Subdumpers\AbstractObjectDumper',
+            'Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper',
+            'Awesomite\VarDumper\Subdumpers\ScalarDumper',
+        );
+        foreach ($classes as $class) {
+            $reflectionInit = new \ReflectionProperty($class, 'inited');
+            $reflectionInit->setAccessible(true);
+            $reflectionInit->setValue(false);
+            $this->wasDumperReset = true;
+        }
     }
 }

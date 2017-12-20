@@ -2,6 +2,7 @@
 
 ## 0.9.0 (????-??-??)
 
+* Class `Awesomite\VarDumper\LightVarDumper` becomes `final`
 * Excluded `phpunit.xml.dist` from `git archive`
 * Use `spl_object_id` whenever it is possible
 * Do not add `...` to the end of text whenever text is not shortened
@@ -15,6 +16,12 @@ array(2) {
     [0] => array(1) {“hello”}
     [1] => array(1) {“world”}
 }
+```
+* Allow displaying array in single line whenever array contains no more than 5 elements,
+keys are no longer than 20 characters each element is null, empty array or scalar (except string) e.g.:
+```
+array(5) {0, 1, 2, 3, 4}
+array(4) {1, 2, 3, [key] => NULL}
 ```
 
 ## 0.8.0 (2017-08-30)

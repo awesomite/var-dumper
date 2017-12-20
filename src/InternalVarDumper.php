@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper;
 
 class InternalVarDumper implements VarDumperInterface
@@ -10,7 +19,7 @@ class InternalVarDumper implements VarDumperInterface
 
     /**
      * @param bool $displayPlaceInCode true whenever dumper should print also information about file and line
-     * @param int $stepShift nesting level of method "dump", it is used whenever $displayPlaceInCode is equal to true
+     * @param int  $stepShift          nesting level of method "dump", it is used whenever $displayPlaceInCode is equal to true
      */
     public function __construct($displayPlaceInCode = false, $stepShift = 0)
     {

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper\Helpers;
 
 /**
@@ -21,14 +30,14 @@ class KeyValuePrinter
             $this->maxLength = $strlen;
         }
 
-        $this->rows[] = array($key, $value);
+        $this->rows[] = array($key, $value, $strlen);
     }
 
     public function flush()
     {
         foreach ($this->rows as $data) {
-            list($key, $value) = $data;
-            echo \str_pad($key, $this->maxLength, ' '), $value, "\n";
+            list($key, $value, $strlen) = $data;
+            echo $key, \str_pad('', $this->maxLength - $strlen, ' '), $value, "\n";
         }
         $this->rows = array();
         $this->maxLength = 0;

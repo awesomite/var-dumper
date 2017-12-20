@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper\LightVarDumperProviders;
 
 use Awesomite\VarDumper\LightVarDumper;
@@ -33,6 +42,9 @@ class ProviderDump implements \IteratorAggregate
         $result['1-element_long_array'] = $this->get1ElementLongArray();
         $result['single_line_short_text'] = $this->getSingleLineShortText();
         $result['single_line_long_text'] = $this->getSingleLineLongText();
+        $result['short_array'] = $this->getShortArray();
+        $result['short_array2'] = $this->getShortArray2();
+        $result['short_array3'] = $this->getShortArray3();
 
         return new \ArrayIterator($result);
     }
@@ -70,10 +82,7 @@ OBJECT;
 
         $arrayObjectDump = <<<DUMP
 object(ArrayObject) #{$hasher->getHashId($arrayObject)} (3) {
-    private \$storage =>
-        array(1) {
-            [awesomite.varDumper] => true
-        }
+    private \$storage =>       array(1) {[awesomite.varDumper] => true}
     private \$flags =>         0
     private \$iteratorClass => “ArrayIterator”
 }
@@ -93,12 +102,9 @@ DUMP;
         $testArrayObjectDump = <<<DUMP
 object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject)} (4) {
     private \$privateProperty => “private value”
-    private \$storage =>
-        array(1) {
-            [awesomite.varDumper] => true
-        }
-    private \$flags =>         0
-    private \$iteratorClass => “ArrayIterator”
+    private \$storage =>         array(1) {[awesomite.varDumper] => true}
+    private \$flags =>           0
+    private \$iteratorClass =>   “ArrayIterator”
 }
 
 DUMP;
@@ -304,6 +310,44 @@ string({$textLength})
 EXPECTED;
 
         return array($zeros, $expected);
+    }
+    
+    private function getShortArray()
+    {
+        $data = array(1, 2, null, 4.5, INF);
+        $dump = <<<'DUMP'
+array(5) {1, 2, NULL, 4.5, INF}
+
+DUMP;
+        
+        return array($data, $dump);
+    }
+    
+    private function getShortArray2()
+    {
+        $data = array(
+            -1 => -1,
+            "multi line\nkey" => M_PI,
+            null,
+            array()
+        );
+        $dump = <<<'DUMP'
+array(4) {[-1] => -1, [multi line↵key] => M_PI, [0] => NULL, [1] => array(0) {}}
+
+DUMP;
+
+        return array($data, $dump);
+    }
+    
+    private function getShortArray3()
+    {
+        $data = array('a' => 0, 'b' => 1, 2 => null, 3 => 3);
+        $dump = <<<'DUMP'
+array(4) {[a] => 0, [b] => 1, [2] => NULL, [3] => 3}
+
+DUMP;
+        
+        return array($data, $dump);
     }
 
     private function getDefaultLineLength()

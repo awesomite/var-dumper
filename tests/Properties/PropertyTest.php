@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Awesomite\VarDumper\Properties;
 
 use Awesomite\VarDumper\BaseTestCase;
@@ -19,7 +28,7 @@ class PropertyTest extends BaseTestCase
      * @dataProvider providerGetValue
      *
      * @param PropertyInterface $property
-     * @param string $name
+     * @param string            $name
      * @param $value
      */
     public function testGetValue(PropertyInterface $property, $name, $value)
@@ -58,9 +67,9 @@ class PropertyTest extends BaseTestCase
      * @dataProvider providerVisibility
      *
      * @param PropertyInterface $property
-     * @param bool $static
-     * @param bool $virtual
-     * @param string $visibility
+     * @param bool              $static
+     * @param bool              $virtual
+     * @param string            $visibility
      */
     public function testVisibility(PropertyInterface $property, $static, $virtual, $visibility)
     {
@@ -104,7 +113,7 @@ class PropertyTest extends BaseTestCase
      * @dataProvider providerGetDeclaringClass
      *
      * @param PropertyInterface $property
-     * @param string $declaringClass
+     * @param string            $declaringClass
      */
     public function testGetDeclaringClass(PropertyInterface $property, $declaringClass)
     {

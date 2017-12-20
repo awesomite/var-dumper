@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0 (????-??-??)
+## 0.9.0 (2017-12-21)
 
 * Class `Awesomite\VarDumper\LightVarDumper` becomes `final`
 * Excluded `phpunit.xml.dist` from `git archive`

@@ -32,6 +32,7 @@ class ResourceDumper implements SubdumperInterface
 
         // @codeCoverageIgnoreStart
         echo 'resource of type ', \get_resource_type($resource), "\n";
+        return;
         // @codeCoverageIgnoreEnd
     }
 
@@ -48,7 +49,9 @@ class ResourceDumper implements SubdumperInterface
                     return $id;
                 }
             }
+            // @codeCoverageIgnoreStart
         }
+        // @codeCoverageIgnoreEnd
 
         \ob_start();
         \var_dump($resource);

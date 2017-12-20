@@ -48,8 +48,8 @@ class ResourceDumper implements SubdumperInterface
                 if ($val === $resource) {
                     return $id;
                 }
+                // @codeCoverageIgnoreStart
             }
-            // @codeCoverageIgnoreStart
         }
         // @codeCoverageIgnoreEnd
 

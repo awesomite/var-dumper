@@ -30,7 +30,6 @@ class ProviderDump implements \IteratorAggregate
         }
         $result['null'] = array(null, "NULL\n");
         $result['resource'] = array(\tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
-        $result['resource2'] = array(\tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
         if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '5.4') >= 0) {
             $result['closure'] = $this->getClosure();
         }
@@ -47,6 +46,7 @@ class ProviderDump implements \IteratorAggregate
         $result['short_array2'] = $this->getShortArray2();
         $result['short_array3'] = $this->getShortArray3();
         $result['short_array_long_key'] = $this->getShortArrayLongKey();
+        $result['single_element'] = $this->getSingleElementDump();
 
         return new \ArrayIterator($result);
     }
@@ -361,6 +361,17 @@ DUMP;
 array(1) {
     [very_very_very_long_key] => “value”
 }
+
+DUMP;
+
+        return array($data, $dump);
+    }
+
+    private function getSingleElementDump()
+    {
+        $data = array('Line of file');
+        $dump = <<<'DUMP'
+array(1) {“Line of file”}
 
 DUMP;
 

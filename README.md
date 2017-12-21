@@ -35,7 +35,7 @@ $array = array(
     'abcdefgh' => 'abcdefgh',
 );
 
-$range = range(1, 5);
+$smallArray = array(1, 2.5, null, M_PI, INF);
 
 $varDumper = new LightVarDumper();
 $varDumper
@@ -44,7 +44,7 @@ $varDumper
     ->setMaxStringLength(400)
     ->setMaxLineLength(50);
 
-$varDumper->dump(array($loremIpsum, $array, $range));
+$varDumper->dump(array($loremIpsum, $array, $smallArray));
 ```
 
 Output:
@@ -73,7 +73,7 @@ array(3) {
             [abcdefg] =>  “abcdefg”
             [abcdefgh] => “abcdefgh”
         }
-    [2] => array(5) {1, 2, 3, 4, 5}
+    [2] => array(5) {1, 2.5, NULL, M_PI, INF}
 }
 ```
 

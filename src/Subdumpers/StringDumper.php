@@ -20,7 +20,10 @@ use Awesomite\VarDumper\Helpers\Symbols;
  */
 class StringDumper implements SubdumperInterface
 {
-    private static $whiteChars = array(
+    /**
+     * @internal Public for php 5.3
+     */
+    public static $whiteChars = array(
         ' ',
         "\t",
         "\n",

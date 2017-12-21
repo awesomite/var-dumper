@@ -33,6 +33,10 @@ class SyntaxTest extends BaseTestCase
 
     public function testSyntax()
     {
+        if (TestEnv::isSpeedTest()) {
+            $this->assertTrue(true);
+            return;
+        }
         list($path, $counter) = static::requireWholeSrc();
         $this->assertInternalType('string', $path);
         $this->assertGreaterThan(0, $counter);

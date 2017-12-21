@@ -91,4 +91,4 @@ The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) s
 
 ## Examples
 
-[Examples](examples)
+[See](examples) more examples.

@@ -74,6 +74,7 @@ before_script:
 script:
   - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix; fi
   - php ${PHP_ARGS} vendor/bin/phpunit
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
       rm -rf ${HOME}/.composer/vendor

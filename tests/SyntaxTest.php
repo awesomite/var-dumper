@@ -16,10 +16,9 @@ namespace Awesomite\VarDumper;
  */
 class SyntaxTest extends BaseTestCase
 {
-    public function testSyntax()
+    public static function requireWholeSrc()
     {
         $path = \realpath(\implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'src')));
-        $this->assertInternalType('string', $path);
         $directory = new \RecursiveDirectoryIterator($path);
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/^.+\.php$/', \RecursiveRegexIterator::GET_MATCH);
@@ -28,6 +27,14 @@ class SyntaxTest extends BaseTestCase
             $counter++;
             require_once $file[0];
         }
+
+        return array($path, $counter);
+    }
+
+    public function testSyntax()
+    {
+        list($path, $counter) = static::requireWholeSrc();
+        $this->assertInternalType('string', $path);
         $this->assertGreaterThan(0, $counter);
     }
 }

@@ -62,9 +62,10 @@ install:
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       composer global require friendsofphp/php-cs-fixer:@stable;
-      export PHP_CS_FIXER="${HOME}/.composer/vendor/bin/php-cs-fixer";
+      export PHP_CS_FIXER="./dev-tools/vendor/bin/php-cs-fixer";
       export RUN_CS_FIXER="true";
     fi
+  - cd dev-tools; composer update
 
 before_script:
   - bin/fix-phpunit.php

@@ -28,7 +28,8 @@
         "phpunit/phpunit": "^4.8.35",
         "php-coveralls/php-coveralls": "^1.0.1 || ^2.0.0",
         "symfony/console": "^2.7 || ^3.0",
-        "sebastian/comparator": ">=1.2.3"
+        "sebastian/comparator": ">=1.2.3",
+        "awesomite/iterators": "^0.2.0"
     },
     "extra": {
         "branch-alias": {
@@ -36,7 +37,7 @@
         }
     },
     "suggest": {
-        "ext-mbstring": "For mb_str* functions.",
+        "ext-mbstring": "For mb_* functions.",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     }
 }

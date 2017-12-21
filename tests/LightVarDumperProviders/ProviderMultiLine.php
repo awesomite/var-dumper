@@ -21,6 +21,9 @@ class ProviderMultiLine implements \IteratorAggregate
         return new \ArrayIterator(array(
             30 => $this->getMultiline30(),
             50 => $this->getMultiLine50(),
+            'without_dots' => $this->getMultilineWithoutDots(),
+            'broken_dots' => $this->getMultilineWithBrokenDots(),
+            'new_lines' => $this->getMultilineWithNewLines(),
         ));
     }
 
@@ -28,26 +31,32 @@ class ProviderMultiLine implements \IteratorAggregate
     {
         $expected = <<<DATA
 string(769)
-    › Lorem ipsu
-    › m dolor si
-    › t amet, co
-    › nsectetur 
+    › Lorem 
+    › ipsum 
+    › dolor sit 
+    › amet, 
+    › consectetu
+    › r 
     › adipiscing
-    ›  elit. Pro
-    › in nibh au
-    › gue, susci
-    › pit a, sce
-    › lerisque s
-    › ed, lacini
-    › a in, mi. 
-    › Cras vel l
-    › orem. Etia
-    › m pellente
-    › sque aliqu
-    › et tellus.
-    ›  Phasellus
-    ›  pharetra 
-    › nulla ac d...
+    ›  elit. 
+    › Proin nibh
+    ›  augue, 
+    › suscipit 
+    › a, 
+    › scelerisqu
+    › e sed, 
+    › lacinia 
+    › in, mi. 
+    › Cras vel 
+    › lorem. 
+    › Etiam 
+    › pellentesq
+    › ue aliquet
+    ›  tellus. 
+    › Phasellus 
+    › pharetra 
+    › nulla ac 
+    › d...
 
 DATA;
 
@@ -59,14 +68,61 @@ DATA;
         $expected = <<<DATA
 string(769)
     › Lorem ipsum dolor sit amet, consectetur adipiscing
-    ›  elit. Proin nibh augue, suscipit a, scelerisque s
-    › ed, lacinia in, mi. Cras vel lorem. Etiam pellente
-    › sque aliquet tellus. Phasellus pharetra nulla ac d
-    › iam. Quisque semper ...
+    ›  elit. Proin nibh augue, suscipit a, scelerisque 
+    › sed, lacinia in, mi. Cras vel lorem. Etiam 
+    › pellentesque aliquet tellus. Phasellus pharetra 
+    › nulla ac diam. Quisque semper ...
 
 DATA;
 
         return array(220, 50, $this->getLoremIpsum(), $expected);
+    }
+
+    private function getMultilineWithoutDots()
+    {
+        $input = \str_pad('', 20, 'a');
+        $expected = <<<'EXPECTED'
+string(20)
+    › aaaaa
+    › aaaaa
+    › aaaaa
+    › aaaaa
+
+EXPECTED;
+
+        return array(20, 5, $input, $expected);
+    }
+
+    private function getMultilineWithBrokenDots()
+    {
+        $input = \str_pad('', 20, 'a');
+        $expected = <<<'EXPECTED'
+string(20)
+    › aaaaa
+    › aaaaa
+    › aaaaa
+    › aaaa.
+    › ..
+
+EXPECTED;
+
+        return array(19, 5, $input, $expected);
+    }
+
+    private function getMultilineWithNewLines()
+    {
+        $input = "Hello\n\n\nworld!";
+        $expected = <<< 'EXCPECTED'
+string(14)
+    › Hello
+    › 
+    › 
+    › world!
+
+EXCPECTED;
+
+
+        return array(100, 20, $input, $expected);
     }
 
     private function getLoremIpsum()

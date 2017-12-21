@@ -91,4 +91,4 @@ script:
 
 after_script:
   - mv ~.git .git
-  - travis_retry bin/coveralls.sh
+  - travis_retry php ${PHP_ARGS} bin/coveralls.sh

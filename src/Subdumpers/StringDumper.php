@@ -32,6 +32,20 @@ class StringDumper implements SubdumperInterface
         "\x0B",
     );
 
+    private static $whiteCharsSearch = array(
+        "\t",
+        "\r",
+        "\0",
+        "\x0B",
+    );
+
+    private static $whiteCharsReplace = array(
+        '\t',
+        '\r',
+        '\0',
+        '\v',
+    );
+
     private $indent;
 
     private $config;
@@ -74,7 +88,7 @@ class StringDumper implements SubdumperInterface
             if ($withPrefix) {
                 echo ' ';
             }
-            echo Symbols::SYMBOL_LEFT_QUOT, $string, Symbols::SYMBOL_RIGHT_QUOT;
+            echo Symbols::SYMBOL_LEFT_QUOT, $this->escapeWhiteChars($string), Symbols::SYMBOL_RIGHT_QUOT;
             if ($withSuffix) {
                 echo '...';
             }
@@ -91,7 +105,7 @@ class StringDumper implements SubdumperInterface
     {
         foreach (\explode("\n", $string) as $metaline) {
             foreach ($this->getLines($metaline) as $line) {
-                echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $line;
+                echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $this->escapeWhiteChars($line);
             }
         }
     }
@@ -137,6 +151,11 @@ class StringDumper implements SubdumperInterface
 
             CallbackIterator::stopIterate();
         });
+    }
+
+    private function escapeWhiteChars(&$string)
+    {
+        return \str_replace(static::$whiteCharsSearch, static::$whiteCharsReplace, $string);
     }
 
     /**

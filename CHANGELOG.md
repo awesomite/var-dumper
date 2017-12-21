@@ -2,6 +2,7 @@
 
 ## 0.10.0 (????-??-??)
 
+* Convert `\t`, `\r`, `\0`, `\x0B` to visible characters
 * Split multiline text by white character whenever it is possible e.g.:
 ```
 string(768)

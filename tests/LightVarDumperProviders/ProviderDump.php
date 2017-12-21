@@ -47,6 +47,8 @@ class ProviderDump implements \IteratorAggregate
         $result['short_array3'] = $this->getShortArray3();
         $result['short_array_long_key'] = $this->getShortArrayLongKey();
         $result['single_element'] = $this->getSingleElementDump();
+        $result['white_chars'] = $this->getWhiteChars();
+        $result['white_chars2'] = $this->getWhiteChars2();
 
         return new \ArrayIterator($result);
     }
@@ -374,6 +376,31 @@ DUMP;
 array(1) {“Line of file”}
 
 DUMP;
+
+        return array($data, $dump);
+    }
+
+    private function getWhiteChars()
+    {
+        $data = "\t\r\0\x0B";
+        $dump = <<<'EXPECTED'
+“\t\r\0\v”
+
+EXPECTED;
+
+        return array($data, $dump);
+    }
+
+    private function getWhiteChars2()
+    {
+        $data = "\t\r\0\n\n\x0B";
+        $dump = <<<'EXPECTED'
+string(6)
+    › \t\r\0
+    › 
+    › \v
+
+EXPECTED;
 
         return array($data, $dump);
     }

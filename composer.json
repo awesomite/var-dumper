@@ -23,13 +23,13 @@
     "prefer-stable": true,
     "require": {
         "php": "^5.3 || ^7.0",
-        "awesomite/phpunit-4.8-fixer": "dev-master as 0.1"
+        "awesomite/iterators": "^0.2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.35",
         "symfony/console": "^2.7 || ^3.0",
         "sebastian/comparator": ">=1.2.3",
-        "awesomite/iterators": "^0.2.0"
+        "awesomite/phpunit-4.8-fixer": "dev-master as 0.1"
     },
     "extra": {
         "branch-alias": {

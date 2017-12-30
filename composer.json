@@ -22,7 +22,8 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": "^5.3 || ^7.0"
+        "php": "^5.3 || ^7.0",
+        "awesomite/phpunit-4.8-fixer": "dev-master as 0.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.35",
@@ -32,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.8-dev"
+            "dev-master": "0.10-dev"
         }
     },
     "suggest": {

@@ -15,7 +15,7 @@ use Awesomite\VarDumper\Config\Config;
 use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
 use Awesomite\VarDumper\Helpers\Stack;
-use Awesomite\VarDumper\Helpers\Symbols;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumper;
 use Awesomite\VarDumper\Properties\PropertyInterface;
 
@@ -82,7 +82,7 @@ class ObjectBigDumper extends AbstractObjectDumper
         $limit = $this->config->getMaxChildren();
         $printer = new KeyValuePrinter();
         foreach ($properties as $property) {
-            $propName = \str_replace("\n", Symbols::SYMBOL_NEW_LINE, $property->getName());
+            $propName = Strings::prepareArrayKey($property->getName());
             $key = "{$this->getTextTypePrefix($property)}\${$propName}";
 
             $valDump = $this->dumper->getDump($property->getValue());

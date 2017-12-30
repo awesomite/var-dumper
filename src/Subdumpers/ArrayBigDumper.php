@@ -15,7 +15,7 @@ use Awesomite\VarDumper\Config\Config;
 use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
 use Awesomite\VarDumper\Helpers\Stack;
-use Awesomite\VarDumper\Helpers\Symbols;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumper;
 
 /**
@@ -76,7 +76,7 @@ class ArrayBigDumper implements SubdumperInterface
         $limit = $this->config->getMaxChildren();
         $printer = new KeyValuePrinter();
         foreach ($array as $key => $value) {
-            $key = \str_replace("\n", Symbols::SYMBOL_NEW_LINE, $key);
+            $key = Strings::prepareArrayKey($key);
             $valDump = $this->dumper->getDump($value);
             $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {

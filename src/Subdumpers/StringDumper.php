@@ -13,6 +13,7 @@ namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\Iterators\CallbackIterator;
 use Awesomite\VarDumper\Config\Config;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Helpers\Symbols;
 
 /**
@@ -23,28 +24,15 @@ class StringDumper implements SubdumperInterface
     /**
      * @internal Public for php 5.3
      */
-    public static $whiteChars = array(
-        ' ',
-        "\t",
-        "\n",
-        "\r",
-        "\0",
-        "\x0B",
-    );
-
-    private static $whiteCharsSearch = array(
-        "\t",
-        "\r",
-        "\0",
-        "\x0B",
-    );
-
-    private static $whiteCharsReplace = array(
-        '\t',
-        '\r',
-        '\0',
-        '\v',
-    );
+    public static $whiteChars
+        = array(
+            ' ',
+            "\t",
+            "\n",
+            "\r",
+            "\0",
+            "\x0B",
+        );
 
     private $indent;
 
@@ -155,7 +143,7 @@ class StringDumper implements SubdumperInterface
 
     private function escapeWhiteChars(&$string)
     {
-        return \str_replace(static::$whiteCharsSearch, static::$whiteCharsReplace, $string);
+        return Strings::prepareSingleLine($string);
     }
 
     /**

@@ -49,6 +49,7 @@ class ProviderDump implements \IteratorAggregate
         $result['single_element'] = $this->getSingleElementDump();
         $result['white_chars'] = $this->getWhiteChars();
         $result['white_chars2'] = $this->getWhiteChars2();
+        $result['simple_array_with_white_spaces']  = $this->getSimpleArrayWithWhiteSpaces();
 
         return new \ArrayIterator($result);
     }
@@ -401,6 +402,17 @@ string(6)
     › \v
 
 EXPECTED;
+
+        return array($data, $dump);
+    }
+
+    private function getSimpleArrayWithWhiteSpaces()
+    {
+        $data = array("hello\tworld!");
+        $dump = <<<'DUMP'
+array(1) {“hello\tworld!”}
+
+DUMP;
 
         return array($data, $dump);
     }

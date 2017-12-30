@@ -28,7 +28,7 @@ class Stack
         return \array_push($this->array, $item);
     }
 
-    public function in($element)
+    public function in(&$element)
     {
         return \in_array($element, $this->array, true);
     }

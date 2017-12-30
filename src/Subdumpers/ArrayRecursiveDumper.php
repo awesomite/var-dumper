@@ -32,7 +32,7 @@ class ArrayRecursiveDumper implements SubdumperInterface
 
     public function supports(&$var)
     {
-        return self::$canCompareArrays && \in_array($var, $this->references->getAll(), true);
+        return self::$canCompareArrays && $this->references->in($var);
     }
 
     public function dump(&$array)

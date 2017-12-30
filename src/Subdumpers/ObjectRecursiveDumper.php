@@ -28,7 +28,7 @@ class ObjectRecursiveDumper extends AbstractObjectDumper
 
     public function supports(&$var)
     {
-        return \is_object($var) && \in_array($var, $this->references->getAll(), true);
+        return \is_object($var) && $this->references->in($var);
     }
 
     public function dump(&$var)

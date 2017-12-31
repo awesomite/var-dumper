@@ -89,6 +89,12 @@ Use method `getDump()` instead of `dump()` for saving output as variable.
 
 The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) scheme.
 
+**Note**
+
+Only source code is considered as backward compatible, result of `dump()` and `getDump()` methods may change.
+Classes, methods, functions and properties marked as `@internal` may change any time,
+promise of backward compatibility excludes them, do not use them.
+
 ## Examples
 
 [See](examples) more examples.

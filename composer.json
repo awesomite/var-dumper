@@ -29,12 +29,7 @@
         "phpunit/phpunit": "^4.8.35",
         "symfony/console": "^2.7 || ^3.0",
         "sebastian/comparator": ">=1.2.3",
-        "awesomite/phpunit-4.8-fixer": "dev-master as 0.1"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.10-dev"
-        }
+        "awesomite/phpunit-4.8-fixer": "^1.0"
     },
     "suggest": {
         "ext-mbstring": "For mb_* functions.",

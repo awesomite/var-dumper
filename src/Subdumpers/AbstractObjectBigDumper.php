@@ -16,6 +16,9 @@ use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\Stack;
 use Awesomite\VarDumper\LightVarDumper;
 
+/**
+ * @internal
+ */
 abstract class AbstractObjectBigDumper extends AbstractObjectDumper
 {
     protected $dumper;

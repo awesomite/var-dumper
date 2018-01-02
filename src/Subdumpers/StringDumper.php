@@ -11,7 +11,9 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\Iterators\CallbackIterator;
 use Awesomite\VarDumper\Config\Config;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Helpers\Symbols;
 
 /**
@@ -19,6 +21,19 @@ use Awesomite\VarDumper\Helpers\Symbols;
  */
 class StringDumper implements SubdumperInterface
 {
+    /**
+     * @internal Public for php 5.3
+     */
+    public static $whiteChars
+        = array(
+            ' ',
+            "\t",
+            "\n",
+            "\r",
+            "\0",
+            "\x0B",
+        );
+
     private $indent;
 
     private $config;
@@ -29,19 +44,18 @@ class StringDumper implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_string($var);
     }
 
-    public function dump(&$var)
+    public function dump($var)
     {
-        $string = $var;
-        $len = \mb_strlen($string);
+        $len = \mb_strlen($var);
         $withPrefix = false;
         $withSuffix = false;
 
-        $containsNewLine = false !== \mb_strpos($string, "\n");
+        $containsNewLine = false !== \mb_strpos($var, "\n");
         $isMultiLine = $len > $this->config->getMaxLineLength() || $containsNewLine;
 
         if ($isMultiLine) {
@@ -49,7 +63,7 @@ class StringDumper implements SubdumperInterface
         }
 
         if ($len > $this->config->getMaxStringLength()) {
-            $string = \mb_substr($string, 0, $this->config->getMaxStringLength());
+            $var = \mb_substr($var, 0, $this->config->getMaxStringLength());
             $withPrefix = true;
             $withSuffix = true;
         }
@@ -61,31 +75,92 @@ class StringDumper implements SubdumperInterface
             if ($withPrefix) {
                 echo ' ';
             }
-            echo Symbols::SYMBOL_LEFT_QUOT, $string, Symbols::SYMBOL_RIGHT_QUOT;
+            echo Symbols::SYMBOL_LEFT_QUOT, $this->escapeWhiteChars($var), Symbols::SYMBOL_RIGHT_QUOT;
             if ($withSuffix) {
                 echo '...';
             }
-            echo "\n";
         } else {
-            foreach (\explode("\n", $string) as $line) {
-                while (true) {
-                    if (\mb_strlen($line) > $this->config->getMaxLineLength()) {
-                        $storage = \mb_substr($line, $this->config->getMaxLineLength());
-                        $line = \mb_substr($line, 0, $this->config->getMaxLineLength());
-                    } else {
-                        $storage = '';
-                    }
-                    echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $line;
-                    if ('' === $storage) {
+            if ($withSuffix) {
+                $var .= '...';
+            }
+            $this->dumpMultiLine($var);
+        }
+        echo "\n";
+    }
+
+    private function dumpMultiLine($string)
+    {
+        foreach (\explode("\n", $string) as $metaline) {
+            foreach ($this->getLines($metaline) as $line) {
+                echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $this->escapeWhiteChars($line);
+            }
+        }
+    }
+
+    private function getLines($string)
+    {
+        $firstIteration = true;
+        $config = $this->config;
+        $self = $this;
+
+        return new CallbackIterator(function () use (&$string, &$firstIteration, &$config, $self) {
+            while ('' !== $string) {
+                $current = \mb_substr($string, 0, $config->getMaxLineLength());
+                $next = \mb_substr($string, $config->getMaxLineLength());
+
+                $toCheck = array(
+                    \mb_substr($current, -1),
+                    \mb_substr($next, 0, 1),
+                );
+                $dividedByWhite = '' === $next;
+                foreach ($toCheck as $char) {
+                    if ($dividedByWhite |= \in_array($char, $self::$whiteChars, true)) {
                         break;
                     }
-                    $line = $storage;
                 }
+
+                if (!$dividedByWhite && $pos = $self->getLastWhiteCharPos($current)) {
+                    $next = \mb_substr($current, $pos) . $next;
+                    $current = \mb_substr($current, 0, $pos);
+                }
+
+                $firstIteration = false;
+                $string = $next;
+
+                return $current;
             }
-            if ($withSuffix) {
-                echo '...';
+
+            if ($firstIteration) {
+                $firstIteration = false;
+
+                return '';
             }
-            echo "\n";
+
+            CallbackIterator::stopIterate();
+        });
+    }
+
+    private function escapeWhiteChars($string)
+    {
+        return Strings::prepareSingleLine($string);
+    }
+
+    /**
+     * @internal Public for php 5.3
+     *
+     * @param $string
+     *
+     * @return bool|mixed
+     */
+    public function getLastWhiteCharPos($string)
+    {
+        $data = array();
+        foreach (self::$whiteChars as $char) {
+            if (false !== $pos = \mb_strrpos($string, $char)) {
+                $data[] = $pos + 1;
+            }
         }
+
+        return \count($data) ? \max($data) : false;
     }
 }

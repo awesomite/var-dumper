@@ -35,7 +35,7 @@ $array = array(
     'abcdefgh' => 'abcdefgh',
 );
 
-$range = range(1, 5);
+$smallArray = array(1, 2.5, null, M_PI, INF);
 
 $varDumper = new LightVarDumper();
 $varDumper
@@ -44,7 +44,7 @@ $varDumper
     ->setMaxStringLength(400)
     ->setMaxLineLength(50);
 
-$varDumper->dump(array($loremIpsum, $array, $range));
+$varDumper->dump(array($loremIpsum, $array, $smallArray));
 ```
 
 Output:
@@ -54,14 +54,14 @@ array(3) {
     [0] =>
         string(768)
             › Lorem ipsum dolor sit amet, consectetur adipiscing
-            ›  elit. Proin nibh augue, suscipit a, scelerisque s
-            › ed, lacinia in, mi. Cras vel lorem. Etiam pellente
-            › sque aliquet tellus. Phasellus pharetra nulla ac d
-            › iam. Quisque semper justo at risus.
-            › Donec venenatis, turpis vel hendrerit interdum, du
-            › i ligula ultricies purus, sed posuere libero dui i
-            › d orci. Nam congue, pede vitae dapibus aliquet, el
-            › it magna vulpu...
+            ›  elit. Proin nibh augue, suscipit a, scelerisque
+            › sed, lacinia in, mi. Cras vel lorem. Etiam
+            › pellentesque aliquet tellus. Phasellus pharetra
+            › nulla ac diam. Quisque semper justo at risus.
+            › Donec venenatis, turpis vel hendrerit interdum,
+            › dui ligula ultricies purus, sed posuere libero dui
+            ›  id orci. Nam congue, pede vitae dapibus aliquet,
+            › elit magna vulpu...
     [1] =>
         array(8) {
             [a] =>        “a”
@@ -73,7 +73,7 @@ array(3) {
             [abcdefg] =>  “abcdefg”
             [abcdefgh] => “abcdefgh”
         }
-    [2] => array(5) {1, 2, 3, 4, 5}
+    [2] => array(5) {1, 2.5, NULL, M_PI, INF}
 }
 ```
 
@@ -89,6 +89,12 @@ Use method `getDump()` instead of `dump()` for saving output as variable.
 
 The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) scheme.
 
+**Note**
+
+Only source code is considered as backward compatible, result of `dump()` and `getDump()` methods may change.
+Classes, methods, functions and properties marked as `@internal` may change any time,
+promise of backward compatibility excludes them, do not use them.
+
 ## Examples
 
-[Examples](examples)
+[See](examples) more examples.

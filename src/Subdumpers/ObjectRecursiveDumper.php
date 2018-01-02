@@ -26,12 +26,12 @@ class ObjectRecursiveDumper extends AbstractObjectDumper
         parent::__construct();
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
-        return \is_object($var) && \in_array($var, $this->references->getAll(), true);
+        return \is_object($var) && $this->references->in($var);
     }
 
-    public function dump(&$var)
+    public function dump($var)
     {
         echo 'RECURSIVE object(', $this->getClassName($var), ') #', self::$hasher->getHashId($var), "\n";
     }

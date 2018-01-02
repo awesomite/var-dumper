@@ -72,12 +72,12 @@ object(ExampleData) #1 (5) {
     protected $emptyArray => array(0) {}
     private $lipsum =>
         string(769)
-            › Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh au
-            › gue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etia
-            › m pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisq
-            › ue semper justo at risus. Donec venenatis, turpis vel hendrerit interd
-            › um, dui ligula ultricies purus, sed posuere libero dui id orci. Nam co
-            › ngue, pede vitae dapibus aliquet, elit magna vulpu...
+            › Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh
+            › augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem.
+            › Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
+            › Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit
+            › interdum, dui ligula ultricies purus, sed posuere libero dui id orci.
+            › Nam congue, pede vitae dapibus aliquet, elit magna vulpu...
     private $lipsum2 =>
         string(768)
             › Lorem ipsum dolor sit amet,

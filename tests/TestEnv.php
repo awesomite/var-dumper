@@ -9,20 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Awesomite\VarDumper\Subdumpers;
+namespace Awesomite\VarDumper;
 
 /**
  * @internal
  */
-class NullDumper implements SubdumperInterface
+class TestEnv
 {
-    public function supports($var)
+    public static function isSpeedTest()
     {
-        return null === $var;
-    }
-
-    public function dump($var)
-    {
-        echo "NULL\n";
+        return 'true' === \getenv('MODE_SPEED_TEST');
     }
 }

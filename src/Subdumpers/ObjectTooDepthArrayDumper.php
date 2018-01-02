@@ -30,12 +30,12 @@ class ObjectTooDepthArrayDumper extends AbstractObjectDumper
         parent::__construct();
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_object($var) && $this->depth->getValue() === $this->config->getMaxDepth();
     }
 
-    public function dump(&$object)
+    public function dump($object)
     {
         $class = $this->getClassName($object);
         $properties = $this->getProperties($object);

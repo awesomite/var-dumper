@@ -30,12 +30,12 @@ class ArrayRecursiveDumper implements SubdumperInterface
         self::init();
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
-        return self::$canCompareArrays && \in_array($var, $this->references->getAll(), true);
+        return self::$canCompareArrays && $this->references->in($var);
     }
 
-    public function dump(&$array)
+    public function dump($array)
     {
         echo 'RECURSIVE array(' . \count($array) . ")\n";
     }

@@ -15,7 +15,7 @@ use Awesomite\VarDumper\Config\Config;
 use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
 use Awesomite\VarDumper\Helpers\Stack;
-use Awesomite\VarDumper\Helpers\Symbols;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumper;
 
 /**
@@ -47,12 +47,12 @@ class ArrayBigDumper implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_array($var);
     }
 
-    public function dump(&$array)
+    public function dump($array)
     {
         $this->depth->incr();
         $this->references->push($array);
@@ -71,12 +71,12 @@ class ArrayBigDumper implements SubdumperInterface
         $this->depth->decr();
     }
 
-    private function dumpBody(array &$array)
+    private function dumpBody(array $array)
     {
         $limit = $this->config->getMaxChildren();
         $printer = new KeyValuePrinter();
         foreach ($array as $key => $value) {
-            $key = \str_replace("\n", Symbols::SYMBOL_NEW_LINE, $key);
+            $key = Strings::prepareArrayKey($key);
             $valDump = $this->dumper->getDump($value);
             $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {

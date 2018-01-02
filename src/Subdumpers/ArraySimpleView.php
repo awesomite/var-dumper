@@ -12,7 +12,7 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Config\Config;
-use Awesomite\VarDumper\Helpers\Symbols;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumper;
 
 /**
@@ -33,7 +33,7 @@ class ArraySimpleView implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         if (!\is_array($var)) {
             return false;
@@ -67,7 +67,7 @@ class ArraySimpleView implements SubdumperInterface
         return true;
     }
 
-    public function dump(&$var)
+    public function dump($var)
     {
         echo 'array(', \count($var), ') {';
         $i = 0;
@@ -78,7 +78,7 @@ class ArraySimpleView implements SubdumperInterface
         foreach ($var as $key => $value) {
             $keyToDump = '';
             if (\is_string($key)) {
-                $keyToDump = '[' . \str_replace("\n", Symbols::SYMBOL_NEW_LINE, $key) . '] => ';
+                $keyToDump = '[' . Strings::prepareArrayKey($key) . '] => ';
                 $canSkipKey = false;
             } elseif (!$canSkipKey || $key !== $i) {
                 $keyToDump = '[' . $key . '] => ';

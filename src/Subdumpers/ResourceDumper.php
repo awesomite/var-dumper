@@ -16,12 +16,12 @@ namespace Awesomite\VarDumper\Subdumpers;
  */
 class ResourceDumper implements SubdumperInterface
 {
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_resource($var);
     }
 
-    public function dump(&$resource)
+    public function dump($resource)
     {
         $id = $this->getResourceId($resource);
         if (false !== $id) {

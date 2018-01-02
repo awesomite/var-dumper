@@ -61,19 +61,20 @@ install:
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
-      composer global require friendsofphp/php-cs-fixer:@stable;
-      export PHP_CS_FIXER="${HOME}/.composer/vendor/bin/php-cs-fixer";
+      export PHP_CS_FIXER="./dev-tools/vendor/bin/php-cs-fixer";
       export RUN_CS_FIXER="true";
     fi
+  - cd dev-tools; composer update; cd ..
 
 before_script:
-  - bin/fix-phpunit.php
+  - vendor/bin/phpunit-4.8-fixer
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); else export PHP_ARGS=''; fi
 
 script:
   - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix; fi
   - php ${PHP_ARGS} vendor/bin/phpunit
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
       rm -rf ${HOME}/.composer/vendor

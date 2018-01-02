@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Listeners;
 
+use Awesomite\VarDumper\SyntaxTest;
+use Awesomite\VarDumper\TestEnv;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -67,11 +69,14 @@ class TestListener implements \PHPUnit_Framework_TestListener
 
     public function __construct()
     {
-        \register_shutdown_function(function () {
-            TestListener::flush();
-        });
         $output = new ConsoleOutput();
         $output->writeln(\sprintf('PHP %s', \phpversion()));
+        if (TestEnv::isSpeedTest()) {
+            \register_shutdown_function(function () {
+                TestListener::flush();
+            });
+            SyntaxTest::requireWholeSrc();
+        }
     }
 
     public function startTest(\PHPUnit_Framework_Test $test)

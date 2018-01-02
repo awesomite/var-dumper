@@ -17,7 +17,7 @@ namespace Awesomite\VarDumper\Properties;
 interface PropertiesInterface
 {
     /**
-     * @return PropertyInterface[]|\Traversable
+     * @return PropertyInterface[]
      */
     public function getProperties();
 }

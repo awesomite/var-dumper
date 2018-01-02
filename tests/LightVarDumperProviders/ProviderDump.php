@@ -34,9 +34,12 @@ class ProviderDump implements \IteratorAggregate
             $result['closure'] = $this->getClosure();
         }
         $result['debugInfo'] = $this->getDebugInfo();
+        $result['debugInfo2'] = $this->getDebugInfo2();
+        $result['debugInfo3'] = $this->getDebugInfo3();
         $result['brokenAlign'] = $this->getBrokenAlign();
         if (\version_compare(PHP_VERSION, '5.6') < 0) {
             $result['invalidDebugInfo'] = $this->getInvalidDebugInfo();
+            $result['nonArrayDebugInfo'] = $this->getNonArrayDebugInfo();
         }
         $result['1-element_array'] = $this->get1ElementArray();
         $result['1-element_long_array'] = $this->get1ElementLongArray();
@@ -177,13 +180,10 @@ DUMP;
         );
 
         $expected = <<<'EXPECTED'
-object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%s (1) {
-    public $__debugInfo() =>
-        array(2) {
-            [greeting] => “hello world”
-            [class] =>    “Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo”
-        }
-}
+object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (2) {[
+    [greeting] => “hello world”
+    [class] =>    “Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo”
+]}
 
 EXPECTED;
 
@@ -193,6 +193,44 @@ EXPECTED;
 
         return array($obj, $expected);
     }
+
+    private function getDebugInfo2()
+    {
+        $data = array(1, 2.5, null, INF);
+
+        $expected = <<<'EXPECTED'
+object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (4) {[
+    [0] => 1
+    [1] => 2.5
+    [2] => NULL
+    [3] => INF
+]}
+
+EXPECTED;
+
+        $hasher = HasherFactory::create();
+        $obj = new TestDebugInfo($data);
+        $expected = \sprintf($expected, $hasher->getHashId($obj));
+
+        return array($obj, $expected);
+    }
+
+    private function getDebugInfo3()
+    {
+        $data = array();
+
+        $expected = <<<'EXPECTED'
+object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (0) {[]}
+
+EXPECTED;
+
+        $hasher = HasherFactory::create();
+        $obj = new TestDebugInfo($data);
+        $expected = \sprintf($expected, $hasher->getHashId($obj));
+
+        return array($obj, $expected);
+    }
+
 
     private function getBrokenAlign()
     {
@@ -240,6 +278,24 @@ EXPECTED;
         $hasher = HasherFactory::create();
 
         $expected = \sprintf("object(%s) #%d (0) {}\n", \get_class($obj), $hasher->getHashId($obj));
+
+        return array($obj, $expected);
+    }
+
+    private function getNonArrayDebugInfo()
+    {
+        $data = "hello world";
+
+        $expected = <<<'EXPECTED'
+object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (1) {
+    public $__debugInfo() => “hello world”
+}
+
+EXPECTED;
+
+        $hasher = HasherFactory::create();
+        $obj = new TestDebugInfo($data);
+        $expected = \sprintf($expected, $hasher->getHashId($obj));
 
         return array($obj, $expected);
     }

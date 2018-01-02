@@ -17,6 +17,7 @@ use Awesomite\VarDumper\Helpers\KeyValuePrinter;
 use Awesomite\VarDumper\Helpers\Stack;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumper;
+use Awesomite\VarDumper\Properties\Properties;
 use Awesomite\VarDumper\Properties\PropertyInterface;
 
 /**
@@ -61,18 +62,55 @@ class ObjectBigDumper extends AbstractObjectDumper
 
         $properties = $this->getProperties($object);
         $class = $this->getClassName($object);
+        list($isDebugInfo, $debugInfoData) = $this->getDebugInfoData($properties);
 
-        $count = \count($properties);
-        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', \count($properties), ') {';
+        $count = \count($isDebugInfo ? $debugInfoData : $properties);
+        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', $count, ') {';
+        if ($isDebugInfo) {
+            echo '[';
+        }
         if ($count > 0) {
             echo "\n";
-            $this->dumpProperties($properties);
+            if ($isDebugInfo) {
+                $this->dumpDebugInfoProperty($debugInfoData);
+            } else {
+                $this->dumpProperties($properties);
+            }
         }
-        echo '}' . "\n";
+        echo($isDebugInfo ? ']' : ''), '}', "\n";
 
         $this->references->pop();
         $this->depth->decr();
     }
+
+    /**
+     * @param PropertyInterface[] $properties
+     *
+     * @return array
+     */
+    private function getDebugInfoData($properties)
+    {
+        if (1 !== \count($properties)) {
+            return array(false, null);
+        }
+
+        if (isset($properties[0]) && Properties::PROPERTY_DEBUG_INFO === $properties[0]->getName()) {
+            $value = $properties[0]->getValue();
+
+            // check type of value for php < 5.6
+            if (\is_array($value)) {
+                return array(true, $value);
+            }
+        }
+
+        return array(false, null);
+    }
+
+    private function dumpDebugInfoProperty(array $debugInfoData)
+    {
+        ArrayBigDumper::dumpBody($debugInfoData, $this->config, $this->dumper, $this->indent);
+    }
+
 
     /**
      * @param PropertyInterface[]|\Traversable $properties

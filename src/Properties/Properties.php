@@ -16,6 +16,8 @@ namespace Awesomite\VarDumper\Properties;
  */
 class Properties extends AbstractProperties
 {
+    const PROPERTY_DEBUG_INFO = '__debugInfo()';
+
     private static $mapping
         = array(
             '\ArrayObject' => '\Awesomite\VarDumper\Properties\PropertiesArrayObject',
@@ -40,7 +42,7 @@ class Properties extends AbstractProperties
         if ($reflection = $this->getDebugInfoReflection()) {
             return array(
                 new VarProperty(
-                    '__debugInfo()',
+                    static::PROPERTY_DEBUG_INFO,
                     $object->__debugInfo(),
                     VarProperty::VISIBILITY_PUBLIC,
                     \get_class($object)

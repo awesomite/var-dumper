@@ -1,9 +1,21 @@
 # Changelog
 
+## 0.11.0 (????-??-??)
+
+* More readable format of objects with method
+[`__debugInfo()`](http://php.net/manual/en/language.oop5.magic.php#object.debuginfo), e.g.:
+```
+object(Foo) #1 (3) {[
+    [0] => 1
+    [1] => RECURSIVE object(Foo) #1
+    [2] => M_PI
+]}
+```
+
 ## 0.10.0 (2018-01-02)
 
 * Convert `\t`, `\r`, `\0`, `\x0B` to visible characters
-* Split multiline text by white character whenever it is possible e.g.:
+* Split multiline text by white character whenever it is possible, e.g.:
 ```
 string(768)
     › Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -36,7 +48,7 @@ array(2) {
 }
 ```
 * Allow displaying array in single line whenever array contains no more than 5 elements,
-keys are no longer than 20 characters each element is null, empty array or scalar (except string) e.g.:
+keys are no longer than 20 characters each element is null, empty array or scalar (except string), e.g.:
 ```
 array(5) {0, 1, 2, 3, 4}
 array(4) {1, 2, 3, [key] => NULL}
@@ -114,7 +126,7 @@ because it can call [`__get()`](http://php.net/manual/en/language.oop5.overloadi
 ## 0.7.1 (2017-06-18)
 
 * Removed support for PHPUnit ^5.0 and ^6.0 - there are issue with HHVM - `Exception` does not implement `Throwable` in HHVM
-* Fixed bug "Undefined property: ClassName::$propertyName" - property can be defined in code, but removed in runtime e.g.:
+* Fixed bug "Undefined property: ClassName::$propertyName" - property can be defined in code, but removed in runtime, e.g.:
 
 ```php
 class Foo

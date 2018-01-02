@@ -36,7 +36,7 @@ abstract class AbstractObjectDumper implements SubdumperInterface
     /**
      * @param $object
      *
-     * @return PropertyInterface[]|\Traversable
+     * @return PropertyInterface[]
      */
     protected function getProperties($object)
     {

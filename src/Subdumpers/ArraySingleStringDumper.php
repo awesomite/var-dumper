@@ -36,8 +36,7 @@ class ArraySingleStringDumper implements SubdumperInterface
             && \array_key_exists(0, $array)
             && \is_string($array[0])
             && \mb_strlen($array[0]) <= $this->config->getMaxLineLength()
-            && false === \mb_strpos($array[0], "\n")
-        ;
+            && false === \mb_strpos($array[0], "\n");
     }
 
     public function dump($array)

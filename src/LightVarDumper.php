@@ -21,12 +21,14 @@ use Awesomite\VarDumper\Subdumpers\ArraySingleStringDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayTooDepthDumper;
 use Awesomite\VarDumper\Subdumpers\NullDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectBigDumper;
+use Awesomite\VarDumper\Subdumpers\ObjectDebugInfoDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectRecursiveDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectTooDepthArrayDumper;
 use Awesomite\VarDumper\Subdumpers\ResourceDumper;
 use Awesomite\VarDumper\Subdumpers\ScalarDumper;
 use Awesomite\VarDumper\Subdumpers\StringDumper;
 use Awesomite\VarDumper\Subdumpers\SubdumperInterface;
+use Awesomite\VarDumper\Subdumpers\VarNotSupportedException;
 
 final class LightVarDumper extends InternalVarDumper
 {
@@ -70,6 +72,7 @@ final class LightVarDumper extends InternalVarDumper
             new ScalarDumper(),
             new ObjectRecursiveDumper($references),
             new ObjectTooDepthArrayDumper($this->depth, $this->config),
+            new ObjectDebugInfoDumper($this, $references, $this->indent, $this->depth, $this->config),
             new ObjectBigDumper($this, $references, $this->indent, $this->depth, $this->config),
             new ArrayRecursiveDumper($references),
             new ArrayTooDepthDumper($this->depth, $this->config),
@@ -88,7 +91,11 @@ final class LightVarDumper extends InternalVarDumper
 
         foreach ($this->subdumpers as $subdumper) {
             if ($subdumper->supports($var)) {
-                $subdumper->dump($var);
+                try {
+                    $subdumper->dump($var);
+                } catch (VarNotSupportedException $exception) {
+                    continue;
+                }
 
                 return;
             }

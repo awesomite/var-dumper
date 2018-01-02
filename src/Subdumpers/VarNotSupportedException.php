@@ -14,12 +14,6 @@ namespace Awesomite\VarDumper\Subdumpers;
 /**
  * @internal
  */
-interface SubdumperInterface
+class VarNotSupportedException extends \Exception
 {
-    public function supports($var);
-
-    /**
-     * @throws VarNotSupportedException
-     */
-    public function dump($var);
 }

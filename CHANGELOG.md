@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.0 (????-??-??)
+## 0.10.0 (2018-01-02)
 
 * Convert `\t`, `\r`, `\0`, `\x0B` to visible characters
 * Split multiline text by white character whenever it is possible e.g.:

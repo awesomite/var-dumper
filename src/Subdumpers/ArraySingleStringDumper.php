@@ -17,7 +17,7 @@ use Awesomite\VarDumper\LightVarDumper;
 /**
  * @internal
  */
-class ArraySingleElementDumper implements SubdumperInterface
+class ArraySingleStringDumper implements SubdumperInterface
 {
     private $dumper;
 

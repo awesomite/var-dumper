@@ -17,7 +17,7 @@ use Awesomite\VarDumper\Helpers\Stack;
 use Awesomite\VarDumper\Subdumpers\ArrayBigDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper;
 use Awesomite\VarDumper\Subdumpers\ArraySimpleView;
-use Awesomite\VarDumper\Subdumpers\ArraySingleElementDumper;
+use Awesomite\VarDumper\Subdumpers\ArraySingleStringDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayTooDepthDumper;
 use Awesomite\VarDumper\Subdumpers\NullDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectBigDumper;
@@ -74,7 +74,7 @@ final class LightVarDumper extends InternalVarDumper
             new ArrayRecursiveDumper($references),
             new ArrayTooDepthDumper($this->depth, $this->config),
             new ArraySimpleView($this, $this->config),
-            new ArraySingleElementDumper($this, $this->config),
+            new ArraySingleStringDumper($this, $this->config),
             new ArrayBigDumper($this, $references, $this->indent, $this->depth, $this->config),
             new ResourceDumper(),
         );

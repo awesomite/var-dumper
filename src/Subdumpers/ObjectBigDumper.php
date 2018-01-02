@@ -47,7 +47,7 @@ class ObjectBigDumper extends AbstractObjectBigDumper
 
 
     /**
-     * @param PropertyInterface[]|\Traversable $properties
+     * @param PropertyInterface[] $properties
      */
     private function dumpProperties($properties)
     {

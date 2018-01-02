@@ -45,6 +45,7 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
         echo ']}', "\n";
 
         $this->references->pop();
+        $this->depth->decr();
     }
 
     /**

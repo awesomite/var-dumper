@@ -34,12 +34,9 @@ $dumper->dump(new MyClass());
 
 Output:
 
-object(MyClass) #1 (1) {
-    public $__debugInfo() =>
-        array(2) {
-            [key] =>  “value”
-            [some] => “output”
-        }
-}
+object(MyClass) #1 (2) {[
+    [key] =>  “value”
+    [some] => “output”
+]}
 
 */

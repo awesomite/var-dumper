@@ -16,12 +16,12 @@ namespace Awesomite\VarDumper\Subdumpers;
  */
 class NullDumper implements SubdumperInterface
 {
-    public function supports(&$var)
+    public function supports($var)
     {
         return null === $var;
     }
 
-    public function dump(&$var)
+    public function dump($var)
     {
         echo "NULL\n";
     }

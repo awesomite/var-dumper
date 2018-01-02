@@ -49,12 +49,12 @@ class ScalarDumper implements SubdumperInterface
         self::init();
     }
 
-    public function supports(&$scalar)
+    public function supports($scalar)
     {
         return \is_scalar($scalar) && !\is_string($scalar);
     }
 
-    public function dump(&$scalar)
+    public function dump($scalar)
     {
         if (\is_float($scalar)) {
             foreach (self::$floatMapping as $key => $value) {

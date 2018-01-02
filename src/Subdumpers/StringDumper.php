@@ -44,19 +44,18 @@ class StringDumper implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_string($var);
     }
 
-    public function dump(&$var)
+    public function dump($var)
     {
-        $string = $var;
-        $len = \mb_strlen($string);
+        $len = \mb_strlen($var);
         $withPrefix = false;
         $withSuffix = false;
 
-        $containsNewLine = false !== \mb_strpos($string, "\n");
+        $containsNewLine = false !== \mb_strpos($var, "\n");
         $isMultiLine = $len > $this->config->getMaxLineLength() || $containsNewLine;
 
         if ($isMultiLine) {
@@ -64,7 +63,7 @@ class StringDumper implements SubdumperInterface
         }
 
         if ($len > $this->config->getMaxStringLength()) {
-            $string = \mb_substr($string, 0, $this->config->getMaxStringLength());
+            $var = \mb_substr($var, 0, $this->config->getMaxStringLength());
             $withPrefix = true;
             $withSuffix = true;
         }
@@ -76,20 +75,20 @@ class StringDumper implements SubdumperInterface
             if ($withPrefix) {
                 echo ' ';
             }
-            echo Symbols::SYMBOL_LEFT_QUOT, $this->escapeWhiteChars($string), Symbols::SYMBOL_RIGHT_QUOT;
+            echo Symbols::SYMBOL_LEFT_QUOT, $this->escapeWhiteChars($var), Symbols::SYMBOL_RIGHT_QUOT;
             if ($withSuffix) {
                 echo '...';
             }
         } else {
             if ($withSuffix) {
-                $string .= '...';
+                $var .= '...';
             }
-            $this->dumpMultiLine($string);
+            $this->dumpMultiLine($var);
         }
         echo "\n";
     }
 
-    private function dumpMultiLine(&$string)
+    private function dumpMultiLine($string)
     {
         foreach (\explode("\n", $string) as $metaline) {
             foreach ($this->getLines($metaline) as $line) {
@@ -98,7 +97,7 @@ class StringDumper implements SubdumperInterface
         }
     }
 
-    private function getLines(&$string)
+    private function getLines($string)
     {
         $firstIteration = true;
         $config = $this->config;
@@ -141,7 +140,7 @@ class StringDumper implements SubdumperInterface
         });
     }
 
-    private function escapeWhiteChars(&$string)
+    private function escapeWhiteChars($string)
     {
         return Strings::prepareSingleLine($string);
     }
@@ -153,7 +152,7 @@ class StringDumper implements SubdumperInterface
      *
      * @return bool|mixed
      */
-    public function getLastWhiteCharPos(&$string)
+    public function getLastWhiteCharPos($string)
     {
         $data = array();
         foreach (self::$whiteChars as $char) {

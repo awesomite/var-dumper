@@ -23,12 +23,12 @@ class Stack
         return \array_pop($this->array);
     }
 
-    public function push(&$item)
+    public function push($item)
     {
         return \array_push($this->array, $item);
     }
 
-    public function in(&$element)
+    public function in($element)
     {
         return \in_array($element, $this->array, true);
     }

@@ -47,12 +47,12 @@ class ArrayBigDumper implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_array($var);
     }
 
-    public function dump(&$array)
+    public function dump($array)
     {
         $this->depth->incr();
         $this->references->push($array);
@@ -71,7 +71,7 @@ class ArrayBigDumper implements SubdumperInterface
         $this->depth->decr();
     }
 
-    private function dumpBody(array &$array)
+    private function dumpBody(array $array)
     {
         $limit = $this->config->getMaxChildren();
         $printer = new KeyValuePrinter();

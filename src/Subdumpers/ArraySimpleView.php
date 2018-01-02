@@ -33,7 +33,7 @@ class ArraySimpleView implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         if (!\is_array($var)) {
             return false;
@@ -67,7 +67,7 @@ class ArraySimpleView implements SubdumperInterface
         return true;
     }
 
-    public function dump(&$var)
+    public function dump($var)
     {
         echo 'array(', \count($var), ') {';
         $i = 0;

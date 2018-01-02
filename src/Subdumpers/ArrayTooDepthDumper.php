@@ -29,12 +29,12 @@ class ArrayTooDepthDumper implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_array($var) && $this->depth->getValue() === $this->config->getMaxDepth();
     }
 
-    public function dump(&$var)
+    public function dump($var)
     {
         $c = \count($var);
         echo 'array(', $c, ') {', ($c ? '...' : ''), "}\n";

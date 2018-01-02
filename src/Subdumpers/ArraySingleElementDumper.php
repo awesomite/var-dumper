@@ -29,7 +29,7 @@ class ArraySingleElementDumper implements SubdumperInterface
         $this->config = $config;
     }
 
-    public function supports(&$array)
+    public function supports($array)
     {
         return \is_array($array)
             && 1 === \count($array)
@@ -40,7 +40,7 @@ class ArraySingleElementDumper implements SubdumperInterface
         ;
     }
 
-    public function dump(&$array)
+    public function dump($array)
     {
         echo 'array(1) {', \rtrim($this->dumper->getDump($array[0]), "\n"), "}\n";
     }

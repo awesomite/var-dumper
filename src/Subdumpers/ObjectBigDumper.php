@@ -49,12 +49,12 @@ class ObjectBigDumper extends AbstractObjectDumper
         parent::__construct();
     }
 
-    public function supports(&$var)
+    public function supports($var)
     {
         return \is_object($var);
     }
 
-    public function dump(&$object)
+    public function dump($object)
     {
         $this->depth->incr();
         $this->references->push($object);

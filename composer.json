@@ -15,7 +15,6 @@
         }
     },
     "autoload-dev": {
-        "files": ["tests/functions.php"],
         "psr-4": {
             "Awesomite\\VarDumper\\": "tests/"
         }

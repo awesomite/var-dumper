@@ -43,8 +43,6 @@ final class LightVarDumper extends InternalVarDumper
     private $config;
     private $depth = null;
 
-    private $indent = '    ';
-
     /**
      * @var SubdumperInterface[]
      */
@@ -62,7 +60,7 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_MAX_DEPTH,
             static::DEFAULT_MAX_STRING_LENGTH,
             static::DEFAULT_MAX_LINE_LENGTH,
-            $this->indent
+            '    '
         );
         $references = new Stack();
         $this->depth = new IntValue();

@@ -2,7 +2,7 @@
 
 ## 0.11.0 (????-??-??)
 
-* Added support for `\e` and `\f`
+* Added support for `\e`, `\f` and binary strings
 * Added method `Awesomite\VarDumper\LightVarDumper::setIndent`
 and constant `Awesomite\VarDumper\LightVarDumper::DEFAULT_INDENT`
 * Added validators for `Awesomite\VarDumper\LightVarDumper::setMax*` methods

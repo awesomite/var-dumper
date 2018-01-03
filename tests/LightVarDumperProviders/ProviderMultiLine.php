@@ -26,6 +26,7 @@ class ProviderMultiLine implements \IteratorAggregate
             'new_lines'       => $this->getMultilineWithNewLines(),
             'white_chars'     => $this->getStringWithWhiteChars(),
             'short_multiline' => $this->getShortMulitiline(),
+            'binary_string'   => $this->getBinaryString(),
         ));
     }
 
@@ -160,6 +161,22 @@ string(10)
 EXCPECTED;
 
         return array(300, 5, $input, $expected);
+    }
+
+    private function getBinaryString()
+    {
+        $input = "hello\x04world";
+        $expected
+            = <<<'EXCPECTED'
+string(11)
+    › hello
+    › \x04
+    › world
+
+EXCPECTED;
+
+
+        return array(100, 8, $input, $expected);
     }
 
     private function getLoremIpsum()

@@ -16,6 +16,8 @@ namespace Awesomite\VarDumper\Helpers;
  */
 class Strings
 {
+    public static $binaryCharRegex = '[\x00-\x1F\x7F]';
+
     public static $replaceChars
         = array(
             "\t"   => '\t',
@@ -43,6 +45,17 @@ class Strings
             $result = \str_replace("\n", Symbols::SYMBOL_NEW_LINE, $input);
         }
 
-        return $result;
+        $callable = function ($chars) {
+            $result = '';
+            $i = 0;
+            $chars = $chars[$i];
+            do {
+                $result .= \sprintf('\x%02X', \ord($chars[$i]));
+            } while (isset($chars[++$i]));
+
+            return $result;
+        };
+
+        return \preg_replace_callback('/' . static::$binaryCharRegex . '+/', $callable, $result);
     }
 }

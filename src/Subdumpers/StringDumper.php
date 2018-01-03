@@ -175,6 +175,11 @@ class StringDumper implements SubdumperInterface
                 $data[] = $pos;
             }
         }
+        $regex = '/' . Strings::$binaryCharRegex . '/';
+        $split = \preg_split($regex, $string, 2);
+        if (2 === \count($split)) {
+            $data[] = \mb_strlen($split[0]);
+        }
 
         return \count($data) ? \min($data) : false;
     }

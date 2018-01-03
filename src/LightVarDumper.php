@@ -137,8 +137,8 @@ final class LightVarDumper extends InternalVarDumper
     public function setMaxStringLength($limit)
     {
         $limit = (int)$limit;
-        if ($limit < 2) {
-            throw new \InvalidArgumentException('Limit must be greater or equal 2');
+        if ($limit < 5) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 5');
         }
 
         $this->config->setMaxStringLength($limit);
@@ -154,8 +154,8 @@ final class LightVarDumper extends InternalVarDumper
     public function setMaxLineLength($limit)
     {
         $limit = (int)$limit;
-        if ($limit < 2) {
-            throw new \InvalidArgumentException('Limit must be greater or equal 2');
+        if ($limit < 5) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 5');
         }
 
         $this->config->setMaxLineLength($limit);

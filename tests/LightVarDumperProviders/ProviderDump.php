@@ -52,7 +52,7 @@ class ProviderDump implements \IteratorAggregate
         $result['single_element'] = $this->getSingleElementDump();
         $result['white_chars'] = $this->getWhiteChars();
         $result['white_chars2'] = $this->getWhiteChars2();
-        $result['simple_array_with_white_spaces']  = $this->getSimpleArrayWithWhiteSpaces();
+        $result['simple_array_with_white_spaces'] = $this->getSimpleArrayWithWhiteSpaces();
 
         return new \ArrayIterator($result);
     }
@@ -67,7 +67,8 @@ class ProviderDump implements \IteratorAggregate
         $object->public = 'public variable';
         $object->dynamicPublic = 'another public variable';
 
-        $objectDump = <<<OBJECT
+        $objectDump
+            = <<<OBJECT
 object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHashId($object)} (5) {
     public static \$static =>             “static value”
     public \$public =>                    “public variable”
@@ -88,7 +89,8 @@ OBJECT;
         $arrayObject = new \ArrayObject();
         $arrayObject['awesomite.varDumper'] = true;
 
-        $arrayObjectDump = <<<DUMP
+        $arrayObjectDump
+            = <<<DUMP
 object(ArrayObject) #{$hasher->getHashId($arrayObject)} (3) {
     private \$storage =>       array(1) {[awesomite.varDumper] => true}
     private \$flags =>         0
@@ -107,7 +109,8 @@ DUMP;
         $testArrayObject = new TestArrayObject();
         $testArrayObject['awesomite.varDumper'] = true;
 
-        $testArrayObjectDump = <<<DUMP
+        $testArrayObjectDump
+            = <<<DUMP
 object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject)} (4) {
     private \$privateProperty => “private value”
     private \$storage =>         array(1) {[awesomite.varDumper] => true}
@@ -128,7 +131,8 @@ DUMP;
         $testArrayObject2['privateProperty'] = 'public value';
         $testArrayObject2['secondProperty'] = 'second value';
 
-        $testArrayObjectDump2 = <<<DUMP
+        $testArrayObjectDump2
+            = <<<DUMP
 object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->getHashId($testArrayObject2)} (4) {
     private \$privateProperty => “private value”
     private \$storage =>
@@ -150,7 +154,8 @@ DUMP;
         $closure = function () {
         };
 
-        $dump =<<<'DUMP'
+        $dump
+            = <<<'DUMP'
 object(Closure) #%%digit%% (%%digit%%) {
     $name =>              %%any%%“Awesomite\VarDumper\LightVarDumperProviders\{closure}”
     $filename =>          %%any%%“%%file%%”
@@ -163,8 +168,8 @@ DUMP;
 
         $replace = array(
             '%%digit%%' => '[0-9]{1,}',
-            '%%file%%' => '.*',
-            '%%any%%' => '.*',
+            '%%file%%'  => '.*',
+            '%%any%%'   => '.*',
         );
         $regex = '#^' . \preg_quote($dump, '#') . '$#ms';
         $regex = \str_replace(\array_keys($replace), \array_values($replace), $regex);
@@ -176,10 +181,11 @@ DUMP;
     {
         $data = array(
             'greeting' => 'hello world',
-            'class' => \get_class(new TestDebugInfo(array()))
+            'class'    => \get_class(new TestDebugInfo(array())),
         );
 
-        $expected = <<<'EXPECTED'
+        $expected
+            = <<<'EXPECTED'
 object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (2) {[
     [greeting] => “hello world”
     [class] =>    “Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo”
@@ -198,7 +204,8 @@ EXPECTED;
     {
         $data = array(1, 2.5, null, INF);
 
-        $expected = <<<'EXPECTED'
+        $expected
+            = <<<'EXPECTED'
 object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (4) {[
     [0] => 1
     [1] => 2.5
@@ -219,7 +226,8 @@ EXPECTED;
     {
         $data = array();
 
-        $expected = <<<'EXPECTED'
+        $expected
+            = <<<'EXPECTED'
 object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (0) {[]}
 
 EXPECTED;
@@ -235,14 +243,15 @@ EXPECTED;
     private function getBrokenAlign()
     {
         $data = array(
-            'a' => 'a',
-            'ab' => 'ab',
-            'abc' => 'abc',
+            'a'        => 'a',
+            'ab'       => 'ab',
+            'abc'      => 'abc',
             'subarray' => \range('a', 'm'),
-            'abcd' => 'abcd',
+            'abcd'     => 'abcd',
         );
 
-        $expected = <<<'EXPECTED'
+        $expected
+            = <<<'EXPECTED'
 array(5) {
     [a] =>   “a”
     [ab] =>  “ab”
@@ -286,7 +295,8 @@ EXPECTED;
     {
         $data = "hello world";
 
-        $expected = <<<'EXPECTED'
+        $expected
+            = <<<'EXPECTED'
 object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (1) {
     public $__debugInfo() => “hello world”
 }
@@ -305,11 +315,12 @@ EXPECTED;
         $zeros = \implode('', \array_fill(0, $this->getDefaultLineLength(), '0'));
 
         $array = array(
-            'first' => array(null),
+            'first'  => array(null),
             'second' => null,
-            'third' => $zeros,
+            'third'  => $zeros,
         );
-        $expected = <<<EXPECTED
+        $expected
+            = <<<EXPECTED
 array(3) {
     [first] =>  array(1) {NULL}
     [second] => NULL
@@ -317,6 +328,7 @@ array(3) {
 }
 
 EXPECTED;
+
         return array($array, $expected);
     }
 
@@ -328,13 +340,14 @@ EXPECTED;
         $zeros = \implode('', \array_fill(0, $textLength, '0'));
 
         $array = array(
-            'first' => array(1),
+            'first'  => array(1),
             'second' => null,
-            'third' => $zeros,
+            'third'  => $zeros,
         );
 
         $zerosLine = \implode('', \array_fill(0, $lineLength, '0'));
-        $expected = <<<EXPECTED
+        $expected
+            = <<<EXPECTED
 array(3) {
     [first] =>  array(1) {1}
     [second] => NULL
@@ -345,6 +358,7 @@ array(3) {
 }
 
 EXPECTED;
+
         return array($array, $expected);
     }
 
@@ -363,7 +377,8 @@ EXPECTED;
         $zeros = \implode('', \array_fill(0, $textLength, '0'));
         $zerosLine = \implode('', \array_fill(0, $lineLength, '0'));
 
-        $expected = <<<EXPECTED
+        $expected
+            = <<<EXPECTED
 string({$textLength})
     › {$zerosLine}
     › 00000
@@ -372,42 +387,45 @@ EXPECTED;
 
         return array($zeros, $expected);
     }
-    
+
     private function getShortArray()
     {
         $data = array(1, 2, null, 4.5, INF);
-        $dump = <<<'DUMP'
+        $dump
+            = <<<'DUMP'
 array(5) {1, 2, NULL, 4.5, INF}
 
 DUMP;
-        
+
         return array($data, $dump);
     }
-    
+
     private function getShortArray2()
     {
         $data = array(
-            -1 => -1,
+            -1                => -1,
             "multi line\nkey" => M_PI,
             null,
-            array()
+            array(),
         );
-        $dump = <<<'DUMP'
+        $dump
+            = <<<'DUMP'
 array(4) {[-1] => -1, [multi line↵key] => M_PI, [0] => NULL, [1] => array(0) {}}
 
 DUMP;
 
         return array($data, $dump);
     }
-    
+
     private function getShortArray3()
     {
         $data = array('a' => 0, 'b' => 1, 2 => null, 3 => 3);
-        $dump = <<<'DUMP'
+        $dump
+            = <<<'DUMP'
 array(4) {[a] => 0, [b] => 1, [2] => NULL, [3] => 3}
 
 DUMP;
-        
+
         return array($data, $dump);
     }
 
@@ -416,7 +434,8 @@ DUMP;
         $data = array(
             'very_very_very_long_key' => 'value',
         );
-        $dump = <<<'DUMP'
+        $dump
+            = <<<'DUMP'
 array(1) {
     [very_very_very_long_key] => “value”
 }
@@ -429,7 +448,8 @@ DUMP;
     private function getSingleElementDump()
     {
         $data = array('Line of file');
-        $dump = <<<'DUMP'
+        $dump
+            = <<<'DUMP'
 array(1) {“Line of file”}
 
 DUMP;
@@ -440,7 +460,8 @@ DUMP;
     private function getWhiteChars()
     {
         $data = "\t\r\0\x0B";
-        $dump = <<<'EXPECTED'
+        $dump
+            = <<<'EXPECTED'
 “\t\r\0\v”
 
 EXPECTED;
@@ -451,7 +472,8 @@ EXPECTED;
     private function getWhiteChars2()
     {
         $data = "\t\r\0\n\n\x0B";
-        $dump = <<<'EXPECTED'
+        $dump
+            = <<<'EXPECTED'
 string(6)
     › \t\r\0
     › 
@@ -465,7 +487,8 @@ EXPECTED;
     private function getSimpleArrayWithWhiteSpaces()
     {
         $data = array("hello\tworld!");
-        $dump = <<<'DUMP'
+        $dump
+            = <<<'DUMP'
 array(1) {“hello\tworld!”}
 
 DUMP;

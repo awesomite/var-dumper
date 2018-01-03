@@ -21,7 +21,7 @@ class ReflectionPropertyTest extends BaseTestCase
     private $testProperty;
 
     /**
-     * @dataProvider providerInvalidConstructor
+     * @dataProvider             providerInvalidConstructor
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Argument $object is not an object!
@@ -35,6 +35,7 @@ class ReflectionPropertyTest extends BaseTestCase
     public function providerInvalidConstructor()
     {
         $reflection = new \ReflectionProperty($this, 'testProperty');
+
         return array(
             array($reflection, false),
             array($reflection, 1),

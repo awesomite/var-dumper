@@ -31,7 +31,8 @@ class ProviderMaxChildren implements \IteratorAggregate
     {
         $array = \range(1, 11);
 
-        $arrayDump1 = <<<'DUMP'
+        $arrayDump1
+            = <<<'DUMP'
 array(11) {
     [0] => 1
     (...)
@@ -39,7 +40,8 @@ array(11) {
 
 DUMP;
 
-        $arrayDump2 = <<<'DUMP'
+        $arrayDump2
+            = <<<'DUMP'
 array(11) {
     [0] =>  1
     [1] =>  2
@@ -57,7 +59,7 @@ array(11) {
 DUMP;
 
         return array(
-            'arrayMax1' => array(1, $array, $arrayDump1),
+            'arrayMax1'  => array(1, $array, $arrayDump1),
             'arrayMax11' => array(11, $array, $arrayDump2),
             'arrayMax12' => array(12, $array, $arrayDump2),
         );
@@ -72,7 +74,8 @@ DUMP;
         $object->bar = 'bar';
         $object->foobar = 'foobar';
 
-        $objectDump1 = <<<DUMP
+        $objectDump1
+            = <<<DUMP
 object(stdClass) #{$hasher->getHashId($object)} (3) {
     \$foo => “foo”
     (...)
@@ -80,7 +83,8 @@ object(stdClass) #{$hasher->getHashId($object)} (3) {
 
 DUMP;
 
-        $objectDump2 = <<<DUMP
+        $objectDump2
+            = <<<DUMP
 object(stdClass) #{$hasher->getHashId($object)} (3) {
     \$foo =>    “foo”
     \$bar =>    “bar”

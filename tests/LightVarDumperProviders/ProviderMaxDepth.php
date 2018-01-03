@@ -36,7 +36,8 @@ class ProviderMaxDepth implements \IteratorAggregate
         $obj->foo = new \stdClass();
         $obj->foo->bar = new \stdClass();
 
-        $dump1 = <<<DUMP
+        $dump1
+            = <<<DUMP
 object(stdClass) #{$hasher->getHashId($obj)} (2) {
     \$testInt => 5
     \$foo =>     object(stdClass) #{$hasher->getHashId($obj->foo)} (1) {...}
@@ -44,7 +45,8 @@ object(stdClass) #{$hasher->getHashId($obj)} (2) {
 
 DUMP;
 
-        $dump2 = <<<DUMP
+        $dump2
+            = <<<DUMP
 object(stdClass) #{$hasher->getHashId($obj)} (2) {
     \$testInt => 5
     \$foo =>
@@ -70,7 +72,8 @@ DUMP;
             ),
         );
 
-        $dumpArray = <<<'DUMP'
+        $dumpArray
+            = <<<'DUMP'
 array(1) {
     [foo] => array(1) {...}
 }

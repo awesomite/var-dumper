@@ -29,7 +29,7 @@ class PropertyTest extends BaseTestCase
      *
      * @param PropertyInterface $property
      * @param string            $name
-     * @param $value
+     * @param                   $value
      */
     public function testGetValue(PropertyInterface $property, $name, $value)
     {
@@ -58,7 +58,7 @@ class PropertyTest extends BaseTestCase
                 new VarProperty('varProperty', $randValue, VarProperty::VISIBILITY_PRIVATE, __CLASS__),
                 'varProperty',
                 $randValue,
-                false
+                false,
             ),
         );
     }
@@ -126,7 +126,7 @@ class PropertyTest extends BaseTestCase
             array(new VarProperty('foo', 'bar', VarProperty::VISIBILITY_PUBLIC, \get_class($this)), \get_class($this)),
             array(
                 new ReflectionProperty(new \ReflectionProperty(\get_class($this), 'static'), $this),
-                \get_class($this)
+                \get_class($this),
             ),
         );
     }

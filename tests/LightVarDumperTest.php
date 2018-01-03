@@ -58,8 +58,8 @@ class LightVarDumperTest extends BaseTestCase
     /**
      * @dataProvider providerMaxDepth
      *
-     * @param int $limit
-     * @param $var
+     * @param int    $limit
+     * @param        $var
      * @param string $dump
      */
     public function testMaxDepth($limit, $var, $dump)
@@ -98,8 +98,8 @@ class LightVarDumperTest extends BaseTestCase
     /**
      * @dataProvider providerMaxChildren
      *
-     * @param int $limit
-     * @param $iterable
+     * @param int    $limit
+     * @param        $iterable
      * @param string $dump
      */
     public function testMaxChildren($limit, $iterable, $dump)
@@ -118,7 +118,7 @@ class LightVarDumperTest extends BaseTestCase
     /**
      * @dataProvider providerRecursive
      *
-     * @param $var
+     * @param             $var
      * @param string|bool $expectedDump
      */
     public function testRecursive($var, $expectedDump)
@@ -269,7 +269,7 @@ class LightVarDumperTest extends BaseTestCase
 
         return $result;
     }
-    
+
     private function reinitAllDumpers()
     {
         $classes = array(

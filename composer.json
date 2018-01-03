@@ -22,16 +22,13 @@
     "prefer-stable": true,
     "require": {
         "php": "^5.3 || ^7.0",
-        "awesomite/iterators": "^1.0"
+        "awesomite/iterators": "^1.0",
+        "symfony/polyfill-mbstring": "^1.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.36",
         "symfony/console": "^2.7 || ^3.0",
         "sebastian/comparator": ">=1.2.3",
         "awesomite/phpunit-4.8-fixer": "^1.0"
-    },
-    "suggest": {
-        "ext-mbstring": "For mb_* functions.",
-        "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     }
 }

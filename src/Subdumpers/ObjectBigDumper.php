@@ -53,6 +53,7 @@ class ObjectBigDumper extends AbstractObjectBigDumper
     {
         $limit = $this->config->getMaxChildren();
         $printer = new KeyValuePrinter();
+        $indent = $this->config->getIndent();
         foreach ($properties as $property) {
             $propName = Strings::prepareArrayKey($property->getName());
             $key = "{$this->getTextTypePrefix($property)}\${$propName}";
@@ -60,17 +61,17 @@ class ObjectBigDumper extends AbstractObjectBigDumper
             $valDump = $this->dumper->getDump($property->getValue());
             $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {
-                $printer->add("{$this->indent}{$key} => ", $valDump, \mb_strlen("{$this->indent}{$key} => "));
+                $printer->add("{$indent}{$key} => ", $valDump, \mb_strlen("{$indent}{$key} => "));
             } else {
                 $printer->flush();
-                $valDump = \str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
-                echo "{$this->indent}{$key} =>\n{$this->indent}{$this->indent}$valDump\n";
+                $valDump = \str_replace("\n", "\n{$indent}{$indent}", $valDump);
+                echo "{$indent}{$key} =>\n{$indent}{$indent}$valDump\n";
             }
 
             if (!--$limit) {
                 $printer->flush();
                 if (\count($properties) > $this->config->getMaxChildren()) {
-                    echo "{$this->indent}(...)\n";
+                    echo "{$indent}(...)\n";
                 }
                 break;
             }

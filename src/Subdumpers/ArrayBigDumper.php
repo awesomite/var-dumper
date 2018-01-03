@@ -27,8 +27,6 @@ class ArrayBigDumper implements SubdumperInterface
 
     private $references;
 
-    private $indent;
-
     private $depth;
 
     private $config;
@@ -36,13 +34,11 @@ class ArrayBigDumper implements SubdumperInterface
     public function __construct(
         LightVarDumper $dumper,
         Stack $references,
-        $indent,
         IntValue $depth,
         Config $config
     ) {
         $this->dumper = $dumper;
         $this->references = $references;
-        $this->indent = $indent;
         $this->depth = $depth;
         $this->config = $config;
     }
@@ -62,7 +58,7 @@ class ArrayBigDumper implements SubdumperInterface
 
         if ($count > 0) {
             echo "\n";
-            $this->dumpBody($array, $this->config, $this->dumper, $this->indent);
+            static::dumpBody($array, $this->config, $this->dumper);
         }
 
         echo '}' . "\n";
@@ -71,8 +67,9 @@ class ArrayBigDumper implements SubdumperInterface
         $this->depth->decr();
     }
 
-    public static function dumpBody(array $array, Config $config, LightVarDumper $dumper, $indent)
+    public static function dumpBody(array $array, Config $config, LightVarDumper $dumper)
     {
+        $indent = $config->getIndent();
         $limit = $config->getMaxChildren();
         $printer = new KeyValuePrinter();
         foreach ($array as $key => $value) {

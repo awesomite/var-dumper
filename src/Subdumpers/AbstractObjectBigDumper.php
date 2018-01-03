@@ -25,8 +25,6 @@ abstract class AbstractObjectBigDumper extends AbstractObjectDumper
 
     protected $references;
 
-    protected $indent;
-
     protected $depth;
 
     protected $config;
@@ -34,13 +32,11 @@ abstract class AbstractObjectBigDumper extends AbstractObjectDumper
     public function __construct(
         LightVarDumper $dumper,
         Stack $references,
-        $indent,
         IntValue $depth,
         Config $config
     ) {
         $this->dumper = $dumper;
         $this->references = $references;
-        $this->indent = $indent;
         $this->depth = $depth;
         $this->config = $config;
         parent::__construct();

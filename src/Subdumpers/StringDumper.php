@@ -31,13 +31,10 @@ class StringDumper implements SubdumperInterface
             "\x0B",
         );
 
-    private $indent;
-
     private $config;
 
-    public function __construct($indent, Config $config)
+    public function __construct(Config $config)
     {
-        $this->indent = $indent;
         $this->config = $config;
     }
 
@@ -101,7 +98,7 @@ class StringDumper implements SubdumperInterface
     {
         foreach (\explode("\n", $string) as $metaline) {
             foreach ($this->getLines($metaline) as $line) {
-                echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $line;
+                echo "\n", $this->config->getIndent(), Symbols::SYMBOL_CITE, ' ', $line;
             }
         }
     }

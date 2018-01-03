@@ -24,12 +24,15 @@ class Config
 
     protected $maxLineLen;
 
-    public function __construct($maxChildren, $maxDepth, $maxStringLen, $maxLineLen)
+    private $indent;
+
+    public function __construct($maxChildren, $maxDepth, $maxStringLen, $maxLineLen, $indent)
     {
         $this->maxChildren = $maxChildren;
         $this->maxDepth = $maxDepth;
         $this->maxStringLen = $maxStringLen;
         $this->maxLineLen = $maxLineLen;
+        $this->indent = $indent;
     }
 
     public function getMaxChildren()
@@ -50,5 +53,10 @@ class Config
     public function getMaxLineLength()
     {
         return $this->maxLineLen;
+    }
+
+    public function getIndent()
+    {
+        return $this->indent;
     }
 }

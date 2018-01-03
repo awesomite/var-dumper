@@ -61,24 +61,25 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_MAX_CHILDREN,
             static::DEFAULT_MAX_DEPTH,
             static::DEFAULT_MAX_STRING_LENGTH,
-            static::DEFAULT_MAX_LINE_LENGTH
+            static::DEFAULT_MAX_LINE_LENGTH,
+            $this->indent
         );
         $references = new Stack();
         $this->depth = new IntValue();
 
         $this->subdumpers = array(
-            new StringDumper($this->indent, $this->config),
+            new StringDumper($this->config),
             new NullDumper(),
             new ScalarDumper(),
             new ObjectRecursiveDumper($references),
             new ObjectTooDepthArrayDumper($this->depth, $this->config),
-            new ObjectDebugInfoDumper($this, $references, $this->indent, $this->depth, $this->config),
-            new ObjectBigDumper($this, $references, $this->indent, $this->depth, $this->config),
+            new ObjectDebugInfoDumper($this, $references, $this->depth, $this->config),
+            new ObjectBigDumper($this, $references, $this->depth, $this->config),
             new ArrayRecursiveDumper($references),
             new ArrayTooDepthDumper($this->depth, $this->config),
             new ArraySimpleView($this, $this->config),
             new ArraySingleStringDumper($this, $this->config),
-            new ArrayBigDumper($this, $references, $this->indent, $this->depth, $this->config),
+            new ArrayBigDumper($this, $references, $this->depth, $this->config),
             new ResourceDumper(),
         );
     }

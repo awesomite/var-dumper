@@ -40,7 +40,7 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
         echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', $count, ') {[';
         if ($count > 0) {
             echo "\n";
-            ArrayBigDumper::dumpBody($debugInfoData, $this->config, $this->dumper, $this->indent);
+            ArrayBigDumper::dumpBody($debugInfoData, $this->config, $this->dumper);
         }
         echo ']}', "\n";
 

@@ -120,6 +120,10 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxDepth($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 1) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 1');
+        }
         $this->config->setMaxDepth($limit);
 
         return $this;
@@ -132,6 +136,11 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxStringLength($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 2) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 2');
+        }
+
         $this->config->setMaxStringLength($limit);
 
         return $this;
@@ -144,6 +153,11 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxLineLength($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 2) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 2');
+        }
+
         $this->config->setMaxLineLength($limit);
 
         return $this;
@@ -156,6 +170,10 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxChildren($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 1) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 1');
+        }
         $this->config->setMaxChildren($limit);
 
         return $this;

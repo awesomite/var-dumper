@@ -2,6 +2,7 @@
 
 ## 0.11.0 (????-??-??)
 
+* Added validators for `Awesomite\VarDumper\LightVarDumper::setMax*` methods
 * Fixed - printed line should not be longer than limit set by
 `Awesomite\VarDumper\LightVarDumper::setMaxLineLength` method
 * More readable format of objects with method

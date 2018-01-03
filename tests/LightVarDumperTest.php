@@ -158,6 +158,91 @@ class LightVarDumperTest extends BaseTestCase
     {
         return \iterator_to_array(new ProviderMultiLine());
     }
+
+    /**
+     * @dataProvider providerInvalidMaxDepth
+     *
+     * @expectedException \InvalidArgumentException
+     *
+     * @param $limit
+     */
+    public function testInvalidMaxDepth($limit)
+    {
+        $dumper = new LightVarDumper();
+        $dumper->setMaxDepth($limit);
+    }
+
+    public function providerInvalidMaxDepth()
+    {
+        return array(
+            array(0.1),
+            array(0),
+            array(-1),
+            array('-1'),
+            array(false),
+        );
+    }
+
+    /**
+     * @dataProvider providerInvalidMaxChildren
+     *
+     * @expectedException \InvalidArgumentException
+     *
+     * @param $limit
+     */
+    public function testInvalidMaxChildrenh($limit)
+    {
+        $dumper = new LightVarDumper();
+        $dumper->setMaxChildren($limit);
+    }
+
+    public function providerInvalidMaxChildren()
+    {
+        return $this->providerInvalidMaxDepth();
+    }
+
+    /**
+     * @dataProvider providerInvalidMaxStringLength
+     *
+     * @expectedException \InvalidArgumentException
+     *
+     * @param $limit
+     */
+    public function testInvalidMaxStringLength($limit)
+    {
+        $dumper = new LightVarDumper();
+        $dumper->setMaxStringLength($limit);
+    }
+
+    public function providerInvalidMaxStringLength()
+    {
+        return array(
+            array(0.1),
+            array(0),
+            array(-1),
+            array('-1'),
+            array(false),
+            array(1),
+        );
+    }
+
+    /**
+     * @dataProvider providerInvalidMaxLineLength
+     *
+     * @expectedException \InvalidArgumentException
+     *
+     * @param $limit
+     */
+    public function testInvalidMaxLineLength($limit)
+    {
+        $dumper = new LightVarDumper();
+        $dumper->setMaxLineLength($limit);
+    }
+
+    public function providerInvalidMaxLineLength()
+    {
+        return $this->providerInvalidMaxStringLength();
+    }
     
     private function reinitAllDumpers()
     {

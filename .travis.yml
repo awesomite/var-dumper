@@ -55,6 +55,7 @@ matrix:
       env: DEPENDENCIES="hhvm_high"
 
 install:
+  - mv .git ~.git
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") && travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
@@ -90,4 +91,5 @@ script:
   - php examples/object.php
 
 after_script:
+  - mv ~.git .git
   - travis_retry bin/coveralls.sh

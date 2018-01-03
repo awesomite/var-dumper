@@ -12,6 +12,7 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Config\Config;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumper;
 
 /**
@@ -35,8 +36,8 @@ class ArraySingleStringDumper implements SubdumperInterface
             && 1 === \count($array)
             && \array_key_exists(0, $array)
             && \is_string($array[0])
-            && \mb_strlen($array[0]) <= $this->config->getMaxLineLength()
-            && false === \mb_strpos($array[0], "\n");
+            && false === \mb_strpos($array[0], "\n")
+            && \mb_strlen(Strings::prepareSingleLine($array[0])) <= $this->config->getMaxLineLength();
     }
 
     public function dump($array)

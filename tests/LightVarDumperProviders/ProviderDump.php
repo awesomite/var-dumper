@@ -53,6 +53,7 @@ class ProviderDump implements \IteratorAggregate
         $result['white_chars'] = $this->getWhiteChars();
         $result['white_chars2'] = $this->getWhiteChars2();
         $result['simple_array_with_white_spaces'] = $this->getSimpleArrayWithWhiteSpaces();
+        $result['edge_case_for_simple_array'] = $this->getEdgeCaseForSimpleArray();
 
         return new \ArrayIterator($result);
     }
@@ -492,6 +493,35 @@ EXPECTED;
 array(1) {“hello\tworld!”}
 
 DUMP;
+
+        return array($data, $dump);
+    }
+
+    private function getEdgeCaseForSimpleArray()
+    {
+        $qqq = \array_fill(0, LightVarDumper::DEFAULT_MAX_LINE_LENGTH - 1, 'q');
+        $qqq = \implode('', $qqq);
+
+        $data = array($qqq . "\t",);
+        $dump
+            = <<<'DUMP'
+array(1) {
+    [0] =>
+        string(%length%)
+            › %qqq%
+            › \t
+}
+
+DUMP;
+        $replace = array(
+            '%length%' => (string)LightVarDumper::DEFAULT_MAX_LINE_LENGTH,
+            '%qqq%'    => $qqq,
+        );
+        $dump = \str_replace(
+            \array_keys($replace),
+            \array_values($replace),
+            $dump
+        );
 
         return array($data, $dump);
     }

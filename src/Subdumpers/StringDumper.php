@@ -21,21 +21,16 @@ use Awesomite\VarDumper\Helpers\Symbols;
  */
 class StringDumper implements SubdumperInterface
 {
-    private static $whiteChars
-        = array(
-            ' ',
-            "\t",
-            "\n",
-            "\r",
-            "\0",
-            "\x0B",
-        );
+    private static $inited = false;
+
+    private static $whiteChars;
 
     private $config;
 
     public function __construct(Config $config)
     {
         $this->config = $config;
+        self::init();
     }
 
     public function supports($var)
@@ -92,6 +87,18 @@ class StringDumper implements SubdumperInterface
             $this->dumpMultiLine($var);
         }
         echo "\n";
+    }
+
+    private static function init()
+    {
+        if (self::$inited) {
+            return;
+        }
+
+        self::$whiteChars = \array_keys(Strings::$replaceChars);
+        self::$whiteChars[] = ' ';
+
+        self::$inited = true;
     }
 
     private function dumpMultiLine($string)

@@ -21,7 +21,9 @@ class Strings
             "\t"   => '\t',
             "\r"   => '\r',
             "\0"   => '\0',
-            "\x0B" => '\v',
+            "\v"   => '\v',
+            "\033" => '\e',
+            "\f"   => '\f',
         );
 
     public static function prepareArrayKey($input)

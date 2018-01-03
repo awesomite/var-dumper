@@ -14,6 +14,7 @@ namespace Awesomite\VarDumper;
 use Awesomite\VarDumper\Config\EditableConfig;
 use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\Stack;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Subdumpers\ArrayBigDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper;
 use Awesomite\VarDumper\Subdumpers\ArraySimpleView;
@@ -190,10 +191,10 @@ final class LightVarDumper extends InternalVarDumper
         if ($len < 1) {
             throw new \InvalidArgumentException('Length of indent must be greater or equal 1');
         }
-        $copy = $indent;
-        $copy = \str_replace(' ', '', $copy);
-        if (\preg_match('/\s|\000/u', $copy)) {
-            throw new \InvalidArgumentException('Indent cannot contain white characters except spaces');
+        foreach (\array_keys(Strings::$replaceChars) as $char) {
+            if (false !== \mb_strpos($indent, $char)) {
+                throw new \InvalidArgumentException('Indent cannot contain white characters except spaces');
+            }
         }
         $this->config->setIndent($indent);
 

@@ -30,15 +30,23 @@ class Strings
 
     public static function prepareArrayKey($input)
     {
-        return self::convertWhiteCharsWithoutSpaces($input, true);
+        return self::convertNonPrintableChars($input, true);
     }
 
     public static function prepareSingleLine($input)
     {
-        return self::convertWhiteCharsWithoutSpaces($input);
+        return self::convertNonPrintableChars($input);
     }
 
-    private static function convertWhiteCharsWithoutSpaces($input, $withNewLine = false)
+    /**
+     * Excludes spaces
+     *
+     * @param      $input
+     * @param bool $withNewLine
+     *
+     * @return mixed
+     */
+    private static function convertNonPrintableChars($input, $withNewLine = false)
     {
         $result = \str_replace(\array_keys(self::$replaceChars), \array_values(self::$replaceChars), $input);
         if ($withNewLine) {

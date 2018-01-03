@@ -2,6 +2,8 @@
 
 ## 0.11.0 (????-??-??)
 
+* Added method `Awesomite\VarDumper\LightVarDumper::setIndent`
+and constant `\Awesomite\VarDumper\LightVarDumper::DEFAULT_INDENT`
 * Added validators for `Awesomite\VarDumper\LightVarDumper::setMax*` methods
 * Fixed - printed line should not be longer than limit set by
 `Awesomite\VarDumper\LightVarDumper::setMaxLineLength` method

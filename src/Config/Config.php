@@ -24,7 +24,7 @@ class Config
 
     protected $maxLineLen;
 
-    private $indent;
+    protected $indent;
 
     public function __construct($maxChildren, $maxDepth, $maxStringLen, $maxLineLen, $indent)
     {

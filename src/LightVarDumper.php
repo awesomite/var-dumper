@@ -36,6 +36,7 @@ final class LightVarDumper extends InternalVarDumper
     const DEFAULT_MAX_STRING_LENGTH = 200;
     const DEFAULT_MAX_LINE_LENGTH   = 130;
     const DEFAULT_MAX_DEPTH         = 5;
+    const DEFAULT_INDENT            = '    ';
 
     /**
      * @var EditableConfig
@@ -60,7 +61,7 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_MAX_DEPTH,
             static::DEFAULT_MAX_STRING_LENGTH,
             static::DEFAULT_MAX_LINE_LENGTH,
-            '    '
+            static::DEFAULT_INDENT
         );
         $references = new Stack();
         $this->depth = new IntValue();
@@ -173,6 +174,28 @@ final class LightVarDumper extends InternalVarDumper
             throw new \InvalidArgumentException('Limit must be greater or equal 1');
         }
         $this->config->setMaxChildren($limit);
+
+        return $this;
+    }
+
+    /**
+     * @param string $indent
+     *
+     * @return $this
+     */
+    public function setIndent($indent)
+    {
+        $indent = (string)$indent;
+        $len = \mb_strlen($indent);
+        if ($len < 1) {
+            throw new \InvalidArgumentException('Length of indent must be greater or equal 1');
+        }
+        $copy = $indent;
+        $copy = \str_replace(' ', '', $copy);
+        if (\preg_match('/\s|\000/u', $copy)) {
+            throw new \InvalidArgumentException('Indent cannot contain white characters except spaces');
+        }
+        $this->config->setIndent($indent);
 
         return $this;
     }

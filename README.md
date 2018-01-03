@@ -42,7 +42,8 @@ $varDumper
     ->setMaxChildren(20)
     ->setMaxDepth(5)
     ->setMaxStringLength(400)
-    ->setMaxLineLength(50);
+    ->setMaxLineLength(50)
+    ->setIndent('    ');
 
 $varDumper->dump(array($loremIpsum, $array, $smallArray));
 ```

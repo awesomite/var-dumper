@@ -11,6 +11,7 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDumpConstants;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxChildren;
@@ -242,6 +243,31 @@ class LightVarDumperTest extends BaseTestCase
     public function providerInvalidMaxLineLength()
     {
         return $this->providerInvalidMaxStringLength();
+    }
+
+    /**
+     * @dataProvider providerInvalidIndent
+     *
+     * @expectedException \InvalidArgumentException
+     *
+     * @param $indent
+     */
+    public function testInvalidIndent($indent)
+    {
+        $dumper = new LightVarDumper();
+        $dumper->setIndent($indent);
+    }
+
+    public function providerInvalidIndent()
+    {
+        $result = array();
+        foreach (\array_keys(Strings::$replaceChars) as $whiteChar) {
+            $result[] = array($whiteChar);
+        }
+
+        $result[] = array('');
+
+        return $result;
     }
     
     private function reinitAllDumpers()

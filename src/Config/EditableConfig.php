@@ -43,4 +43,11 @@ class EditableConfig extends Config
 
         return $this;
     }
+
+    public function setIndent($indent)
+    {
+        $this->indent = $indent;
+
+        return $this;
+    }
 }

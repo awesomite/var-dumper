@@ -2,6 +2,8 @@
 
 ## 0.11.0 (????-??-??)
 
+* Fixed - printed line should not be longer than limit set by
+`Awesomite\VarDumper\LightVarDumper::setMaxLineLength` method
 * More readable format of objects with method
 [`__debugInfo()`](http://php.net/manual/en/language.oop5.magic.php#object.debuginfo), e.g.:
 ```

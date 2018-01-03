@@ -21,10 +21,7 @@ use Awesomite\VarDumper\Helpers\Symbols;
  */
 class StringDumper implements SubdumperInterface
 {
-    /**
-     * @internal Public for php 5.3
-     */
-    public static $whiteChars
+    private static $whiteChars
         = array(
             ' ',
             "\t",
@@ -57,6 +54,18 @@ class StringDumper implements SubdumperInterface
 
         $containsNewLine = false !== \mb_strpos($var, "\n");
         $isMultiLine = $len > $this->config->getMaxLineLength() || $containsNewLine;
+
+        if (!$isMultiLine) {
+            $visibleLen = $len;
+            foreach (Strings::$replaceChars as $char => $replace) {
+                $number = \mb_substr_count($var, $char);
+                $visibleLen += $number * \mb_strlen($replace);
+                if ($visibleLen > $this->config->getMaxLineLength()) {
+                    $isMultiLine = true;
+                    break;
+                }
+            }
+        }
 
         if ($isMultiLine) {
             $withPrefix = true;
@@ -92,48 +101,38 @@ class StringDumper implements SubdumperInterface
     {
         foreach (\explode("\n", $string) as $metaline) {
             foreach ($this->getLines($metaline) as $line) {
-                echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $this->escapeWhiteChars($line);
+                echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $line;
             }
         }
     }
 
     private function getLines($string)
     {
-        $firstIteration = true;
         $config = $this->config;
-        $self = $this;
+        $words = $this->explodeWords($string);
 
-        return new CallbackIterator(function () use (&$string, &$firstIteration, &$config, $self) {
-            while ('' !== $string) {
-                $current = \mb_substr($string, 0, $config->getMaxLineLength());
-                $next = \mb_substr($string, $config->getMaxLineLength());
+        return new CallbackIterator(function () use (&$words, $config) {
+            while ($words) {
+                $current = Strings::prepareSingleLine(\array_shift($words));
 
-                $toCheck = array(
-                    \mb_substr($current, -1),
-                    \mb_substr($next, 0, 1),
-                );
-                $dividedByWhite = '' === $next;
-                foreach ($toCheck as $char) {
-                    if ($dividedByWhite |= \in_array($char, $self::$whiteChars, true)) {
+                if (\mb_strlen($current) > $config->getMaxLineLength()) {
+                    $next = \mb_substr($current, $config->getMaxLineLength());
+                    $current = \mb_substr($current, 0, $config->getMaxLineLength());
+                    \array_unshift($words, $next);
+
+                    return $current;
+                }
+
+                while ($words) {
+                    $nextWord = Strings::prepareSingleLine($words[0]);
+                    if (\mb_strlen($current) + \mb_strlen($nextWord) > $config->getMaxLineLength()) {
                         break;
                     }
+                    $current .= $nextWord;
+                    \array_shift($words);
                 }
-
-                if (!$dividedByWhite && $pos = $self->getLastWhiteCharPos($current)) {
-                    $next = \mb_substr($current, $pos) . $next;
-                    $current = \mb_substr($current, 0, $pos);
-                }
-
-                $firstIteration = false;
-                $string = $next;
 
                 return $current;
-            }
-
-            if ($firstIteration) {
-                $firstIteration = false;
-
-                return '';
             }
 
             CallbackIterator::stopIterate();
@@ -145,22 +144,34 @@ class StringDumper implements SubdumperInterface
         return Strings::prepareSingleLine($string);
     }
 
-    /**
-     * @internal Public for php 5.3
-     *
-     * @param $string
-     *
-     * @return bool|mixed
-     */
-    public function getLastWhiteCharPos($string)
+    private function explodeWords($string)
+    {
+        if ('' === $string) {
+            return array('');
+        }
+
+        $words = array();
+        while (false !== $pos = $this->getFirstWhiteCharPos($string)) {
+            $words[] = \mb_substr($string, 0, $pos);
+            $words[] = \mb_substr($string, $pos, 1);
+            $string = \mb_substr($string, $pos + 1);
+        }
+        if ('' !== $string) {
+            $words[] = $string;
+        }
+
+        return $words;
+    }
+
+    private function getFirstWhiteCharPos($string)
     {
         $data = array();
         foreach (self::$whiteChars as $char) {
-            if (false !== $pos = \mb_strrpos($string, $char)) {
-                $data[] = $pos + 1;
+            if (false !== $pos = \mb_strpos($string, $char)) {
+                $data[] = $pos;
             }
         }
 
-        return \count($data) ? \max($data) : false;
+        return \count($data) ? \min($data) : false;
     }
 }

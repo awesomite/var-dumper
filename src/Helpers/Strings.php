@@ -16,7 +16,7 @@ namespace Awesomite\VarDumper\Helpers;
  */
 class Strings
 {
-    private static $replaceChars
+    public static $replaceChars
         = array(
             "\t"   => '\t',
             "\r"   => '\r',
@@ -24,7 +24,17 @@ class Strings
             "\x0B" => '\v',
         );
 
-    public static function convertWhiteCharsWithoutSpaces($input, $withNewLine = false)
+    public static function prepareArrayKey($input)
+    {
+        return self::convertWhiteCharsWithoutSpaces($input, true);
+    }
+
+    public static function prepareSingleLine($input)
+    {
+        return self::convertWhiteCharsWithoutSpaces($input);
+    }
+
+    private static function convertWhiteCharsWithoutSpaces($input, $withNewLine = false)
     {
         $result = \str_replace(\array_keys(self::$replaceChars), \array_values(self::$replaceChars), $input);
         if ($withNewLine) {
@@ -32,15 +42,5 @@ class Strings
         }
 
         return $result;
-    }
-
-    public static function prepareArrayKey($input)
-    {
-        return static::convertWhiteCharsWithoutSpaces($input, true);
-    }
-
-    public static function prepareSingleLine($input)
-    {
-        return static::convertWhiteCharsWithoutSpaces($input);
     }
 }

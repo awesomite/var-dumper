@@ -24,6 +24,8 @@ class ProviderMultiLine implements \IteratorAggregate
             'without_dots' => $this->getMultilineWithoutDots(),
             'broken_dots' => $this->getMultilineWithBrokenDots(),
             'new_lines' => $this->getMultilineWithNewLines(),
+            'white_chars' => $this->getStringWithWhiteChars(),
+            'short_multiline' => $this->getShortMulitiline(),
         ));
     }
 
@@ -123,6 +125,34 @@ EXCPECTED;
 
 
         return array(100, 20, $input, $expected);
+    }
+
+    private function getShortMulitiline()
+    {
+        $input = "hello\t";
+        $expected = <<<'EXCPECTED'
+string(6)
+    › hello
+    › \t
+
+EXCPECTED;
+
+        return array(100, \mb_strlen($input), $input, $expected);
+    }
+
+    private function getStringWithWhiteChars()
+    {
+        $input = "\t\t\t\t\tqqqqq";
+        $expected = <<<'EXCPECTED'
+string(10)
+    › \t\t
+    › \t\t
+    › \t
+    › qqqqq
+
+EXCPECTED;
+
+        return array(300, 5, $input, $expected);
     }
 
     private function getLoremIpsum()

@@ -47,6 +47,7 @@ class ArraySimpleView implements SubdumperInterface
         }
 
         foreach ($var as $key => $value) {
+            $key = Strings::prepareArrayKey($key);
             if (!\is_int($key) && \mb_strlen((string)$key) > static::KEY_LIMIT) {
                 return false;
             }

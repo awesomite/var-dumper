@@ -3,6 +3,10 @@ language: php
 dist: trusty
 sudo: false
 
+cache:
+  directories:
+    - $(composer global config --list | grep "\[cache-files-dir\]" | cut -d  " " -f 3 | tr -d '()')
+
 php:
   - 7.2
   - 7.1

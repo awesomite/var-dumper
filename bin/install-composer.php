@@ -7,6 +7,7 @@ $checkSum = \trim(\file_get_contents('https://composer.github.io/installer.sig')
 if (\hash_file('SHA384', 'composer-setup.php') === $checkSum) {
     echo 'Installer verified' . PHP_EOL;
     require_once $destinationFile;
+
     return;
 }
 

@@ -86,6 +86,7 @@ script:
       rm -rf ${COMPOSER_DIR}/composer.json
       rm -rf ${COMPOSER_DIR}/composer.lock
       composer global require infection/infection:^0.7;
+      composer show;
       export PHP_INFECTION="${COMPOSER_BIN_DIR}/infection";
       ${PHP_INFECTION};
     fi

@@ -78,8 +78,8 @@ script:
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
       composer global config --list;
-      export COMPOSER_DIR=$(composer global config --list | grep home | cut -d  " " -f 2 | tr -d '()');
-      export COMPOSER_BIN_DIR=$(composer global config --list | grep bin-dir | cut -d  " " -f 3 | tr -d '()');
+      export COMPOSER_DIR=$(composer global config --list | grep "\[home\]" | cut -d  " " -f 2 | tr -d '()');
+      export COMPOSER_BIN_DIR=$(composer global config --list | grep "\[bin-dir\]" | cut -d  " " -f 3 | tr -d '()');
       echo ${COMPOSER_DIR};
       echo ${COMPOSER_BIN_DIR};
       rm -rf ${COMPOSER_DIR}/vendor

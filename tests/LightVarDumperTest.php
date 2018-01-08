@@ -115,6 +115,21 @@ class LightVarDumperTest extends BaseTestCase
         return \iterator_to_array(new ProviderMaxChildren());
     }
 
+    public function testIndent()
+    {
+        $dumper = new LightVarDumper();
+        $dumper2 = $dumper->setIndent('----');
+        $this->assertSame($dumper2, $dumper);
+        $var = array(array(array()));
+        $dump = <<<'DUMP'
+array(1) {
+----[0] => array(1) {array(0) {}}
+}
+
+DUMP;
+        $this->assertSame($dump, $dumper->getDump($var));
+    }
+
     /**
      * @dataProvider providerRecursive
      *

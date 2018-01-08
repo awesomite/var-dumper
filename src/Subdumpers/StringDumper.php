@@ -156,9 +156,8 @@ class StringDumper implements SubdumperInterface
 
         $words = array();
         while (false !== $pos = $this->getFirstWhiteCharPos($string)) {
-            $wordA = \mb_substr($string, 0, $pos);
-            if ('' !== $words) {
-                $words[] = $wordA;
+            if (0 !== $pos) {
+                $words[] = \mb_substr($string, 0, $pos);
             }
             $words[] = \mb_substr($string, $pos, 1);
             $string = \mb_substr($string, $pos + 1);

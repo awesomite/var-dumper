@@ -16,7 +16,7 @@ namespace Awesomite\VarDumper\Helpers;
  */
 class Strings
 {
-    public static $binaryCharRegex = '[\x00-\x1F\x7F]';
+    const BINARY_CHAR_REGEX = '[\x00-\x1F\x7F]';
 
     public static $replaceChars
         = array(
@@ -64,6 +64,6 @@ class Strings
             return $result;
         };
 
-        return \preg_replace_callback('/' . static::$binaryCharRegex . '+/', $callable, $result);
+        return \preg_replace_callback('/' . static::BINARY_CHAR_REGEX . '+/', $callable, $result);
     }
 }

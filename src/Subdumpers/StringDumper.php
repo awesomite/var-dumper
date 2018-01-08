@@ -178,7 +178,7 @@ class StringDumper implements SubdumperInterface
                 $data[] = $pos;
             }
         }
-        $regex = '/' . Strings::$binaryCharRegex . '/';
+        $regex = '/' . Strings::BINARY_CHAR_REGEX . '/';
         $split = \preg_split($regex, $string, 2);
         if (2 === \count($split)) {
             $data[] = \mb_strlen($split[0]);

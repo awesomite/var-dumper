@@ -77,6 +77,7 @@ script:
   - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
+      composer global config --list;
       export COMPOSER_DIR=$(composer global config --list | grep home | cut -d  " " -f 2 | tr -d '()');
       export COMPOSER_BIN_DIR=$(composer global config --list | grep bin-dir | cut -d  " " -f 3 | tr -d '()');
       echo ${COMPOSER_DIR};

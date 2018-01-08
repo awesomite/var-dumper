@@ -114,10 +114,11 @@ class StringDumper implements SubdumperInterface
     {
         $config = $this->config;
         $words = $this->explodeWords($string);
+        $self = $this;
 
-        return new CallbackIterator(function () use (&$words, $config) {
+        return new CallbackIterator(function () use (&$words, $config, $self) {
             while ($words) {
-                $current = Strings::prepareSingleLine(\array_shift($words));
+                $current = $self->escapeWhiteChars(\array_shift($words));
 
                 if (\mb_strlen($current) > $config->getMaxLineLength()) {
                     $next = \mb_substr($current, $config->getMaxLineLength());
@@ -128,7 +129,7 @@ class StringDumper implements SubdumperInterface
                 }
 
                 while ($words) {
-                    $nextWord = Strings::prepareSingleLine($words[0]);
+                    $nextWord = $self->escapeWhiteChars($words[0]);
                     if (\mb_strlen($current) + \mb_strlen($nextWord) > $config->getMaxLineLength()) {
                         break;
                     }
@@ -143,7 +144,16 @@ class StringDumper implements SubdumperInterface
         });
     }
 
-    private function escapeWhiteChars($string)
+    /**
+     * Public for php 5.3
+     *
+     * @internal
+     *
+     * @param $string
+     *
+     * @return mixed
+     */
+    public function escapeWhiteChars($string)
     {
         return Strings::prepareSingleLine($string);
     }

@@ -14,6 +14,7 @@ namespace Awesomite\VarDumper;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDumpConstants;
+use Awesomite\VarDumper\LightVarDumperProviders\ProviderIndent;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxChildren;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxDepth;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxStringLength;
@@ -115,19 +116,24 @@ class LightVarDumperTest extends BaseTestCase
         return \iterator_to_array(new ProviderMaxChildren());
     }
 
-    public function testIndent()
+    /**
+     * @dataProvider providerIndent
+     *
+     * @param string $indent
+     * @param        $var
+     * @param string $dump
+     */
+    public function testIndent($indent, $var, $dump)
     {
         $dumper = new LightVarDumper();
-        $dumper2 = $dumper->setIndent('----');
+        $dumper2 = $dumper->setIndent($indent);
         $this->assertSame($dumper2, $dumper);
-        $var = array(array(array()));
-        $dump = <<<'DUMP'
-array(1) {
-----[0] => array(1) {array(0) {}}
-}
-
-DUMP;
         $this->assertSame($dump, $dumper->getDump($var));
+    }
+
+    public function providerIndent()
+    {
+        return \iterator_to_array(new ProviderIndent());
     }
 
     /**

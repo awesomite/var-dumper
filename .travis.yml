@@ -77,12 +77,14 @@ script:
   - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
-      export COMPOSER_DIR=$(composer global config --list | grep home | cut -d  " " -f 2 | tr -d '()')
+      export COMPOSER_DIR=$(composer global config --list | grep home | cut -d  " " -f 2 | tr -d '()');
+      export COMPOSER_BIN_DIR=$(composer global config --list | grep bin-dir | cut -d  " " -f 3 | tr -d '()');
+      echo ${COMPOSER_DIR};
+      echo ${COMPOSER_BIN_DIR};
       rm -rf ${COMPOSER_DIR}/vendor
       rm -rf ${COMPOSER_DIR}/composer.json
       rm -rf ${COMPOSER_DIR}/composer.lock
       composer global require infection/infection:^0.7;
-      export COMPOSER_BIN_DIR=$(composer global config --list | grep bin-dir | cut -d  " " -f 3 | tr -d '()')
       export PHP_INFECTION="${COMPOSER_BIN_DIR}/infection";
       ${PHP_INFECTION};
     fi

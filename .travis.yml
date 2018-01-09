@@ -68,7 +68,7 @@ install:
       export PHP_CS_FIXER="./dev-tools/vendor/bin/php-cs-fixer";
       export RUN_CS_FIXER="true";
     fi
-  - cd dev-tools; composer update; cd ..
+  - cd dev-tools; travis_retry composer update; cd ..
 
 before_script:
   - vendor/bin/phpunit-4.8-fixer

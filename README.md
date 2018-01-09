@@ -99,3 +99,7 @@ promise of backward compatibility excludes them, do not use them.
 ## Examples
 
 [See](examples) more examples.
+
+## License
+
+This library is released under the [MIT license](LICENSE).

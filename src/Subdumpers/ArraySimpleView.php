@@ -85,7 +85,7 @@ class ArraySimpleView implements SubdumperInterface
                 $keyToDump = '[' . $key . '] => ';
                 $canSkipKey = false;
             }
-            echo $keyToDump, \mb_substr($this->dumper->getDump($value), 0, -1);
+            echo $keyToDump, \mb_substr($this->dumper->dumpAsString($value), 0, -1);
             if ($last !== $key) {
                 echo ', ';
             }

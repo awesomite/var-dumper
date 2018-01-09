@@ -58,7 +58,7 @@ class ObjectBigDumper extends AbstractObjectBigDumper
             $propName = Strings::prepareArrayKey($property->getName());
             $key = "{$this->getTextTypePrefix($property)}\${$propName}";
 
-            $valDump = $this->dumper->getDump($property->getValue());
+            $valDump = $this->dumper->dumpAsString($property->getValue());
             $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {
                 $printer->add("{$indent}{$key} => ", $valDump, \mb_strlen("{$indent}{$key} => "));

@@ -44,11 +44,11 @@ class LightVarDumperTest extends BaseTestCase
 
         $dumper = new LightVarDumper();
         if ('#' === $expectedDump[0]) {
-            $this->assertRegExp($expectedDump, $dumper->getDump($var));
             $this->assertRegExp($expectedDump, $dumper->dumpAsString($var));
+            $this->assertRegExp($expectedDump, $dumper->getDump($var));
         } else {
-            $this->assertSame($expectedDump, $dumper->getDump($var));
             $this->assertSame($expectedDump, $dumper->dumpAsString($var));
+            $this->assertSame($expectedDump, $dumper->getDump($var));
         }
 
         $this->assertZeroDepth($dumper);
@@ -75,7 +75,7 @@ class LightVarDumperTest extends BaseTestCase
         $dumper = new LightVarDumper();
         $dumper2 = $dumper->setMaxDepth($limit);
         $this->assertSame($dumper2, $dumper);
-        $this->assertSame($dump, $dumper->getDump($var));
+        $this->assertSame($dump, $dumper->dumpAsString($var));
     }
 
     public function providerMaxDepth()
@@ -95,7 +95,7 @@ class LightVarDumperTest extends BaseTestCase
         $dumper = new LightVarDumper();
         $dumper2 = $dumper->setMaxStringLength($limit);
         $this->assertSame($dumper2, $dumper);
-        $this->assertSame($dump, $dumper->getDump($string));
+        $this->assertSame($dump, $dumper->dumpAsString($string));
     }
 
     public function providerMaxStringLength()
@@ -115,7 +115,7 @@ class LightVarDumperTest extends BaseTestCase
         $dumper = new LightVarDumper();
         $dumper2 = $dumper->setMaxChildren($limit);
         $this->assertSame($dumper2, $dumper);
-        $this->assertSame($dump, $dumper->getDump($iterable));
+        $this->assertSame($dump, $dumper->dumpAsString($iterable));
     }
 
     public function providerMaxChildren()
@@ -135,7 +135,7 @@ class LightVarDumperTest extends BaseTestCase
         $dumper = new LightVarDumper();
         $dumper2 = $dumper->setIndent($indent);
         $this->assertSame($dumper2, $dumper);
-        $this->assertSame($dump, $dumper->getDump($var));
+        $this->assertSame($dump, $dumper->dumpAsString($var));
     }
 
     public function providerIndent()
@@ -152,10 +152,10 @@ class LightVarDumperTest extends BaseTestCase
     public function testRecursive($var, $expectedDump)
     {
         $dumper = new LightVarDumper();
-        $dump = $dumper->getDump($var);
+        $dump = $dumper->dumpAsString($var);
         $this->assertInternalType('string', $dump);
         if (false !== $expectedDump) {
-            $this->assertSame($expectedDump, $dumper->getDump($var));
+            $this->assertSame($expectedDump, $dumper->dumpAsString($var));
         }
     }
 
@@ -178,7 +178,7 @@ class LightVarDumperTest extends BaseTestCase
         $dumper
             ->setMaxStringLength($stringLimit)
             ->setMaxLineLength($lineLimit);
-        $dump = $dumper->getDump($input);
+        $dump = $dumper->dumpAsString($input);
         $this->assertInternalType('string', $dump);
         $this->assertSame($expected, $dump);
     }

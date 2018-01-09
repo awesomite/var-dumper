@@ -74,7 +74,7 @@ class ArrayBigDumper implements SubdumperInterface
         $printer = new KeyValuePrinter();
         foreach ($array as $key => $value) {
             $key = Strings::prepareArrayKey($key);
-            $valDump = $dumper->getDump($value);
+            $valDump = $dumper->dumpAsString($value);
             $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {
                 $printer->add("{$indent}[{$key}] => ", $valDump, \mb_strlen("{$indent}[{$key}] => "));

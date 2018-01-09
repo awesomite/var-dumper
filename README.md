@@ -80,7 +80,7 @@ array(3) {
 
 **Note**
 
-Use method `getDump()` instead of `dump()` for saving output as variable.
+Use method `dumpAsString()` instead of `dump()` for saving output as variable.
 
 ## Installation
 

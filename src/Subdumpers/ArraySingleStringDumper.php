@@ -42,6 +42,6 @@ class ArraySingleStringDumper implements SubdumperInterface
 
     public function dump($array)
     {
-        echo 'array(1) {', \mb_substr($this->dumper->getDump($array[0]), 0, -1), "}\n";
+        echo 'array(1) {', \mb_substr($this->dumper->dumpAsString($array[0]), 0, -1), "}\n";
     }
 }

@@ -25,7 +25,7 @@ class InternalVarDumperTest extends BaseTestCase
     public function testAll($value, $dump)
     {
         $dumper = new InternalVarDumper();
-        $this->assertSame($dump, $dumper->getDump($value));
+        $this->assertSame($dump, $dumper->dumpAsString($value));
         $this->expectOutputString($dump);
         $dumper->dump($value);
     }

@@ -18,7 +18,7 @@ use Awesomite\VarDumper\LightVarDumper;
 /**
  * @internal
  */
-class ArraySimpleView implements SubdumperInterface
+class ArraySimpleViewDumper implements SubdumperInterface
 {
     const COUNT_LIMIT = 5;
     const KEY_LIMIT   = 20;

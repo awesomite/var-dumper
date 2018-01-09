@@ -2,6 +2,9 @@
 
 ## 0.11.0 (????-??-??)
 
+* Method `Awesomite\VarDumper\VarDumperInterface::getDump` has been marked as `deprecated`
+and will be removed in next version,
+use `Awesomite\VarDumper\VarDumperInterface::dumpAsString` instead
 * Added support for `\e`, `\f` and binary strings
 * Added method `Awesomite\VarDumper\LightVarDumper::setIndent`
 and constant `Awesomite\VarDumper\LightVarDumper::DEFAULT_INDENT`

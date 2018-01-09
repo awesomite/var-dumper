@@ -43,8 +43,10 @@ class LightVarDumperTest extends BaseTestCase
         $dumper = new LightVarDumper();
         if ('#' === $expectedDump[0]) {
             $this->assertRegExp($expectedDump, $dumper->getDump($var));
+            $this->assertRegExp($expectedDump, $dumper->dumpAsString($var));
         } else {
             $this->assertSame($expectedDump, $dumper->getDump($var));
+            $this->assertSame($expectedDump, $dumper->dumpAsString($var));
         }
     }
 

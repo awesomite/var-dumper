@@ -43,6 +43,11 @@ class InternalVarDumper implements VarDumperInterface
 
     public function getDump($var)
     {
+        return $this->dumpAsString($var);
+    }
+
+    public function dumpAsString($var)
+    {
         \ob_start();
         $this->dump($var);
         $result = \ob_get_contents();

@@ -19,7 +19,7 @@ use Awesomite\VarDumper\BaseTestCase;
 class VarPropertyTest extends BaseTestCase
 {
     /**
-     * @dataProvider providerInvalidConstructor
+     * @dataProvider             providerInvalidConstructor
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid value of $visibility!

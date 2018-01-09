@@ -35,6 +35,7 @@ class SyntaxTest extends BaseTestCase
     {
         if (TestEnv::isSpeedTest()) {
             $this->assertTrue(true);
+
             return;
         }
         list($path, $counter) = static::requireWholeSrc();

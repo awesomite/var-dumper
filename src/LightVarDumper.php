@@ -14,19 +14,22 @@ namespace Awesomite\VarDumper;
 use Awesomite\VarDumper\Config\EditableConfig;
 use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\Stack;
+use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Subdumpers\ArrayBigDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper;
-use Awesomite\VarDumper\Subdumpers\ArraySimpleView;
+use Awesomite\VarDumper\Subdumpers\ArraySimpleViewDumper;
 use Awesomite\VarDumper\Subdumpers\ArraySingleStringDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayTooDepthDumper;
 use Awesomite\VarDumper\Subdumpers\NullDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectBigDumper;
+use Awesomite\VarDumper\Subdumpers\ObjectDebugInfoDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectRecursiveDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectTooDepthArrayDumper;
 use Awesomite\VarDumper\Subdumpers\ResourceDumper;
 use Awesomite\VarDumper\Subdumpers\ScalarDumper;
 use Awesomite\VarDumper\Subdumpers\StringDumper;
 use Awesomite\VarDumper\Subdumpers\SubdumperInterface;
+use Awesomite\VarDumper\Subdumpers\VarNotSupportedException;
 
 final class LightVarDumper extends InternalVarDumper
 {
@@ -34,14 +37,16 @@ final class LightVarDumper extends InternalVarDumper
     const DEFAULT_MAX_STRING_LENGTH = 200;
     const DEFAULT_MAX_LINE_LENGTH   = 130;
     const DEFAULT_MAX_DEPTH         = 5;
+    const DEFAULT_INDENT            = '    ';
 
     /**
      * @var EditableConfig
      */
     private $config;
-    private $depth = null;
 
-    private $indent = '    ';
+    private $depth;
+
+    private $references;
 
     /**
      * @var SubdumperInterface[]
@@ -59,23 +64,25 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_MAX_CHILDREN,
             static::DEFAULT_MAX_DEPTH,
             static::DEFAULT_MAX_STRING_LENGTH,
-            static::DEFAULT_MAX_LINE_LENGTH
+            static::DEFAULT_MAX_LINE_LENGTH,
+            static::DEFAULT_INDENT
         );
-        $references = new Stack();
+        $this->references = $references = new Stack();
         $this->depth = new IntValue();
 
         $this->subdumpers = array(
-            new StringDumper($this->indent, $this->config),
+            new StringDumper($this->config),
             new NullDumper(),
             new ScalarDumper(),
             new ObjectRecursiveDumper($references),
             new ObjectTooDepthArrayDumper($this->depth, $this->config),
-            new ObjectBigDumper($this, $references, $this->indent, $this->depth, $this->config),
+            new ObjectDebugInfoDumper($this, $references, $this->depth, $this->config),
+            new ObjectBigDumper($this, $references, $this->depth, $this->config),
             new ArrayRecursiveDumper($references),
             new ArrayTooDepthDumper($this->depth, $this->config),
-            new ArraySimpleView($this, $this->config),
+            new ArraySimpleViewDumper($this, $this->config),
             new ArraySingleStringDumper($this, $this->config),
-            new ArrayBigDumper($this, $references, $this->indent, $this->depth, $this->config),
+            new ArrayBigDumper($this, $references, $this->depth, $this->config),
             new ResourceDumper(),
         );
     }
@@ -88,7 +95,11 @@ final class LightVarDumper extends InternalVarDumper
 
         foreach ($this->subdumpers as $subdumper) {
             if ($subdumper->supports($var)) {
-                $subdumper->dump($var);
+                try {
+                    $subdumper->dump($var);
+                } catch (VarNotSupportedException $exception) {
+                    continue;
+                }
 
                 return;
             }
@@ -112,6 +123,11 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxDepth($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 1) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 1');
+        }
+
         $this->config->setMaxDepth($limit);
 
         return $this;
@@ -124,6 +140,11 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxStringLength($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 5) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 5');
+        }
+
         $this->config->setMaxStringLength($limit);
 
         return $this;
@@ -136,6 +157,11 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxLineLength($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 5) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 5');
+        }
+
         $this->config->setMaxLineLength($limit);
 
         return $this;
@@ -148,7 +174,34 @@ final class LightVarDumper extends InternalVarDumper
      */
     public function setMaxChildren($limit)
     {
+        $limit = (int)$limit;
+        if ($limit < 1) {
+            throw new \InvalidArgumentException('Limit must be greater or equal 1');
+        }
+
         $this->config->setMaxChildren($limit);
+
+        return $this;
+    }
+
+    /**
+     * @param string $indent
+     *
+     * @return $this
+     */
+    public function setIndent($indent)
+    {
+        $indent = (string)$indent;
+        $len = \mb_strlen($indent);
+        if ($len < 1) {
+            throw new \InvalidArgumentException('Length of indent must be greater or equal 1');
+        }
+        foreach (\array_keys(Strings::$replaceChars) as $char) {
+            if (false !== \mb_strpos($indent, $char)) {
+                throw new \InvalidArgumentException('Indent cannot contain white characters except spaces');
+            }
+        }
+        $this->config->setIndent($indent);
 
         return $this;
     }

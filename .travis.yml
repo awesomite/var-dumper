@@ -3,6 +3,10 @@ language: php
 dist: trusty
 sudo: false
 
+cache:
+  directories:
+    - $(composer global config --list | grep "\[cache-files-dir\]" | cut -d  " " -f 3 | tr -d '()')
+
 php:
   - 7.2
   - 7.1
@@ -64,7 +68,7 @@ install:
       export PHP_CS_FIXER="./dev-tools/vendor/bin/php-cs-fixer";
       export RUN_CS_FIXER="true";
     fi
-  - cd dev-tools; composer update; cd ..
+  - cd dev-tools; travis_retry composer update; cd ..
 
 before_script:
   - vendor/bin/phpunit-4.8-fixer
@@ -77,14 +81,14 @@ script:
   - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
-      rm -rf ${HOME}/.composer/vendor
-      rm -rf ${HOME}/.composer/composer.json
-      rm -rf ${HOME}/.composer/composer.lock
-      composer global require infection/infection:^0.6;
-      export PHP_INFECTION="${HOME}/.composer/vendor/bin/infection";
-      ${PHP_INFECTION};
+      wget https://github.com/infection/infection/releases/download/0.7.0/infection.phar;
+      wget https://github.com/infection/infection/releases/download/0.7.0/infection.phar.pubkey;
+      chmod +x infection.phar;
+      ./infection.phar
     fi
   - php examples/big-dump.php
+  - php examples/binary-string.php
+  - php examples/custom-indent.php
   - php examples/debug-info.php
   - php examples/dumper.php
   - php examples/object.php

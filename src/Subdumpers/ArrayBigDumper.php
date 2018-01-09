@@ -27,8 +27,6 @@ class ArrayBigDumper implements SubdumperInterface
 
     private $references;
 
-    private $indent;
-
     private $depth;
 
     private $config;
@@ -36,13 +34,11 @@ class ArrayBigDumper implements SubdumperInterface
     public function __construct(
         LightVarDumper $dumper,
         Stack $references,
-        $indent,
         IntValue $depth,
         Config $config
     ) {
         $this->dumper = $dumper;
         $this->references = $references;
-        $this->indent = $indent;
         $this->depth = $depth;
         $this->config = $config;
     }
@@ -62,7 +58,7 @@ class ArrayBigDumper implements SubdumperInterface
 
         if ($count > 0) {
             echo "\n";
-            $this->dumpBody($array);
+            static::dumpBody($array, $this->config, $this->dumper);
         }
 
         echo '}' . "\n";
@@ -71,26 +67,27 @@ class ArrayBigDumper implements SubdumperInterface
         $this->depth->decr();
     }
 
-    private function dumpBody(array $array)
+    public static function dumpBody(array $array, Config $config, LightVarDumper $dumper)
     {
-        $limit = $this->config->getMaxChildren();
+        $indent = $config->getIndent();
+        $limit = $config->getMaxChildren();
         $printer = new KeyValuePrinter();
         foreach ($array as $key => $value) {
             $key = Strings::prepareArrayKey($key);
-            $valDump = $this->dumper->getDump($value);
+            $valDump = $dumper->dumpAsString($value);
             $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {
-                $printer->add("{$this->indent}[{$key}] => ", $valDump, \mb_strlen("{$this->indent}[{$key}] => "));
+                $printer->add("{$indent}[{$key}] => ", $valDump, \mb_strlen("{$indent}[{$key}] => "));
             } else {
                 $printer->flush();
-                $valDump = \str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
-                echo "{$this->indent}[{$key}] =>\n{$this->indent}{$this->indent}$valDump\n";
+                $valDump = \str_replace("\n", "\n{$indent}{$indent}", $valDump);
+                echo "{$indent}[{$key}] =>\n{$indent}{$indent}$valDump\n";
             }
 
             if (!--$limit) {
                 $printer->flush();
-                if (\count($array) > $this->config->getMaxChildren()) {
-                    echo "{$this->indent}(...)\n";
+                if (\count($array) > $config->getMaxChildren()) {
+                    echo "{$indent}(...)\n";
                 }
                 break;
             }

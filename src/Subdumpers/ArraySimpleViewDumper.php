@@ -18,7 +18,7 @@ use Awesomite\VarDumper\LightVarDumper;
 /**
  * @internal
  */
-class ArraySimpleView implements SubdumperInterface
+class ArraySimpleViewDumper implements SubdumperInterface
 {
     const COUNT_LIMIT = 5;
     const KEY_LIMIT   = 20;
@@ -47,6 +47,7 @@ class ArraySimpleView implements SubdumperInterface
         }
 
         foreach ($var as $key => $value) {
+            $key = Strings::prepareArrayKey($key);
             if (!\is_int($key) && \mb_strlen((string)$key) > static::KEY_LIMIT) {
                 return false;
             }
@@ -84,7 +85,7 @@ class ArraySimpleView implements SubdumperInterface
                 $keyToDump = '[' . $key . '] => ';
                 $canSkipKey = false;
             }
-            echo $keyToDump, \rtrim($this->dumper->getDump($value), "\n");
+            echo $keyToDump, \mb_substr($this->dumper->dumpAsString($value), 0, -1);
             if ($last !== $key) {
                 echo ', ';
             }

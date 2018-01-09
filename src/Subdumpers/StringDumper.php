@@ -21,27 +21,16 @@ use Awesomite\VarDumper\Helpers\Symbols;
  */
 class StringDumper implements SubdumperInterface
 {
-    /**
-     * @internal Public for php 5.3
-     */
-    public static $whiteChars
-        = array(
-            ' ',
-            "\t",
-            "\n",
-            "\r",
-            "\0",
-            "\x0B",
-        );
+    private static $inited = false;
 
-    private $indent;
+    private static $whiteChars;
 
     private $config;
 
-    public function __construct($indent, Config $config)
+    public function __construct(Config $config)
     {
-        $this->indent = $indent;
         $this->config = $config;
+        self::init();
     }
 
     public function supports($var)
@@ -57,6 +46,18 @@ class StringDumper implements SubdumperInterface
 
         $containsNewLine = false !== \mb_strpos($var, "\n");
         $isMultiLine = $len > $this->config->getMaxLineLength() || $containsNewLine;
+
+        if (!$isMultiLine) {
+            $visibleLen = $len;
+            foreach (Strings::$replaceChars as $char => $replace) {
+                $number = \mb_substr_count($var, $char);
+                $visibleLen += $number * \mb_strlen($replace);
+                if ($visibleLen > $this->config->getMaxLineLength()) {
+                    $isMultiLine = true;
+                    break;
+                }
+            }
+        }
 
         if ($isMultiLine) {
             $withPrefix = true;
@@ -88,79 +89,110 @@ class StringDumper implements SubdumperInterface
         echo "\n";
     }
 
+    private static function init()
+    {
+        if (self::$inited) {
+            return;
+        }
+
+        self::$whiteChars = \array_keys(Strings::$replaceChars);
+        self::$whiteChars[] = ' ';
+
+        self::$inited = true;
+    }
+
     private function dumpMultiLine($string)
     {
         foreach (\explode("\n", $string) as $metaline) {
             foreach ($this->getLines($metaline) as $line) {
-                echo "\n", $this->indent, Symbols::SYMBOL_CITE, ' ', $this->escapeWhiteChars($line);
+                echo "\n", $this->config->getIndent(), Symbols::SYMBOL_CITE, ' ', $line;
             }
         }
     }
 
     private function getLines($string)
     {
-        $firstIteration = true;
         $config = $this->config;
+        $words = $this->explodeWords($string);
         $self = $this;
 
-        return new CallbackIterator(function () use (&$string, &$firstIteration, &$config, $self) {
-            while ('' !== $string) {
-                $current = \mb_substr($string, 0, $config->getMaxLineLength());
-                $next = \mb_substr($string, $config->getMaxLineLength());
+        return new CallbackIterator(function () use (&$words, $config, $self) {
+            while ($words) {
+                $current = $self->escapeWhiteChars(\array_shift($words));
 
-                $toCheck = array(
-                    \mb_substr($current, -1),
-                    \mb_substr($next, 0, 1),
-                );
-                $dividedByWhite = '' === $next;
-                foreach ($toCheck as $char) {
-                    if ($dividedByWhite |= \in_array($char, $self::$whiteChars, true)) {
+                if (\mb_strlen($current) > $config->getMaxLineLength()) {
+                    $next = \mb_substr($current, $config->getMaxLineLength());
+                    $current = \mb_substr($current, 0, $config->getMaxLineLength());
+                    \array_unshift($words, $next);
+
+                    return $current;
+                }
+
+                while ($words) {
+                    $nextWord = $self->escapeWhiteChars($words[0]);
+                    if (\mb_strlen($current) + \mb_strlen($nextWord) > $config->getMaxLineLength()) {
                         break;
                     }
+                    $current .= $nextWord;
+                    \array_shift($words);
                 }
-
-                if (!$dividedByWhite && $pos = $self->getLastWhiteCharPos($current)) {
-                    $next = \mb_substr($current, $pos) . $next;
-                    $current = \mb_substr($current, 0, $pos);
-                }
-
-                $firstIteration = false;
-                $string = $next;
 
                 return $current;
-            }
-
-            if ($firstIteration) {
-                $firstIteration = false;
-
-                return '';
             }
 
             CallbackIterator::stopIterate();
         });
     }
 
-    private function escapeWhiteChars($string)
+    /**
+     * Public for php 5.3
+     *
+     * @internal
+     *
+     * @param $string
+     *
+     * @return mixed
+     */
+    public function escapeWhiteChars($string)
     {
         return Strings::prepareSingleLine($string);
     }
 
-    /**
-     * @internal Public for php 5.3
-     *
-     * @param $string
-     *
-     * @return bool|mixed
-     */
-    public function getLastWhiteCharPos($string)
+    private function explodeWords($string)
+    {
+        if ('' === $string) {
+            return array('');
+        }
+
+        $words = array();
+        while (false !== $pos = $this->getFirstWhiteCharPos($string)) {
+            if (0 !== $pos) {
+                $words[] = \mb_substr($string, 0, $pos);
+            }
+            $words[] = \mb_substr($string, $pos, 1);
+            $string = \mb_substr($string, $pos + 1);
+        }
+        if ('' !== $string) {
+            $words[] = $string;
+        }
+
+        return $words;
+    }
+
+    private function getFirstWhiteCharPos($string)
     {
         $data = array();
         foreach (self::$whiteChars as $char) {
-            if (false !== $pos = \mb_strrpos($string, $char)) {
-                $data[] = $pos + 1;
+            if (false !== $pos = \mb_strpos($string, $char)) {
+                $data[] = $pos;
             }
         }
+        $regex = '/' . Strings::BINARY_CHAR_REGEX . '/';
+        $split = \preg_split($regex, $string, 2);
+        if (2 === \count($split)) {
+            $data[] = \mb_strlen($split[0]);
+        }
 
-        return \count($data) ? \max($data) : false;
+        return \count($data) ? \min($data) : false;
     }
 }

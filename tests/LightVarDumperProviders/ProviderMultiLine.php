@@ -19,17 +19,21 @@ class ProviderMultiLine implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator(array(
-            30 => $this->getMultiline30(),
-            50 => $this->getMultiLine50(),
-            'without_dots' => $this->getMultilineWithoutDots(),
-            'broken_dots' => $this->getMultilineWithBrokenDots(),
-            'new_lines' => $this->getMultilineWithNewLines(),
+            30                => $this->getMultiline30(),
+            50                => $this->getMultiLine50(),
+            'without_dots'    => $this->getMultilineWithoutDots(),
+            'broken_dots'     => $this->getMultilineWithBrokenDots(),
+            'new_lines'       => $this->getMultilineWithNewLines(),
+            'white_chars'     => $this->getStringWithWhiteChars(),
+            'short_multiline' => $this->getShortMulitiline(),
+            'binary_string'   => $this->getBinaryString(),
         ));
     }
 
     private function getMultiline30()
     {
-        $expected = <<<DATA
+        $expected
+            = <<<DATA
 string(769)
     › Lorem 
     › ipsum 
@@ -65,7 +69,8 @@ DATA;
 
     private function getMultiLine50()
     {
-        $expected = <<<DATA
+        $expected
+            = <<<DATA
 string(769)
     › Lorem ipsum dolor sit amet, consectetur adipiscing
     ›  elit. Proin nibh augue, suscipit a, scelerisque 
@@ -81,7 +86,8 @@ DATA;
     private function getMultilineWithoutDots()
     {
         $input = \str_pad('', 20, 'a');
-        $expected = <<<'EXPECTED'
+        $expected
+            = <<<'EXPECTED'
 string(20)
     › aaaaa
     › aaaaa
@@ -96,7 +102,8 @@ EXPECTED;
     private function getMultilineWithBrokenDots()
     {
         $input = \str_pad('', 20, 'a');
-        $expected = <<<'EXPECTED'
+        $expected
+            = <<<'EXPECTED'
 string(20)
     › aaaaa
     › aaaaa
@@ -112,7 +119,8 @@ EXPECTED;
     private function getMultilineWithNewLines()
     {
         $input = "Hello\n\n\nworld!";
-        $expected = <<< 'EXCPECTED'
+        $expected
+            = <<< 'EXCPECTED'
 string(14)
     › Hello
     › 
@@ -123,6 +131,52 @@ EXCPECTED;
 
 
         return array(100, 20, $input, $expected);
+    }
+
+    private function getShortMulitiline()
+    {
+        $input = "hello\t";
+        $expected
+            = <<<'EXCPECTED'
+string(6)
+    › hello
+    › \t
+
+EXCPECTED;
+
+        return array(100, \mb_strlen($input), $input, $expected);
+    }
+
+    private function getStringWithWhiteChars()
+    {
+        $input = "\t\t\t\t\tqqqqq";
+        $expected
+            = <<<'EXCPECTED'
+string(10)
+    › \t\t
+    › \t\t
+    › \t
+    › qqqqq
+
+EXCPECTED;
+
+        return array(300, 5, $input, $expected);
+    }
+
+    private function getBinaryString()
+    {
+        $input = "hello\x04world";
+        $expected
+            = <<<'EXCPECTED'
+string(11)
+    › hello
+    › \x04
+    › world
+
+EXCPECTED;
+
+
+        return array(100, 8, $input, $expected);
     }
 
     private function getLoremIpsum()

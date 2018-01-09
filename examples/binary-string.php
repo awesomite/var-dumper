@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Awesomite\VarDumper\Subdumpers;
+use Awesomite\VarDumper\LightVarDumper;
 
-/**
- * @internal
- */
-interface SubdumperInterface
-{
-    public function supports($var);
+require __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
 
-    /**
-     * @throws VarNotSupportedException
-     */
-    public function dump($var);
-}
+$dumper = new LightVarDumper();
+$dumper->dump("some\x01\x02text");
+
+/*
+
+Output:
+
+“some\x01\x02text”
+
+*/

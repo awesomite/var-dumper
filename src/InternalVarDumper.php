@@ -41,7 +41,7 @@ class InternalVarDumper implements VarDumperInterface
         \ini_set($iniKey, $previousVal);
     }
 
-    public function getDump($var)
+    public function dumpAsString($var)
     {
         \ob_start();
         $this->dump($var);
@@ -49,6 +49,11 @@ class InternalVarDumper implements VarDumperInterface
         \ob_end_clean();
 
         return $result;
+    }
+
+    public function getDump($var)
+    {
+        return $this->dumpAsString($var);
     }
 
     protected function dumpPlaceInCode($number)

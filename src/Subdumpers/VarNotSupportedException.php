@@ -9,22 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Awesomite\VarDumper\LightVarDumperProviders;
+namespace Awesomite\VarDumper\Subdumpers;
 
 /**
  * @internal
  */
-class TestDebugInfo
+class VarNotSupportedException extends \Exception
 {
-    private $data;
-
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
-
-    public function __debugInfo()
-    {
-        return $this->data;
-    }
 }

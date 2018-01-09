@@ -24,7 +24,8 @@ class ProviderRecursive implements \IteratorAggregate
 
         $recursiveObj = new \stdClass();
         $recursiveObj->self = $recursiveObj;
-        $objectDump = <<<DUMP
+        $objectDump
+            = <<<DUMP
 object(stdClass) #{$hasher->getHashId($recursiveObj)} (1) {
     \$self => RECURSIVE object(stdClass) #{$hasher->getHashId($recursiveObj)}
 }
@@ -33,7 +34,8 @@ DUMP;
 
         $recursiveArr = array();
         $recursiveArr[] = &$recursiveArr;
-        $arrayDump = <<<'DUMP'
+        $arrayDump
+            = <<<'DUMP'
 array(1) {
     [0] => RECURSIVE array(1)
 }

@@ -11,44 +11,15 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Config\Config;
-use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
-use Awesomite\VarDumper\Helpers\Stack;
 use Awesomite\VarDumper\Helpers\Strings;
-use Awesomite\VarDumper\LightVarDumper;
 use Awesomite\VarDumper\Properties\PropertyInterface;
 
 /**
  * @internal
  */
-class ObjectBigDumper extends AbstractObjectDumper
+class ObjectBigDumper extends AbstractObjectBigDumper
 {
-    private $dumper;
-
-    private $references;
-
-    private $indent;
-
-    private $depth;
-
-    private $config;
-
-    public function __construct(
-        LightVarDumper $dumper,
-        Stack $references,
-        $indent,
-        IntValue $depth,
-        Config $config
-    ) {
-        $this->dumper = $dumper;
-        $this->references = $references;
-        $this->indent = $indent;
-        $this->depth = $depth;
-        $this->config = $config;
-        parent::__construct();
-    }
-
     public function supports($var)
     {
         return \is_object($var);
@@ -63,42 +34,44 @@ class ObjectBigDumper extends AbstractObjectDumper
         $class = $this->getClassName($object);
 
         $count = \count($properties);
-        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', \count($properties), ') {';
+        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', $count, ') {';
         if ($count > 0) {
             echo "\n";
             $this->dumpProperties($properties);
         }
-        echo '}' . "\n";
+        echo '}', "\n";
 
         $this->references->pop();
         $this->depth->decr();
     }
 
+
     /**
-     * @param PropertyInterface[]|\Traversable $properties
+     * @param PropertyInterface[] $properties
      */
     private function dumpProperties($properties)
     {
         $limit = $this->config->getMaxChildren();
         $printer = new KeyValuePrinter();
+        $indent = $this->config->getIndent();
         foreach ($properties as $property) {
             $propName = Strings::prepareArrayKey($property->getName());
             $key = "{$this->getTextTypePrefix($property)}\${$propName}";
 
-            $valDump = $this->dumper->getDump($property->getValue());
+            $valDump = $this->dumper->dumpAsString($property->getValue());
             $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {
-                $printer->add("{$this->indent}{$key} => ", $valDump, \mb_strlen("{$this->indent}{$key} => "));
+                $printer->add("{$indent}{$key} => ", $valDump, \mb_strlen("{$indent}{$key} => "));
             } else {
                 $printer->flush();
-                $valDump = \str_replace("\n", "\n{$this->indent}{$this->indent}", $valDump);
-                echo "{$this->indent}{$key} =>\n{$this->indent}{$this->indent}$valDump\n";
+                $valDump = \str_replace("\n", "\n{$indent}{$indent}", $valDump);
+                echo "{$indent}{$key} =>\n{$indent}{$indent}$valDump\n";
             }
 
             if (!--$limit) {
                 $printer->flush();
                 if (\count($properties) > $this->config->getMaxChildren()) {
-                    echo "{$this->indent}(...)\n";
+                    echo "{$indent}(...)\n";
                 }
                 break;
             }

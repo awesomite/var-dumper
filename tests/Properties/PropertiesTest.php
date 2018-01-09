@@ -73,6 +73,7 @@ class PropertiesTest extends BaseTestCase
     {
         if (\defined('HHVM_VERSION')) {
             $this->assertTrue(true);
+
             return;
         }
         $properties = new Properties($array);
@@ -91,6 +92,7 @@ class PropertiesTest extends BaseTestCase
         $object = new ArrayObject();
         $object['test'] = 'hello';
         $object->property = 'value';
+
         return array(
             array($object, array('privateProperty', 'property', 'storage', 'flags', 'iteratorClass')),
         );
@@ -106,6 +108,7 @@ class PropertiesTest extends BaseTestCase
     {
         if (\defined('HHVM_VERSION')) {
             $this->assertTrue(true);
+
             return;
         }
 

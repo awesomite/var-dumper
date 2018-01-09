@@ -42,7 +42,8 @@ $varDumper
     ->setMaxChildren(20)
     ->setMaxDepth(5)
     ->setMaxStringLength(400)
-    ->setMaxLineLength(50);
+    ->setMaxLineLength(50)
+    ->setIndent('    ');
 
 $varDumper->dump(array($loremIpsum, $array, $smallArray));
 ```
@@ -79,7 +80,7 @@ array(3) {
 
 **Note**
 
-Use method `getDump()` instead of `dump()` for saving output as variable.
+Use method `dumpAsString()` instead of `dump()` for saving output as variable.
 
 ## Installation
 
@@ -91,10 +92,14 @@ The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) s
 
 **Note**
 
-Only source code is considered as backward compatible, result of `dump()` and `getDump()` methods may change.
+Only source code is considered as backward compatible, result of `dump()` and `dumpAsString()` methods may change.
 Classes, methods, functions and properties marked as `@internal` may change any time,
 promise of backward compatibility excludes them, do not use them.
 
 ## Examples
 
 [See](examples) more examples.
+
+## License
+
+This library is released under the [MIT license](LICENSE).

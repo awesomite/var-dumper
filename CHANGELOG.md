@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.11.0 (????-??-??)
+## 0.11.0 (2018-01-09)
 
 * Method `Awesomite\VarDumper\VarDumperInterface::getDump` has been marked as `deprecated`
 and will be removed in next version,

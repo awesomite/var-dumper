@@ -326,12 +326,12 @@ class LightVarDumperTest extends BaseTestCase
         $references = $this->readPrivateProperty($dumper, 'references');
 
         $array = $this->readPrivateProperty($references, 'array');
-        $this->assertSame(0, count($array));
+        $this->assertSame(0, \count($array));
     }
 
     private function readPrivateProperty($object, $name)
     {
-        $property = new \ReflectionProperty(get_class($object), $name);
+        $property = new \ReflectionProperty(\get_class($object), $name);
         $property->setAccessible(true);
 
         return $property->getValue($object);

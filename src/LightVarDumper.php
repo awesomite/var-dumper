@@ -43,7 +43,10 @@ final class LightVarDumper extends InternalVarDumper
      * @var EditableConfig
      */
     private $config;
-    private $depth = null;
+
+    private $depth;
+
+    private $references;
 
     /**
      * @var SubdumperInterface[]
@@ -64,7 +67,7 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_MAX_LINE_LENGTH,
             static::DEFAULT_INDENT
         );
-        $references = new Stack();
+        $this->references = $references = new Stack();
         $this->depth = new IntValue();
 
         $this->subdumpers = array(
@@ -124,6 +127,7 @@ final class LightVarDumper extends InternalVarDumper
         if ($limit < 1) {
             throw new \InvalidArgumentException('Limit must be greater or equal 1');
         }
+
         $this->config->setMaxDepth($limit);
 
         return $this;
@@ -174,6 +178,7 @@ final class LightVarDumper extends InternalVarDumper
         if ($limit < 1) {
             throw new \InvalidArgumentException('Limit must be greater or equal 1');
         }
+
         $this->config->setMaxChildren($limit);
 
         return $this;

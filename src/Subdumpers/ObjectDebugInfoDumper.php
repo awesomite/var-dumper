@@ -26,15 +26,15 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
 
     public function dump($object)
     {
-        $this->depth->incr();
-        $this->references->push($object);
-
         $properties = $this->getProperties($object);
         $class = $this->getClassName($object);
         $debugInfoData = $this->getDebugInfoData($properties);
         if (false === $debugInfoData) {
             throw new VarNotSupportedException();
         }
+
+        $this->depth->incr();
+        $this->references->push($object);
 
         $count = \count($debugInfoData);
         echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', $count, ') {[';

@@ -32,7 +32,7 @@ class ProviderDumpConstants implements \IteratorAggregate
         $result['PHP_INT_MAX'] = array(PHP_INT_MAX, "PHP_INT_MAX\n");
 
         if (\defined('PHP_FLOAT_EPSILON')) {
-            $result['PHP_FLOAT_EPSILON'] = PHP_FLOAT_EPSILON;
+            $result['PHP_FLOAT_EPSILON'] = array(PHP_FLOAT_EPSILON, "PHP_FLOAT_EPSILON\n");
         }
 
         return new \ArrayIterator($result);

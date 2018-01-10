@@ -4,6 +4,12 @@
 
 * Added support for constants `PHP_FLOAT_EPSILON`, `PHP_FLOAT_MIN`, `PHP_FLOAT_MAX`
 * Removed deprecated method `Awesomite\VarDumper\VarDumperInterface::dumpAsString`
+* Added - print symbol `↵` at the end of the line, e.g.:
+```
+string(11)
+    › hello↵
+    › world
+```
 
 ## 0.11.1 (2018-01-10)
 

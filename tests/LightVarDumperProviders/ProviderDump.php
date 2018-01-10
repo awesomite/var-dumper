@@ -476,8 +476,8 @@ EXPECTED;
         $dump
             = <<<'EXPECTED'
 string(6)
-    › \t\r\0
-    › 
+    › \t\r\0↵
+    › ↵
     › \v
 
 EXPECTED;

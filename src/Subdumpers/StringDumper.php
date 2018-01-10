@@ -103,7 +103,12 @@ class StringDumper implements SubdumperInterface
 
     private function dumpMultiLine($string)
     {
-        foreach (\explode("\n", $string) as $metaline) {
+        $metalines = \explode("\n", $string);
+
+        while (null !== $metaline = \array_shift($metalines)) {
+            if (!empty($metalines)) {
+                $metaline .= Symbols::SYMBOL_NEW_LINE;
+            }
             foreach ($this->getLines($metaline) as $line) {
                 echo "\n", $this->config->getIndent(), Symbols::SYMBOL_CITE, ' ', $line;
             }
@@ -112,17 +117,17 @@ class StringDumper implements SubdumperInterface
 
     private function getLines($string)
     {
-        $config = $this->config;
         $words = $this->explodeWords($string);
         $self = $this;
+        $maxLen = $this->config->getMaxLineLength();
 
-        return new CallbackIterator(function () use (&$words, $config, $self) {
+        return new CallbackIterator(function () use (&$words, $maxLen, $self) {
             while ($words) {
                 $current = $self->escapeWhiteChars(\array_shift($words));
 
-                if (\mb_strlen($current) > $config->getMaxLineLength()) {
-                    $next = \mb_substr($current, $config->getMaxLineLength());
-                    $current = \mb_substr($current, 0, $config->getMaxLineLength());
+                if (\mb_strlen($current) > $maxLen) {
+                    $next = \mb_substr($current, $maxLen);
+                    $current = \mb_substr($current, 0, $maxLen);
                     \array_unshift($words, $next);
 
                     return $current;
@@ -130,7 +135,7 @@ class StringDumper implements SubdumperInterface
 
                 while ($words) {
                     $nextWord = $self->escapeWhiteChars($words[0]);
-                    if (\mb_strlen($current) + \mb_strlen($nextWord) > $config->getMaxLineLength()) {
+                    if (\mb_strlen($current) + \mb_strlen($nextWord) > $maxLen) {
                         break;
                     }
                     $current .= $nextWord;
@@ -186,6 +191,9 @@ class StringDumper implements SubdumperInterface
             if (false !== $pos = \mb_strpos($string, $char)) {
                 $data[] = $pos;
             }
+        }
+        if (false !== $pos = \mb_strpos($string, Symbols::SYMBOL_NEW_LINE)) {
+            $data[] = $pos;
         }
         $regex = '/' . Strings::BINARY_CHAR_REGEX . '/';
         $split = \preg_split($regex, $string, 2);

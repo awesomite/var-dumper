@@ -19,15 +19,30 @@ class ProviderMultiLine implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator(array(
-            30                => $this->getMultiline30(),
-            50                => $this->getMultiLine50(),
-            'without_dots'    => $this->getMultilineWithoutDots(),
-            'broken_dots'     => $this->getMultilineWithBrokenDots(),
-            'new_lines'       => $this->getMultilineWithNewLines(),
-            'white_chars'     => $this->getStringWithWhiteChars(),
-            'short_multiline' => $this->getShortMulitiline(),
-            'binary_string'   => $this->getBinaryString(),
+            30                     => $this->getMultiline30(),
+            50                     => $this->getMultiLine50(),
+            'without_dots'         => $this->getMultilineWithoutDots(),
+            'broken_dots'          => $this->getMultilineWithBrokenDots(),
+            'new_lines'            => $this->getMultilineWithNewLines(),
+            'white_chars'          => $this->getStringWithWhiteChars(),
+            'short_multiline'      => $this->getShortMulitiline(),
+            'binary_string'        => $this->getBinaryString(),
+            'new_line_in_new_line' => $this->getNewLineInNewLine(),
         ));
+    }
+
+    private function getNewLineInNewLine()
+    {
+        $expected
+            = <<<DATA
+string(6)
+    › a a a
+    › ↵
+    › 
+
+DATA;
+
+        return array(200, 5, "a a a\n", $expected);
     }
 
     private function getMultiline30()
@@ -122,9 +137,9 @@ EXPECTED;
         $expected
             = <<< 'EXCPECTED'
 string(14)
-    › Hello
-    › 
-    › 
+    › Hello↵
+    › ↵
+    › ↵
     › world!
 
 EXCPECTED;

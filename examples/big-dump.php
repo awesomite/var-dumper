@@ -67,8 +67,8 @@ $dumper->dump(new ExampleData());
 
 Output:
 
-object(ExampleData) #1 (5) {
-    public $recursion =>     RECURSIVE object(ExampleData) #1
+object(ExampleData) #20 (5) {
+    public $recursion =>     RECURSIVE object(ExampleData) #20
     protected $emptyArray => array(0) {}
     private $lipsum =>
         string(769)
@@ -80,19 +80,19 @@ object(ExampleData) #1 (5) {
             › Nam congue, pede vitae dapibus aliquet, elit magna vulpu...
     private $lipsum2 =>
         string(768)
-            › Lorem ipsum dolor sit amet,
-            › consectetur adipiscing elit.
-            › Proin nibh augue, suscipit a,
-            › scelerisque sed, lacinia in, mi.
-            › Cras vel lorem.
-            › Etiam pellentesque aliquet tellus.
-            › Phasellus pharetra nulla ac diam.
-            › Quisque semper justo at risus.
-            › Donec venenatis,
-            › turpis vel hendrerit interdum,
-            › dui ligula ultricies purus,
-            › sed posuere libero dui id orci.
-            › Nam congue, pede vitae dapibus aliquet,
+            › Lorem ipsum dolor sit amet,↵
+            › consectetur adipiscing elit.↵
+            › Proin nibh augue, suscipit a,↵
+            › scelerisque sed, lacinia in, mi.↵
+            › Cras vel lorem.↵
+            › Etiam pellentesque aliquet tellus.↵
+            › Phasellus pharetra nulla ac diam.↵
+            › Quisque semper justo at risus.↵
+            › Donec venenatis,↵
+            › turpis vel hendrerit interdum,↵
+            › dui ligula ultricies purus,↵
+            › sed posuere libero dui id orci.↵
+            › Nam congue, pede vitae dapibus aliquet,↵
             › elit magna vulpu...
     $array =>
         array(11) {

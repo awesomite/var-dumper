@@ -33,7 +33,6 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
             throw new VarNotSupportedException();
         }
 
-        $this->depth->incr();
         $this->references->push($object);
 
         $count = \count($debugInfoData);
@@ -45,7 +44,6 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
         echo ']}', "\n";
 
         $this->references->pop();
-        $this->depth->decr();
     }
 
     /**

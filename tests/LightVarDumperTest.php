@@ -21,6 +21,7 @@ use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxChildren;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxDepth;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxStringLength;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMultiLine;
+use Awesomite\VarDumper\LightVarDumperProviders\ProviderPlaceInCode;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderRecursive;
 
 /**
@@ -61,6 +62,25 @@ class LightVarDumperTest extends BaseTestCase
             \iterator_to_array(new ProviderDump()),
             \iterator_to_array(new ProviderDumpConstants())
         );
+    }
+
+    /**
+     * @dataProvider providerPlaceInCode
+     *
+     * @param LightVarDumper $dumper
+     * @param                $var
+     * @param                $dump
+     */
+    public function testPlaceInCode(LightVarDumper $dumper, $var, $dump)
+    {
+        $this->assertSame($dump, $dumper->dumpAsString($var)); $this->assertSame($dump, $dumper->getDump($var));
+        $this->assertZeroDepth($dumper);
+        $this->assertEmptyReferences($dumper);
+    }
+
+    public function providerPlaceInCode()
+    {
+        return iterator_to_array(new ProviderPlaceInCode());
     }
 
     /**

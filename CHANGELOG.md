@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.11.1 (2018-01-10)
+
+* Fixed bug - `Awesomite\VarDumper\InternalVarDumper::dumpAsString`
+and `Awesomite\VarDumper\InternalVarDumper::getDump` was displaying invalid file and line
+* Fixed bug introduced in 0.9.0 - displaying short array with enabled $displayPlaceInCode
+flag was causing invalid output, e.g.:
+```
+(...)/test.php:6:
+array(5) {(...)/src/InternalVarDumper.php:47:
+1, (...)/src/InternalVarDumper.php:47:
+2, (...)/src/InternalVarDumper.php:47:
+3, (...)/src/InternalVarDumper.php:47:
+4, (...)/src/InternalVarDumper.php:47:
+5}
+```
+instead of
+```
+(...)/test.php:6:
+array(5) {1, 2, 3, 4, 5}
+```
+
 ## 0.11.0 (2018-01-09)
 
 * Method `Awesomite\VarDumper\VarDumperInterface::getDump` has been marked as `deprecated`

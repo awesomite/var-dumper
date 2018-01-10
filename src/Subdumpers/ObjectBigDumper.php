@@ -27,7 +27,6 @@ class ObjectBigDumper extends AbstractObjectBigDumper
 
     public function dump($object)
     {
-        $this->depth->incr();
         $this->references->push($object);
 
         $properties = $this->getProperties($object);
@@ -42,7 +41,6 @@ class ObjectBigDumper extends AbstractObjectBigDumper
         echo '}', "\n";
 
         $this->references->pop();
-        $this->depth->decr();
     }
 
 

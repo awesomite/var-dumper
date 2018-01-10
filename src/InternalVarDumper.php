@@ -44,7 +44,9 @@ class InternalVarDumper implements VarDumperInterface
     public function dumpAsString($var)
     {
         \ob_start();
+        ++$this->shift;
         $this->dump($var);
+        --$this->shift;
         $result = \ob_get_contents();
         \ob_end_clean();
 
@@ -53,7 +55,11 @@ class InternalVarDumper implements VarDumperInterface
 
     public function getDump($var)
     {
-        return $this->dumpAsString($var);
+        ++$this->shift;
+        $result = $this->dumpAsString($var);
+        --$this->shift;
+
+        return $result;
     }
 
     protected function dumpPlaceInCode($number)

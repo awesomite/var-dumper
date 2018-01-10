@@ -12,6 +12,7 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Config\Config;
+use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumper;
 
@@ -27,10 +28,13 @@ class ArraySimpleViewDumper implements SubdumperInterface
 
     private $config;
 
-    public function __construct(LightVarDumper $dumper, Config $config)
+    private $depth;
+
+    public function __construct(LightVarDumper $dumper, Config $config, IntValue $depth)
     {
         $this->dumper = $dumper;
         $this->config = $config;
+        $this->depth = $depth;
     }
 
     public function supports($var)

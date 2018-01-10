@@ -80,7 +80,7 @@ final class LightVarDumper extends InternalVarDumper
             new ObjectBigDumper($this, $references, $this->depth, $this->config),
             new ArrayRecursiveDumper($references),
             new ArrayTooDepthDumper($this->depth, $this->config),
-            new ArraySimpleViewDumper($this, $this->config),
+            new ArraySimpleViewDumper($this, $this->config, $this->depth),
             new ArraySingleStringDumper($this, $this->config),
             new ArrayBigDumper($this, $references, $this->depth, $this->config),
             new ResourceDumper(),
@@ -95,9 +95,12 @@ final class LightVarDumper extends InternalVarDumper
 
         foreach ($this->subdumpers as $subdumper) {
             if ($subdumper->supports($var)) {
+                $this->depth->incr();
                 try {
                     $subdumper->dump($var);
+                    $this->depth->decr();
                 } catch (VarNotSupportedException $exception) {
+                    $this->depth->decr();
                     continue;
                 }
 
@@ -111,6 +114,8 @@ final class LightVarDumper extends InternalVarDumper
         $this->displayPlaceInCode = false;
         parent::dump($var);
         $this->displayPlaceInCode = $prev;
+
+        $this->depth->decr();
 
         return;
         // @codeCoverageIgnoreEnd

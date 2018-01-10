@@ -50,7 +50,6 @@ class ArrayBigDumper implements SubdumperInterface
 
     public function dump($array)
     {
-        $this->depth->incr();
         $this->references->push($array);
 
         $count = \count($array);
@@ -64,7 +63,6 @@ class ArrayBigDumper implements SubdumperInterface
         echo '}' . "\n";
 
         $this->references->pop();
-        $this->depth->decr();
     }
 
     public static function dumpBody(array $array, Config $config, LightVarDumper $dumper)

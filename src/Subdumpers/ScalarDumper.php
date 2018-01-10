@@ -81,7 +81,7 @@ class ScalarDumper implements SubdumperInterface
             return;
         }
 
-        self::$intMapping[-PHP_INT_MAX - 1] = 'PHP_INT_MIN';
+        self::$intMapping[~PHP_INT_MAX] = 'PHP_INT_MIN';
         self::$inited = true;
     }
 }

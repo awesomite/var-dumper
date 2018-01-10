@@ -322,6 +322,7 @@ class LightVarDumperTest extends BaseTestCase
             'Awesomite\VarDumper\Subdumpers\AbstractObjectDumper',
             'Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper',
             'Awesomite\VarDumper\Subdumpers\ScalarDumper',
+            'Awesomite\VarDumper\Subdumpers\StringDumper',
         );
         foreach ($classes as $class) {
             $reflectionInit = new \ReflectionProperty($class, 'inited');

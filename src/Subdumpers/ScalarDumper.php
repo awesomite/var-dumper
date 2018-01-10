@@ -81,6 +81,18 @@ class ScalarDumper implements SubdumperInterface
             return;
         }
 
+        $php72Constants = array(
+            'PHP_FLOAT_EPSILON',
+            'PHP_FLOAT_MIN',
+            'PHP_FLOAT_MAX',
+        );
+
+        foreach ($php72Constants as $constant) {
+            if (\defined($constant)) {
+                self::$floatMapping[$constant] = \constant($constant);
+            }
+        }
+
         self::$intMapping[~PHP_INT_MAX] = 'PHP_INT_MIN';
         self::$inited = true;
     }

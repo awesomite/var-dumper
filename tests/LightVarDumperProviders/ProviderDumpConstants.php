@@ -27,9 +27,13 @@ class ProviderDumpConstants implements \IteratorAggregate
         if (\defined('PHP_INT_MIN')) {
             $result['PHP_INT_MIN'] = array(PHP_INT_MIN, "PHP_INT_MIN\n");
         } else {
-            $result['PHP_INT_MIN'] = array(-PHP_INT_MAX - 1, "PHP_INT_MIN\n");
+            $result['PHP_INT_MIN'] = array(~PHP_INT_MAX, "PHP_INT_MIN\n");
         }
         $result['PHP_INT_MAX'] = array(PHP_INT_MAX, "PHP_INT_MAX\n");
+
+        if (\defined('PHP_FLOAT_EPSILON')) {
+            $result['PHP_FLOAT_EPSILON'] = PHP_FLOAT_EPSILON;
+        }
 
         return new \ArrayIterator($result);
     }

@@ -21,13 +21,4 @@ interface VarDumperInterface
      * @return string
      */
     public function dumpAsString($var);
-
-    /**
-     * @deprecated
-     *
-     * @param mixed $var
-     *
-     * @return string
-     */
-    public function getDump($var);
 }

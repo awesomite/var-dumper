@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.0 (????-??-??)
+
+* Added support for constants `PHP_FLOAT_EPSILON`, `PHP_FLOAT_MIN`, `PHP_FLOAT_MAX`
+* Removed deprecated method `Awesomite\VarDumper\VarDumperInterface::dumpAsString`
+
 ## 0.11.1 (2018-01-10)
 
 * Fixed bug - `Awesomite\VarDumper\InternalVarDumper::dumpAsString`

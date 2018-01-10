@@ -46,10 +46,8 @@ class LightVarDumperTest extends BaseTestCase
         $dumper = new LightVarDumper();
         if ('#' === $expectedDump[0]) {
             $this->assertRegExp($expectedDump, $dumper->dumpAsString($var));
-            $this->assertRegExp($expectedDump, $dumper->getDump($var));
         } else {
             $this->assertSame($expectedDump, $dumper->dumpAsString($var));
-            $this->assertSame($expectedDump, $dumper->getDump($var));
         }
 
         $this->assertZeroDepth($dumper);
@@ -73,14 +71,14 @@ class LightVarDumperTest extends BaseTestCase
      */
     public function testPlaceInCode(LightVarDumper $dumper, $var, $dump)
     {
-        $this->assertSame($dump, $dumper->dumpAsString($var)); $this->assertSame($dump, $dumper->getDump($var));
+        $this->assertSame($dump, $dumper->dumpAsString($var));
         $this->assertZeroDepth($dumper);
         $this->assertEmptyReferences($dumper);
     }
 
     public function providerPlaceInCode()
     {
-        return iterator_to_array(new ProviderPlaceInCode());
+        return \iterator_to_array(new ProviderPlaceInCode());
     }
 
     /**

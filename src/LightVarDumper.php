@@ -115,8 +115,6 @@ final class LightVarDumper extends InternalVarDumper
         parent::dump($var);
         $this->displayPlaceInCode = $prev;
 
-        $this->depth->decr();
-
         return;
         // @codeCoverageIgnoreEnd
     }

@@ -31,6 +31,9 @@ class SyntaxTest extends BaseTestCase
         return array($path, $counter);
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testSyntax()
     {
         if (TestEnv::isSpeedTest()) {

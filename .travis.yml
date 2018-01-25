@@ -25,9 +25,14 @@ install:
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
 
-  - travis_retry wget https://github.com/infection/infection/releases/download/0.7.0/infection.phar
-  - travis_retry wget https://github.com/infection/infection/releases/download/0.7.0/infection.phar.pubkey
-  - chmod +x infection.phar
+  - if php -r "var_export(get_loaded_extensions(true));" | grep --quiet -i xdebug; then export RUN_INFECTION=true; else export RUN_INFECTION=false; fi
+  - |
+    if [[ ${RUN_INFECTION} == "true" ]]; then
+      wget https://github.com/infection/infection/releases/download/0.7.0/infection.phar;
+      wget https://github.com/infection/infection/releases/download/0.7.0/infection.phar.pubkey;
+      chmod +x infection.phar;
+      ./infection.phar
+    fi
 
   - cd dev-tools; travis_retry composer update; cd ..
 
@@ -37,7 +42,7 @@ before_script:
 script:
   - php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
   - php ${PHP_ARGS} vendor/bin/phpunit
-  - ./infection.phar
+  - if [[ ${RUN_INFECTION} == "true" ]]; then ./infection.phar; fi
 
   - php examples/big-dump.php
   - php examples/binary-string.php

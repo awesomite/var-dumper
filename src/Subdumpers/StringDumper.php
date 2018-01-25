@@ -145,16 +145,7 @@ class StringDumper implements SubdumperInterface
         }
     }
 
-    /**
-     * Public for php 5.3
-     *
-     * @internal
-     *
-     * @param $string
-     *
-     * @return mixed
-     */
-    public function escapeWhiteChars($string)
+    private function escapeWhiteChars($string)
     {
         return Strings::prepareSingleLine($string);
     }

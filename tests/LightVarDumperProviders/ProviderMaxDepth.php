@@ -20,7 +20,7 @@ class ProviderMaxDepth implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $result = array();
+        $result = [];
         $result = \array_merge($result, $this->getObjects());
         $result['array'] = $this->getArray();
 
@@ -57,20 +57,20 @@ object(stdClass) #{$hasher->getHashId($obj)} (2) {
 
 DUMP;
 
-        return array(
-            'objectDepth1' => array(1, $obj, $dump1),
-            'objectDepth2' => array(2, $obj, $dump2),
-            'objectDepth3' => array(3, $obj, $dump2),
-        );
+        return [
+            'objectDepth1' => [1, $obj, $dump1],
+            'objectDepth2' => [2, $obj, $dump2],
+            'objectDepth3' => [3, $obj, $dump2],
+        ];
     }
 
     private function getArray()
     {
-        $array = array(
-            'foo' => array(
+        $array = [
+            'foo' => [
                 'bar',
-            ),
-        );
+            ],
+        ];
 
         $dumpArray
             = <<<'DUMP'
@@ -80,6 +80,6 @@ array(1) {
 
 DUMP;
 
-        return array(1, $array, $dumpArray);
+        return [1, $array, $dumpArray];
     }
 }

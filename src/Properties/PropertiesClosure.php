@@ -16,7 +16,7 @@ namespace Awesomite\VarDumper\Properties;
  */
 class PropertiesClosure implements PropertiesInterface
 {
-    const DESIRED_CLASS = 'Closure';
+    const DESIRED_CLASS = \Closure::class;
 
     private $closure;
 
@@ -29,9 +29,9 @@ class PropertiesClosure implements PropertiesInterface
     {
         $reflection = new \ReflectionFunction($this->closure);
 
-        $result = array(
+        $result = [
             $this->createProperty('name', $reflection->getName()),
-        );
+        ];
 
         if (!$reflection->isInternal()) {
             $result = \array_merge($result, $this->getNonInternalProperties($reflection));
@@ -42,16 +42,14 @@ class PropertiesClosure implements PropertiesInterface
 
     private function getNonInternalProperties(\ReflectionFunction $reflection)
     {
-        $result = array(
+        $result = [
             $this->createProperty('filename', $reflection->getFileName()),
             $this->createProperty('startLine', $reflection->getStartLine()),
             $this->createProperty('endLine', $reflection->getEndLine()),
-        );
+        ];
 
-        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
-            if ($scopeClass = $reflection->getClosureScopeClass()) {
-                $result[] = $this->createProperty('closureScopeClass', $scopeClass->getName());
-            }
+        if ($scopeClass = $reflection->getClosureScopeClass()) {
+            $result[] = $this->createProperty('closureScopeClass', $scopeClass->getName());
         }
 
         return $result;

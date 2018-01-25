@@ -20,7 +20,7 @@ class ProviderMaxChildren implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $result = array();
+        $result = [];
         $result = \array_merge($result, $this->getArrays());
         $result = \array_merge($result, $this->getObjects());
 
@@ -58,11 +58,11 @@ array(11) {
 
 DUMP;
 
-        return array(
-            'arrayMax1'  => array(1, $array, $arrayDump1),
-            'arrayMax11' => array(11, $array, $arrayDump2),
-            'arrayMax12' => array(12, $array, $arrayDump2),
-        );
+        return [
+            'arrayMax1'  => [1, $array, $arrayDump1],
+            'arrayMax11' => [11, $array, $arrayDump2],
+            'arrayMax12' => [12, $array, $arrayDump2],
+        ];
     }
 
     private function getObjects()
@@ -93,10 +93,10 @@ object(stdClass) #{$hasher->getHashId($object)} (3) {
 
 DUMP;
 
-        return array(
-            'objectMax1' => array(1, $object, $objectDump1),
-            'objectMax3' => array(3, $object, $objectDump2),
-            'objectMax4' => array(4, $object, $objectDump2),
-        );
+        return [
+            'objectMax1' => [1, $object, $objectDump1],
+            'objectMax3' => [3, $object, $objectDump2],
+            'objectMax4' => [4, $object, $objectDump2],
+        ];
     }
 }

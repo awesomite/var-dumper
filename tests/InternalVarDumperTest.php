@@ -32,10 +32,10 @@ class InternalVarDumperTest extends BaseTestCase
 
     public function providerAll()
     {
-        return array(
-            array(1, "int(1)\n"),
-            array(false, "bool(false)\n"),
-            array(null, "NULL\n"),
-        );
+        return [
+            [1, "int(1)\n"],
+            [false, "bool(false)\n"],
+            [null, "NULL\n"],
+        ];
     }
 }

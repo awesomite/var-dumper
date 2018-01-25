@@ -34,12 +34,12 @@ class FileLineTest extends BaseTestCase
 
     public function providerDumpers()
     {
-        return array(
-            array(new LightVarDumper(true), true),
-            array(new InternalVarDumper(true), true),
-            array(new LightVarDumper(), false),
-            array(new InternalVarDumper(), false),
-        );
+        return [
+            [new LightVarDumper(true), true],
+            [new InternalVarDumper(true), true],
+            [new LightVarDumper(), false],
+            [new InternalVarDumper(), false],
+        ];
     }
 
     /**
@@ -63,11 +63,11 @@ class FileLineTest extends BaseTestCase
             $dump2();
         };
 
-        $nestingMapping = array(
+        $nestingMapping = [
             0 => 21,
             1 => 18,
             2 => 15,
-        );
+        ];
 
         \ob_start();
         $dump3();
@@ -80,10 +80,10 @@ class FileLineTest extends BaseTestCase
 
     public function providerNestingLevel()
     {
-        return array(
-            array(0),
-            array(1),
-            array(2),
-        );
+        return [
+            [0],
+            [1],
+            [2],
+        ];
     }
 }

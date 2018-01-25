@@ -23,6 +23,9 @@ use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxStringLength;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMultiLine;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderPlaceInCode;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderRecursive;
+use Awesomite\VarDumper\Subdumpers\AbstractObjectDumper;
+use Awesomite\VarDumper\Subdumpers\ScalarDumper;
+use Awesomite\VarDumper\Subdumpers\StringDumper;
 
 /**
  * @internal
@@ -56,10 +59,8 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerDump()
     {
-        return \array_merge(
-            \iterator_to_array(new ProviderDump()),
-            \iterator_to_array(new ProviderDumpConstants())
-        );
+        yield from new ProviderDump();
+        yield from new ProviderDumpConstants();
     }
 
     /**
@@ -78,7 +79,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerPlaceInCode()
     {
-        return \iterator_to_array(new ProviderPlaceInCode());
+        return new ProviderPlaceInCode();
     }
 
     /**
@@ -98,7 +99,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMaxDepth()
     {
-        return \iterator_to_array(new ProviderMaxDepth());
+        return new ProviderMaxDepth();
     }
 
     /**
@@ -118,7 +119,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMaxStringLength()
     {
-        return \iterator_to_array(new ProviderMaxStringLength());
+        return new ProviderMaxStringLength();
     }
 
     /**
@@ -138,7 +139,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMaxChildren()
     {
-        return \iterator_to_array(new ProviderMaxChildren());
+        return new ProviderMaxChildren();
     }
 
     /**
@@ -158,28 +159,26 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerIndent()
     {
-        return \iterator_to_array(new ProviderIndent());
+        return new ProviderIndent();
     }
 
     /**
      * @dataProvider providerRecursive
      *
-     * @param             $var
-     * @param string|bool $expectedDump
+     * @param        $var
+     * @param string $expectedDump
      */
     public function testRecursive($var, $expectedDump)
     {
         $dumper = new LightVarDumper();
         $dump = $dumper->dumpAsString($var);
         $this->assertInternalType('string', $dump);
-        if (false !== $expectedDump) {
-            $this->assertSame($expectedDump, $dumper->dumpAsString($var));
-        }
+        $this->assertSame($expectedDump, $dumper->dumpAsString($var));
     }
 
     public function providerRecursive()
     {
-        return \iterator_to_array(new ProviderRecursive());
+        return new ProviderRecursive();
     }
 
     /**
@@ -203,7 +202,7 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerMultiLine()
     {
-        return \iterator_to_array(new ProviderMultiLine());
+        return new ProviderMultiLine();
     }
 
     /**
@@ -221,13 +220,13 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerInvalidMaxDepth()
     {
-        return array(
-            array(0.1),
-            array(0),
-            array(-1),
-            array('-1'),
-            array(false),
-        );
+        return [
+            [0.1],
+            [0],
+            [-1],
+            ['-1'],
+            [false],
+        ];
     }
 
     /**
@@ -263,14 +262,14 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerInvalidMaxStringLength()
     {
-        return array(
-            array(0.1),
-            array(0),
-            array(-1),
-            array('-1'),
-            array(false),
-            array(1),
-        );
+        return [
+            [0.1],
+            [0],
+            [-1],
+            ['-1'],
+            [false],
+            [1],
+        ];
     }
 
     /**
@@ -306,24 +305,23 @@ class LightVarDumperTest extends BaseTestCase
 
     public function providerInvalidIndent()
     {
-        $result = array();
+        $result = [];
         foreach (\array_keys(Strings::$replaceChars) as $whiteChar) {
-            $result[] = array($whiteChar);
+            $result[] = [$whiteChar];
         }
 
-        $result[] = array('');
+        $result[] = [''];
 
         return $result;
     }
 
     private function reinitAllDumpers()
     {
-        $classes = array(
-            'Awesomite\VarDumper\Subdumpers\AbstractObjectDumper',
-            'Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper',
-            'Awesomite\VarDumper\Subdumpers\ScalarDumper',
-            'Awesomite\VarDumper\Subdumpers\StringDumper',
-        );
+        $classes = [
+            AbstractObjectDumper::class,
+            ScalarDumper::class,
+            StringDumper::class,
+        ];
         foreach ($classes as $class) {
             $reflectionInit = new \ReflectionProperty($class, 'inited');
             $reflectionInit->setAccessible(true);

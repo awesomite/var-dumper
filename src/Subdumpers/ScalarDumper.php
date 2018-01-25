@@ -17,7 +17,7 @@ namespace Awesomite\VarDumper\Subdumpers;
 class ScalarDumper implements SubdumperInterface
 {
     private static $floatMapping
-        = array(
+        = [
             'M_PI'       => M_PI,
             'M_E'        => M_E,
             'M_LOG2E'    => M_LOG2E,
@@ -35,12 +35,12 @@ class ScalarDumper implements SubdumperInterface
             'M_SQRT1_2'  => M_SQRT1_2,
             'M_LNPI'     => M_LNPI,
             'M_EULER'    => M_EULER,
-        );
+        ];
 
     private static $intMapping
-        = array(
+        = [
             PHP_INT_MAX => 'PHP_INT_MAX',
-        );
+        ];
 
     private static $inited = false;
 
@@ -81,11 +81,11 @@ class ScalarDumper implements SubdumperInterface
             return;
         }
 
-        $php72Constants = array(
+        $php72Constants = [
             'PHP_FLOAT_EPSILON',
             'PHP_FLOAT_MIN',
             'PHP_FLOAT_MAX',
-        );
+        ];
 
         foreach ($php72Constants as $constant) {
             if (\defined($constant)) {

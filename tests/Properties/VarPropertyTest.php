@@ -32,9 +32,9 @@ class VarPropertyTest extends BaseTestCase
 
     public function providerInvalidConstructor()
     {
-        return array(
-            array('name', 'value', false, \get_class($this)),
-            array('name', 'value', new \stdClass(), \get_class($this)),
-        );
+        return [
+            ['name', 'value', false, \get_class($this)],
+            ['name', 'value', new \stdClass(), \get_class($this)],
+        ];
     }
 }

@@ -19,7 +19,7 @@ HEADER;
 return PhpCsFixer\Config::create()
     ->setRules(array(
         '@PSR2' => true,
-        'array_syntax' => array('syntax' => 'long'),
+        'array_syntax' => array('syntax' => 'short'),
         'no_unused_imports' => true,
         'yoda_style' => true,
         'new_with_braces' => true,

@@ -45,22 +45,22 @@ class PropertyTest extends BaseTestCase
         $this->protected = \mt_rand(1, 1000);
         $randValue = \mt_rand(1, 1000);
 
-        return array(
-            array(new ReflectionProperty($object->getProperty('public'), $this), 'public', null),
-            array(
+        return [
+            [new ReflectionProperty($object->getProperty('public'), $this), 'public', null],
+            [
                 new ReflectionProperty($object->getProperty('testVariable'), $this),
                 'testVariable',
                 $this->testVariable,
-            ),
-            array(new ReflectionProperty($object->getProperty('private'), $this), 'private', $this->private),
-            array(new ReflectionProperty($object->getProperty('protected'), $this), 'protected', $this->protected),
-            array(
+            ],
+            [new ReflectionProperty($object->getProperty('private'), $this), 'private', $this->private],
+            [new ReflectionProperty($object->getProperty('protected'), $this), 'protected', $this->protected],
+            [
                 new VarProperty('varProperty', $randValue, VarProperty::VISIBILITY_PRIVATE, __CLASS__),
                 'varProperty',
                 $randValue,
                 false,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -73,7 +73,7 @@ class PropertyTest extends BaseTestCase
      */
     public function testVisibility(PropertyInterface $property, $static, $virtual, $visibility)
     {
-        $methods = array('isPublic', 'isProtected', 'isPrivate');
+        $methods = ['isPublic', 'isProtected', 'isPrivate'];
 
         if (!\in_array($visibility, $methods)) {
             throw new \LogicException("Invalid value of \$visibility - {$visibility}!");
@@ -82,7 +82,7 @@ class PropertyTest extends BaseTestCase
         $this->assertSame($static, $property->isStatic());
         $this->assertSame($virtual, $property->isVirtual());
         foreach ($methods as $method) {
-            $this->assertSame($method === $visibility, \call_user_func(array($property, $method)));
+            $this->assertSame($method === $visibility, \call_user_func([$property, $method]));
         }
     }
 
@@ -96,17 +96,17 @@ class PropertyTest extends BaseTestCase
             return new VarProperty('foo', 'bar', $visibility, \get_class($self), $static, $virtual);
         };
 
-        return array(
-            array($createProperty('static'), true, false, 'isPublic'),
-            array($createProperty('public'), false, false, 'isPublic'),
-            array($createProperty('protected'), false, false, 'isProtected'),
-            array($createProperty('private'), false, false, 'isPrivate'),
-            array($createVarProperty(VarProperty::VISIBILITY_PUBLIC, false, false), false, false, 'isPublic'),
-            array($createVarProperty(VarProperty::VISIBILITY_PUBLIC, true, false), true, false, 'isPublic'),
-            array($createVarProperty(VarProperty::VISIBILITY_PUBLIC, false, true), false, true, 'isPublic'),
-            array($createVarProperty(VarProperty::VISIBILITY_PROTECTED, false, false), false, false, 'isProtected'),
-            array($createVarProperty(VarProperty::VISIBILITY_PRIVATE, false, false), false, false, 'isPrivate'),
-        );
+        return [
+            [$createProperty('static'), true, false, 'isPublic'],
+            [$createProperty('public'), false, false, 'isPublic'],
+            [$createProperty('protected'), false, false, 'isProtected'],
+            [$createProperty('private'), false, false, 'isPrivate'],
+            [$createVarProperty(VarProperty::VISIBILITY_PUBLIC, false, false), false, false, 'isPublic'],
+            [$createVarProperty(VarProperty::VISIBILITY_PUBLIC, true, false), true, false, 'isPublic'],
+            [$createVarProperty(VarProperty::VISIBILITY_PUBLIC, false, true), false, true, 'isPublic'],
+            [$createVarProperty(VarProperty::VISIBILITY_PROTECTED, false, false), false, false, 'isProtected'],
+            [$createVarProperty(VarProperty::VISIBILITY_PRIVATE, false, false), false, false, 'isPrivate'],
+        ];
     }
 
     /**
@@ -122,12 +122,12 @@ class PropertyTest extends BaseTestCase
 
     public function providerGetDeclaringClass()
     {
-        return array(
-            array(new VarProperty('foo', 'bar', VarProperty::VISIBILITY_PUBLIC, \get_class($this)), \get_class($this)),
-            array(
+        return [
+            [new VarProperty('foo', 'bar', VarProperty::VISIBILITY_PUBLIC, \get_class($this)), \get_class($this)],
+            [
                 new ReflectionProperty(new \ReflectionProperty(\get_class($this), 'static'), $this),
                 \get_class($this),
-            ),
-        );
+            ],
+        ];
     }
 }

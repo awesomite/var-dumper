@@ -18,12 +18,12 @@ class ProviderMaxStringLength implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $result = array(
-            array(5, 'Hello world!', "string(12) “Hello”...\n"),
-            array(6, 'Hello world!', "string(12) “Hello ”...\n"),
-            array(12, 'Hello world!', "“Hello world!”\n"),
-            array(13, 'Hello world!', "“Hello world!”\n"),
-        );
+        $result = [
+            [5, 'Hello world!', "string(12) “Hello”...\n"],
+            [6, 'Hello world!', "string(12) “Hello ”...\n"],
+            [12, 'Hello world!', "“Hello world!”\n"],
+            [13, 'Hello world!', "“Hello world!”\n"],
+        ];
 
         return new \ArrayIterator($result);
     }

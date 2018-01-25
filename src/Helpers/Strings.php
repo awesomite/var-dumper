@@ -19,14 +19,14 @@ class Strings
     const BINARY_CHAR_REGEX = '[\x00-\x1F\x7F]';
 
     public static $replaceChars
-        = array(
+        = [
             "\t"   => '\t',
             "\r"   => '\r',
             "\0"   => '\0',
             "\v"   => '\v',
             "\033" => '\e',
             "\f"   => '\f',
-        );
+        ];
 
     public static function prepareArrayKey($input)
     {

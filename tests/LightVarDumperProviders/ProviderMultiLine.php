@@ -18,7 +18,7 @@ class ProviderMultiLine implements \IteratorAggregate
 {
     public function getIterator()
     {
-        return new \ArrayIterator(array(
+        return new \ArrayIterator([
             30                     => $this->getMultiline30(),
             50                     => $this->getMultiLine50(),
             'without_dots'         => $this->getMultilineWithoutDots(),
@@ -28,7 +28,7 @@ class ProviderMultiLine implements \IteratorAggregate
             'short_multiline'      => $this->getShortMulitiline(),
             'binary_string'        => $this->getBinaryString(),
             'new_line_in_new_line' => $this->getNewLineInNewLine(),
-        ));
+        ]);
     }
 
     private function getNewLineInNewLine()
@@ -42,7 +42,7 @@ string(6)
 
 DATA;
 
-        return array(200, 5, "a a a\n", $expected);
+        return [200, 5, "a a a\n", $expected];
     }
 
     private function getMultiline30()
@@ -79,7 +79,7 @@ string(769)
 
 DATA;
 
-        return array(200, 10, $this->getLoremIpsum(), $expected);
+        return [200, 10, $this->getLoremIpsum(), $expected];
     }
 
     private function getMultiLine50()
@@ -95,7 +95,7 @@ string(769)
 
 DATA;
 
-        return array(220, 50, $this->getLoremIpsum(), $expected);
+        return [220, 50, $this->getLoremIpsum(), $expected];
     }
 
     private function getMultilineWithoutDots()
@@ -111,7 +111,7 @@ string(20)
 
 EXPECTED;
 
-        return array(20, 5, $input, $expected);
+        return [20, 5, $input, $expected];
     }
 
     private function getMultilineWithBrokenDots()
@@ -128,7 +128,7 @@ string(20)
 
 EXPECTED;
 
-        return array(19, 5, $input, $expected);
+        return [19, 5, $input, $expected];
     }
 
     private function getMultilineWithNewLines()
@@ -145,7 +145,7 @@ string(14)
 EXCPECTED;
 
 
-        return array(100, 20, $input, $expected);
+        return [100, 20, $input, $expected];
     }
 
     private function getShortMulitiline()
@@ -159,7 +159,7 @@ string(6)
 
 EXCPECTED;
 
-        return array(100, \mb_strlen($input), $input, $expected);
+        return [100, \mb_strlen($input), $input, $expected];
     }
 
     private function getStringWithWhiteChars()
@@ -175,7 +175,7 @@ string(10)
 
 EXCPECTED;
 
-        return array(300, 5, $input, $expected);
+        return [300, 5, $input, $expected];
     }
 
     private function getBinaryString()
@@ -191,7 +191,7 @@ string(11)
 EXCPECTED;
 
 
-        return array(100, 8, $input, $expected);
+        return [100, 8, $input, $expected];
     }
 
     private function getLoremIpsum()

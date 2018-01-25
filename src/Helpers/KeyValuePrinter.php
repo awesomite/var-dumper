@@ -18,7 +18,7 @@ class KeyValuePrinter
 {
     private $maxLength = 0;
 
-    private $rows = array();
+    private $rows = [];
 
     /**
      * @param string $key
@@ -30,7 +30,7 @@ class KeyValuePrinter
             $this->maxLength = $strlen;
         }
 
-        $this->rows[] = array($key, $value, $strlen);
+        $this->rows[] = [$key, $value, $strlen];
     }
 
     public function flush()
@@ -39,7 +39,7 @@ class KeyValuePrinter
             list($key, $value, $strlen) = $data;
             echo $key, \str_pad('', $this->maxLength - $strlen, ' '), $value, "\n";
         }
-        $this->rows = array();
+        $this->rows = [];
         $this->maxLength = 0;
     }
 }

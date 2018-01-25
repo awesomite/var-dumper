@@ -41,12 +41,12 @@ class Foobar extends Bar
     public function __construct()
     {
         parent::__construct();
-        $this->propFooBar = array(
+        $this->propFooBar = [
             'First' => new stdClass(),
             'Second' => 2,
-            'Third' => array(array(array())),
+            'Third' => [[[]]],
             'Fourth' => 4,
-        );
+        ];
     }
 }
 

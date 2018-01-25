@@ -53,12 +53,12 @@ class HasherTest extends BaseTestCase
 
     public function providerInvalidException()
     {
-        return array(
-            array(1),
-            array(null),
-            array(false),
-            array('hello'),
-            array(\tmpfile()),
-        );
+        return [
+            [1],
+            [null],
+            [false],
+            ['hello'],
+            [\tmpfile()],
+        ];
     }
 }

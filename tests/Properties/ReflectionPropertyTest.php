@@ -36,11 +36,11 @@ class ReflectionPropertyTest extends BaseTestCase
     {
         $reflection = new \ReflectionProperty($this, 'testProperty');
 
-        return array(
-            array($reflection, false),
-            array($reflection, 1),
-            array($reflection, \get_class($this)),
-        );
+        return [
+            [$reflection, false],
+            [$reflection, 1],
+            [$reflection, \get_class($this)],
+        ];
     }
 
     /**
@@ -59,8 +59,8 @@ class ReflectionPropertyTest extends BaseTestCase
         $childClass = \get_class(new TestChild());
         $parentClass = \get_class(new TestParent());
 
-        return array(
-            array(new ReflectionProperty(new \ReflectionProperty($childClass, 'foo'), new TestChild()), $parentClass),
-        );
+        return [
+            [new ReflectionProperty(new \ReflectionProperty($childClass, 'foo'), new TestChild()), $parentClass],
+        ];
     }
 }

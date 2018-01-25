@@ -55,8 +55,7 @@ class InternalVarDumper implements VarDumperInterface
 
     protected function dumpPlaceInCode($number)
     {
-        $options = \version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;
-        $stackTrace = \debug_backtrace($options);
+        $stackTrace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $num = 1 + $number + $this->shift;
 
         // @codeCoverageIgnoreStart

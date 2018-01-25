@@ -21,26 +21,18 @@ class ProviderDump implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $result = array();
+        $result = [];
         $result['visibilityModifiers'] = $this->getVisibilityModifiers();
-        if (!\defined('HHVM_VERSION')) {
-            $result['arrayObject'] = $this->getArrayObject();
-            $result['extendedArrayObject'] = $this->getExtendedArrayObject();
-            $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
-        }
-        $result['null'] = array(null, "NULL\n");
-        $result['resource'] = array(\tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
-        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '5.4') >= 0) {
-            $result['closure'] = $this->getClosure();
-        }
+        $result['arrayObject'] = $this->getArrayObject();
+        $result['extendedArrayObject'] = $this->getExtendedArrayObject();
+        $result['extendedArrayObject2'] = $this->getExtendedArrayObject2();
+        $result['null'] = [null, "NULL\n"];
+        $result['resource'] = [\tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#"];
+        $result['closure'] = $this->getClosure();
         $result['debugInfo'] = $this->getDebugInfo();
         $result['debugInfo2'] = $this->getDebugInfo2();
         $result['debugInfo3'] = $this->getDebugInfo3();
         $result['brokenAlign'] = $this->getBrokenAlign();
-        if (\version_compare(PHP_VERSION, '5.6') < 0) {
-            $result['invalidDebugInfo'] = $this->getInvalidDebugInfo();
-            $result['nonArrayDebugInfo'] = $this->getNonArrayDebugInfo();
-        }
         $result['1-element_array'] = $this->get1ElementArray();
         $result['1-element_long_array'] = $this->get1ElementLongArray();
         $result['single_line_short_text'] = $this->getSingleLineShortText();
@@ -80,7 +72,7 @@ object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHas
 
 OBJECT;
 
-        return array($object, $objectDump);
+        return [$object, $objectDump];
     }
 
     private function getArrayObject()
@@ -100,7 +92,7 @@ object(ArrayObject) #{$hasher->getHashId($arrayObject)} (3) {
 
 DUMP;
 
-        return array($arrayObject, $arrayObjectDump);
+        return [$arrayObject, $arrayObjectDump];
     }
 
     private function getExtendedArrayObject()
@@ -121,7 +113,7 @@ object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->g
 
 DUMP;
 
-        return array($testArrayObject, $testArrayObjectDump);
+        return [$testArrayObject, $testArrayObjectDump];
     }
 
     private function getExtendedArrayObject2()
@@ -147,7 +139,7 @@ object(Awesomite\VarDumper\LightVarDumperProviders\TestArrayObject) #{$hasher->g
 
 DUMP;
 
-        return array($testArrayObject2, $testArrayObjectDump2);
+        return [$testArrayObject2, $testArrayObjectDump2];
     }
 
     private function getClosure()
@@ -167,23 +159,23 @@ object(Closure) #%%digit%% (%%digit%%) {
 
 DUMP;
 
-        $replace = array(
+        $replace = [
             '%%digit%%' => '[0-9]{1,}',
             '%%file%%'  => '.*',
             '%%any%%'   => '.*',
-        );
+        ];
         $regex = '#^' . \preg_quote($dump, '#') . '$#ms';
         $regex = \str_replace(\array_keys($replace), \array_values($replace), $regex);
 
-        return array($closure, $regex);
+        return [$closure, $regex];
     }
 
     private function getDebugInfo()
     {
-        $data = array(
+        $data = [
             'greeting' => 'hello world',
-            'class'    => \get_class(new TestDebugInfo(array())),
-        );
+            'class'    => \get_class(new TestDebugInfo([])),
+        ];
 
         $expected
             = <<<'EXPECTED'
@@ -198,12 +190,12 @@ EXPECTED;
         $obj = new TestDebugInfo($data);
         $expected = \sprintf($expected, $hasher->getHashId($obj));
 
-        return array($obj, $expected);
+        return [$obj, $expected];
     }
 
     private function getDebugInfo2()
     {
-        $data = array(1, 2.5, null, INF);
+        $data = [1, 2.5, null, INF];
 
         $expected
             = <<<'EXPECTED'
@@ -220,12 +212,12 @@ EXPECTED;
         $obj = new TestDebugInfo($data);
         $expected = \sprintf($expected, $hasher->getHashId($obj));
 
-        return array($obj, $expected);
+        return [$obj, $expected];
     }
 
     private function getDebugInfo3()
     {
-        $data = array();
+        $data = [];
 
         $expected
             = <<<'EXPECTED'
@@ -237,19 +229,19 @@ EXPECTED;
         $obj = new TestDebugInfo($data);
         $expected = \sprintf($expected, $hasher->getHashId($obj));
 
-        return array($obj, $expected);
+        return [$obj, $expected];
     }
 
 
     private function getBrokenAlign()
     {
-        $data = array(
+        $data = [
             'a'        => 'a',
             'ab'       => 'ab',
             'abc'      => 'abc',
             'subarray' => \range('a', 'm'),
             'abcd'     => 'abcd',
-        );
+        ];
 
         $expected
             = <<<'EXPECTED'
@@ -279,47 +271,18 @@ array(5) {
 EXPECTED;
 
 
-        return array($data, $expected);
-    }
-
-    private function getInvalidDebugInfo()
-    {
-        $obj = new TestInvalidDebugInfo();
-        $hasher = HasherFactory::create();
-
-        $expected = \sprintf("object(%s) #%d (0) {}\n", \get_class($obj), $hasher->getHashId($obj));
-
-        return array($obj, $expected);
-    }
-
-    private function getNonArrayDebugInfo()
-    {
-        $data = "hello world";
-
-        $expected
-            = <<<'EXPECTED'
-object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (1) {
-    public $__debugInfo() => “hello world”
-}
-
-EXPECTED;
-
-        $hasher = HasherFactory::create();
-        $obj = new TestDebugInfo($data);
-        $expected = \sprintf($expected, $hasher->getHashId($obj));
-
-        return array($obj, $expected);
+        return [$data, $expected];
     }
 
     private function get1ElementArray()
     {
         $zeros = \implode('', \array_fill(0, $this->getDefaultLineLength(), '0'));
 
-        $array = array(
-            'first'  => array(null),
+        $array = [
+            'first'  => [null],
             'second' => null,
             'third'  => $zeros,
-        );
+        ];
         $expected
             = <<<EXPECTED
 array(3) {
@@ -330,7 +293,7 @@ array(3) {
 
 EXPECTED;
 
-        return array($array, $expected);
+        return [$array, $expected];
     }
 
     private function get1ElementLongArray()
@@ -340,11 +303,11 @@ EXPECTED;
 
         $zeros = \implode('', \array_fill(0, $textLength, '0'));
 
-        $array = array(
-            'first'  => array(1),
+        $array = [
+            'first'  => [1],
             'second' => null,
             'third'  => $zeros,
-        );
+        ];
 
         $zerosLine = \implode('', \array_fill(0, $lineLength, '0'));
         $expected
@@ -360,14 +323,14 @@ array(3) {
 
 EXPECTED;
 
-        return array($array, $expected);
+        return [$array, $expected];
     }
 
     private function getSingleLineShortText()
     {
         $zeros = \implode('', \array_fill(0, $this->getDefaultLineLength(), '0'));
 
-        return array($zeros, "“{$zeros}”\n");
+        return [$zeros, "“{$zeros}”\n"];
     }
 
     private function getSingleLineLongText()
@@ -386,55 +349,55 @@ string({$textLength})
 
 EXPECTED;
 
-        return array($zeros, $expected);
+        return [$zeros, $expected];
     }
 
     private function getShortArray()
     {
-        $data = array(1, 2, null, 4.5, INF);
+        $data = [1, 2, null, 4.5, INF];
         $dump
             = <<<'DUMP'
 array(5) {1, 2, NULL, 4.5, INF}
 
 DUMP;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getShortArray2()
     {
-        $data = array(
+        $data = [
             -1                => -1,
             "multi line\nkey" => M_PI,
             null,
-            array(),
-        );
+            [],
+        ];
         $dump
             = <<<'DUMP'
 array(4) {[-1] => -1, [multi line↵key] => M_PI, [0] => NULL, [1] => array(0) {}}
 
 DUMP;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getShortArray3()
     {
-        $data = array('a' => 0, 'b' => 1, 2 => null, 3 => 3);
+        $data = ['a' => 0, 'b' => 1, 2 => null, 3 => 3];
         $dump
             = <<<'DUMP'
 array(4) {[a] => 0, [b] => 1, [2] => NULL, [3] => 3}
 
 DUMP;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getShortArrayLongKey()
     {
-        $data = array(
+        $data = [
             'very_very_very_long_key' => 'value',
-        );
+        ];
         $dump
             = <<<'DUMP'
 array(1) {
@@ -443,19 +406,19 @@ array(1) {
 
 DUMP;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getSingleElementDump()
     {
-        $data = array('Line of file');
+        $data = ['Line of file'];
         $dump
             = <<<'DUMP'
 array(1) {“Line of file”}
 
 DUMP;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getWhiteChars()
@@ -467,7 +430,7 @@ DUMP;
 
 EXPECTED;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getWhiteChars2()
@@ -482,19 +445,19 @@ string(6)
 
 EXPECTED;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getSimpleArrayWithWhiteSpaces()
     {
-        $data = array("hello\tworld!");
+        $data = ["hello\tworld!"];
         $dump
             = <<<'DUMP'
 array(1) {“hello\tworld!”}
 
 DUMP;
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getEdgeCaseForSimpleArray()
@@ -502,7 +465,7 @@ DUMP;
         $qqq = \array_fill(0, LightVarDumper::DEFAULT_MAX_LINE_LENGTH - 1, 'q');
         $qqq = \implode('', $qqq);
 
-        $data = array($qqq . "\t",);
+        $data = [$qqq . "\t",];
         $dump
             = <<<'DUMP'
 array(1) {
@@ -513,17 +476,17 @@ array(1) {
 }
 
 DUMP;
-        $replace = array(
+        $replace = [
             '%length%' => (string)LightVarDumper::DEFAULT_MAX_LINE_LENGTH,
             '%qqq%'    => $qqq,
-        );
+        ];
         $dump = \str_replace(
             \array_keys($replace),
             \array_values($replace),
             $dump
         );
 
-        return array($data, $dump);
+        return [$data, $dump];
     }
 
     private function getDefaultLineLength()

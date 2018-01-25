@@ -47,17 +47,7 @@ abstract class AbstractObjectDumper implements SubdumperInterface
 
     protected function getClassName($object)
     {
-        $class = \get_class($object);
-
-        // @see https://github.com/facebook/hhvm/issues/7868
-        // @codeCoverageIgnoreStart
-        if (\defined('HHVM_VERSION') && $object instanceof \Closure) {
-            $class = 'Closure';
-        }
-
-        // @codeCoverageIgnoreEnd
-
-        return $class;
+        return \get_class($object);
     }
 
     private static function init()

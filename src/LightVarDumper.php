@@ -29,7 +29,6 @@ use Awesomite\VarDumper\Subdumpers\ResourceDumper;
 use Awesomite\VarDumper\Subdumpers\ScalarDumper;
 use Awesomite\VarDumper\Subdumpers\StringDumper;
 use Awesomite\VarDumper\Subdumpers\SubdumperInterface;
-use Awesomite\VarDumper\Subdumpers\VarNotSupportedException;
 
 final class LightVarDumper extends InternalVarDumper
 {
@@ -51,7 +50,7 @@ final class LightVarDumper extends InternalVarDumper
     /**
      * @var SubdumperInterface[]
      */
-    private $subdumpers = array();
+    private $subdumpers = [];
 
     /**
      * {@inheritdoc}
@@ -70,7 +69,7 @@ final class LightVarDumper extends InternalVarDumper
         $this->references = $references = new Stack();
         $this->depth = new IntValue();
 
-        $this->subdumpers = array(
+        $this->subdumpers = [
             new StringDumper($this->config),
             new NullDumper(),
             new ScalarDumper(),
@@ -84,7 +83,7 @@ final class LightVarDumper extends InternalVarDumper
             new ArraySingleStringDumper($this, $this->config),
             new ArrayBigDumper($this, $references, $this->depth, $this->config),
             new ResourceDumper(),
-        );
+        ];
     }
 
     public function dump($var)
@@ -96,13 +95,8 @@ final class LightVarDumper extends InternalVarDumper
         foreach ($this->subdumpers as $subdumper) {
             if ($subdumper->supports($var)) {
                 $this->depth->incr();
-                try {
-                    $subdumper->dump($var);
-                    $this->depth->decr();
-                } catch (VarNotSupportedException $exception) {
-                    $this->depth->decr();
-                    continue;
-                }
+                $subdumper->dump($var);
+                $this->depth->decr();
 
                 return;
             }

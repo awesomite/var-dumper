@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-$paths = array(
-    \implode(DIRECTORY_SEPARATOR, array('..', 'vendor', 'autoload.php')),
-    \implode(DIRECTORY_SEPARATOR, array('..', '..', '..', 'autoload.php')),
-);
+$paths = [
+    \implode(DIRECTORY_SEPARATOR, ['..', 'vendor', 'autoload.php']),
+    \implode(DIRECTORY_SEPARATOR, ['..', '..', '..', 'autoload.php']),
+];
 
 $included = false;
 foreach ($paths as $path) {

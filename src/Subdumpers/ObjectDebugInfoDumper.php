@@ -11,7 +11,6 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Properties\Properties;
 use Awesomite\VarDumper\Properties\PropertyInterface;
 
 /**
@@ -29,9 +28,6 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
         $properties = $this->getProperties($object);
         $class = $this->getClassName($object);
         $debugInfoData = $this->getDebugInfoData($properties);
-        if (false === $debugInfoData) {
-            throw new VarNotSupportedException();
-        }
 
         $this->references->push($object);
 
@@ -49,23 +45,10 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
     /**
      * @param PropertyInterface[] $properties
      *
-     * @return array|false
+     * @return array
      */
     private function getDebugInfoData($properties)
     {
-        if (1 !== \count($properties)) {
-            return false;
-        }
-
-        if (isset($properties[0]) && Properties::PROPERTY_DEBUG_INFO === $properties[0]->getName()) {
-            $value = $properties[0]->getValue();
-
-            // check type of value for php < 5.6
-            if (\is_array($value)) {
-                return $value;
-            }
-        }
-
-        return false;
+        return $properties[0]->getValue();
     }
 }

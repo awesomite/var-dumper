@@ -11,10 +11,12 @@
 
 namespace Awesomite\VarDumper;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @internal
  */
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class BaseTestCase extends TestCase
 {
     protected function setUp()
     {

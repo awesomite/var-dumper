@@ -19,10 +19,10 @@ class Properties extends AbstractProperties
     const PROPERTY_DEBUG_INFO = '__debugInfo()';
 
     private static $mapping
-        = array(
-            '\ArrayObject' => '\Awesomite\VarDumper\Properties\PropertiesArrayObject',
-            '\Closure'     => '\Awesomite\VarDumper\Properties\PropertiesClosure',
-        );
+        = [
+            \ArrayObject::class => PropertiesArrayObject::class,
+            \Closure::class     => PropertiesClosure::class,
+        ];
 
     /**
      * @param $object
@@ -39,15 +39,15 @@ class Properties extends AbstractProperties
     {
         $object = $this->object;
 
-        if ($reflection = $this->getDebugInfoReflection()) {
-            return array(
+        if (\method_exists($object, '__debugInfo')) {
+            return [
                 new VarProperty(
                     static::PROPERTY_DEBUG_INFO,
                     $object->__debugInfo(),
                     VarProperty::VISIBILITY_PUBLIC,
                     \get_class($object)
                 ),
-            );
+            ];
         }
 
         foreach (self::$mapping as $classInterface => $classReader) {
@@ -62,20 +62,5 @@ class Properties extends AbstractProperties
         return \array_map(function ($property) use ($object) {
             return new ReflectionProperty($property, $object);
         }, $this->getDeclaredProperties());
-    }
-
-    /**
-     * @return \ReflectionMethod|null
-     */
-    private function getDebugInfoReflection()
-    {
-        if (\method_exists($this->object, '__debugInfo')) {
-            $reflection = new \ReflectionMethod($this->object, '__debugInfo');
-            if (!$reflection->isStatic() && $reflection->isPublic() && 0 === $reflection->getNumberOfParameters()) {
-                return $reflection;
-            }
-        }
-
-        return null;
     }
 }

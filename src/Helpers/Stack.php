@@ -16,7 +16,7 @@ namespace Awesomite\VarDumper\Helpers;
  */
 class Stack
 {
-    private $array = array();
+    private $array = [];
 
     public function pop()
     {

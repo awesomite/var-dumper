@@ -32,7 +32,7 @@ object(stdClass) #{$hasher->getHashId($recursiveObj)} (1) {
 
 DUMP;
 
-        $recursiveArr = array();
+        $recursiveArr = [];
         $recursiveArr[] = &$recursiveArr;
         $arrayDump
             = <<<'DUMP'
@@ -42,10 +42,10 @@ array(1) {
 
 DUMP;
 
-        $result = array(
-            array($recursiveObj, $objectDump),
-            array($recursiveArr, \version_compare(PHP_VERSION, '5.4.5' >= 0) ? $arrayDump : false),
-        );
+        $result = [
+            [$recursiveObj, $objectDump],
+            [$recursiveArr, $arrayDump],
+        ];
 
         return new \ArrayIterator($result);
     }

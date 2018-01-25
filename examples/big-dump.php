@@ -20,7 +20,7 @@ class ExampleData
 {
     public $recursion;
 
-    protected $emptyArray = array();
+    protected $emptyArray = [];
 
     private $lipsum;
 
@@ -41,7 +41,7 @@ class ExampleData
 
     private function prepareArray()
     {
-        $array = array();
+        $array = [];
         for ($i = 0; $i < 10; $i++) {
             $array[\implode('', \range(0, $i))] = $i;
         }

@@ -16,7 +16,7 @@ namespace Awesomite\VarDumper\Properties;
  */
 class PropertiesArrayObject extends AbstractProperties
 {
-    const DESIRED_CLASS_NAME = 'ArrayObject';
+    const DESIRED_CLASS_NAME = \ArrayObject::class;
 
     public function __construct(\ArrayObject $object)
     {
@@ -35,26 +35,24 @@ class PropertiesArrayObject extends AbstractProperties
             return new ReflectionProperty($property, $object);
         }, $this->getDeclaredProperties());
 
-        if (!\defined('HHVM_VERSION')) {
-            $properties[] = new VarProperty(
-                'storage',
-                $reflectionClass->getMethod('getArrayCopy')->invoke($object),
-                VarProperty::VISIBILITY_PRIVATE,
-                static::DESIRED_CLASS_NAME
-            );
-            $properties[] = new VarProperty(
-                'flags',
-                $flags,
-                VarProperty::VISIBILITY_PRIVATE,
-                static::DESIRED_CLASS_NAME
-            );
-            $properties[] = new VarProperty(
-                'iteratorClass',
-                $reflectionClass->getMethod('getIteratorClass')->invoke($object),
-                VarProperty::VISIBILITY_PRIVATE,
-                static::DESIRED_CLASS_NAME
-            );
-        }
+        $properties[] = new VarProperty(
+            'storage',
+            $reflectionClass->getMethod('getArrayCopy')->invoke($object),
+            VarProperty::VISIBILITY_PRIVATE,
+            static::DESIRED_CLASS_NAME
+        );
+        $properties[] = new VarProperty(
+            'flags',
+            $flags,
+            VarProperty::VISIBILITY_PRIVATE,
+            static::DESIRED_CLASS_NAME
+        );
+        $properties[] = new VarProperty(
+            'iteratorClass',
+            $reflectionClass->getMethod('getIteratorClass')->invoke($object),
+            VarProperty::VISIBILITY_PRIVATE,
+            static::DESIRED_CLASS_NAME
+        );
 
         $reflectionClass->getMethod('setFlags')->invoke($object, $flags);
 

@@ -59,14 +59,14 @@ class ResourceDumper implements SubdumperInterface
         $contents = \ob_get_contents();
         \ob_end_clean();
 
-        $matches = array();
+        $matches = [];
         if (\preg_match('#resource\((?<id>[0-9]+)\) of type#', $contents, $matches)) {
             return $matches['id'];
         }
 
         // @codeCoverageIgnoreStart
         $contents = \strip_tags($contents);
-        $matches = array();
+        $matches = [];
         if (\preg_match('#resource\((?<id>[0-9]+),#', $contents, $matches)) {
             return $matches['id'];
         }

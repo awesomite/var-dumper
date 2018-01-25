@@ -36,10 +36,10 @@ class PropertiesTest extends BaseTestCase
         $obj = new \stdClass();
         $obj->foo = 'bar';
 
-        return array(
-            array(new \stdClass()),
-            array($obj),
-        );
+        return [
+            [new \stdClass()],
+            [$obj],
+        ];
     }
 
     /**
@@ -55,12 +55,12 @@ class PropertiesTest extends BaseTestCase
 
     public function providerInvalidConstructor()
     {
-        return array(
-            array(1),
-            array(false),
-            array(array()),
-            array(null),
-        );
+        return [
+            [1],
+            [false],
+            [[]],
+            [null],
+        ];
     }
 
     /**
@@ -71,13 +71,8 @@ class PropertiesTest extends BaseTestCase
      */
     public function testArrayObject(\ArrayObject $array, array $expectedNames)
     {
-        if (\defined('HHVM_VERSION')) {
-            $this->assertTrue(true);
-
-            return;
-        }
         $properties = new Properties($array);
-        $names = array();
+        $names = [];
         foreach ($properties->getProperties() as $property) {
             /** @var PropertyInterface $property */
             $names[] = $property->getName();
@@ -93,9 +88,9 @@ class PropertiesTest extends BaseTestCase
         $object['test'] = 'hello';
         $object->property = 'value';
 
-        return array(
-            array($object, array('privateProperty', 'property', 'storage', 'flags', 'iteratorClass')),
-        );
+        return [
+            [$object, ['privateProperty', 'property', 'storage', 'flags', 'iteratorClass']],
+        ];
     }
 
     /**
@@ -106,17 +101,11 @@ class PropertiesTest extends BaseTestCase
      */
     public function testClosure(\Closure $closure, array $expectedProperties)
     {
-        if (\defined('HHVM_VERSION')) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         $propertiesObj = new Properties($closure);
         /** @var PropertyInterface[] $properties */
         $properties = $propertiesObj->getProperties();
         $this->assertSame(\count($properties), \count($expectedProperties));
-        $methods = array(
+        $methods = [
             'getName',
             'getValue',
             'getDeclaringClass',
@@ -125,12 +114,12 @@ class PropertiesTest extends BaseTestCase
             'isPublic',
             'isVirtual',
             'isStatic',
-        );
+        ];
         foreach ($properties as $key => $value) {
             foreach ($methods as $method) {
                 $this->assertSame(
-                    \call_user_func(array($expectedProperties[$key], $method)),
-                    \call_user_func(array($value, $method)),
+                    \call_user_func([$expectedProperties[$key], $method]),
+                    \call_user_func([$value, $method]),
                     \sprintf('%s [getName() === %s]', $method, $value->getName())
                 );
             }
@@ -139,16 +128,10 @@ class PropertiesTest extends BaseTestCase
 
     public function providerClosure()
     {
-        $result = array(
+        return [
             $this->getClosureData(),
-        );
-
-        // https://travis-ci.org/awesomite/var-dumper/jobs/240526896
-        if (\version_compare(PHP_VERSION, '7.1') >= 0 && !\defined('HHVM_VERSION')) {
-            $result[] = $this->getInternalClosureName();
-        }
-
-        return $result;
+            $this->getInternalClosureName(),
+        ];
     }
 
     private function getClosureData()
@@ -159,20 +142,18 @@ class PropertiesTest extends BaseTestCase
 
         $closure = function () {
         };
-        $properties = array(
+        $properties = [
             $fnCreateProperty('name', __NAMESPACE__ . '\\{closure}'),
             $fnCreateProperty('filename', __FILE__),
             $fnCreateProperty('startLine', __LINE__ - 5),
             $fnCreateProperty('endLine', __LINE__ - 5),
-        );
-        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
-            $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
-        }
+        ];
+        $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
 
-        return array(
+        return [
             $closure,
             $properties,
-        );
+        ];
     }
 
     private function getInternalClosureName()
@@ -182,13 +163,13 @@ class PropertiesTest extends BaseTestCase
         };
 
         $closure = \Closure::fromCallable('strpos');
-        $properties = array(
+        $properties = [
             $fnCreateProperty('name', 'strpos'),
-        );
+        ];
 
-        return array(
+        return [
             $closure,
             $properties,
-        );
+        ];
     }
 }

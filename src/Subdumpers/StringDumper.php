@@ -11,7 +11,6 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\Iterators\CallbackIterator;
 use Awesomite\VarDumper\Config\Config;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Helpers\Symbols;
@@ -121,32 +120,29 @@ class StringDumper implements SubdumperInterface
         $self = $this;
         $maxLen = $this->config->getMaxLineLength();
 
-        return new CallbackIterator(function () use (&$words, $maxLen, $self) {
-            while ($words) {
-                $current = $self->escapeWhiteChars(\array_shift($words));
+        while ($words) {
+            $current = $self->escapeWhiteChars(\array_shift($words));
 
-                if (\mb_strlen($current) > $maxLen) {
-                    $next = \mb_substr($current, $maxLen);
-                    $current = \mb_substr($current, 0, $maxLen);
-                    \array_unshift($words, $next);
+            if (\mb_strlen($current) > $maxLen) {
+                $next = \mb_substr($current, $maxLen);
+                $current = \mb_substr($current, 0, $maxLen);
+                \array_unshift($words, $next);
 
-                    return $current;
-                }
-
-                while ($words) {
-                    $nextWord = $self->escapeWhiteChars($words[0]);
-                    if (\mb_strlen($current) + \mb_strlen($nextWord) > $maxLen) {
-                        break;
-                    }
-                    $current .= $nextWord;
-                    \array_shift($words);
-                }
-
-                return $current;
+                yield $current;
+                continue;
             }
 
-            CallbackIterator::stopIterate();
-        });
+            while ($words) {
+                $nextWord = $self->escapeWhiteChars($words[0]);
+                if (\mb_strlen($current) + \mb_strlen($nextWord) > $maxLen) {
+                    break;
+                }
+                $current .= $nextWord;
+                \array_shift($words);
+            }
+
+            yield $current;
+        }
     }
 
     /**
@@ -166,10 +162,10 @@ class StringDumper implements SubdumperInterface
     private function explodeWords($string)
     {
         if ('' === $string) {
-            return array('');
+            return [''];
         }
 
-        $words = array();
+        $words = [];
         while (false !== $pos = $this->getFirstWhiteCharPos($string)) {
             if (0 !== $pos) {
                 $words[] = \mb_substr($string, 0, $pos);
@@ -186,7 +182,7 @@ class StringDumper implements SubdumperInterface
 
     private function getFirstWhiteCharPos($string)
     {
-        $data = array();
+        $data = [];
         foreach (self::$whiteChars as $char) {
             if (false !== $pos = \mb_strpos($string, $char)) {
                 $data[] = $pos;

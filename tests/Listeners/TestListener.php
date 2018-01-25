@@ -13,19 +13,26 @@ namespace Awesomite\VarDumper\Listeners;
 
 use Awesomite\VarDumper\SyntaxTest;
 use Awesomite\VarDumper\TestEnv;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Warning;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use PHPUnit\Framework\TestListener as PHPUnitTestListener;
 
 /**
  * @internal
  */
-class TestListener implements \PHPUnit_Framework_TestListener
+class TestListener implements PHPUnitTestListener
 {
-    private static $times = array();
+    private static $times = [];
 
     public static function flush()
     {
         $times = self::$times;
-        self::$times = array();
+        self::$times = [];
 
         if (empty($times)) {
             return;
@@ -54,17 +61,17 @@ class TestListener implements \PHPUnit_Framework_TestListener
         });
 
         $output = new ConsoleOutput();
-        $header = '<bg=yellow;fg=black>ms         %        ' . \str_pad('name', $maxLength, ' ') . '</>';
-        $output->writeln($header);
+        $table = new Table($output);
+        $table->setHeaders(['Time [ms]', '%', 'Name']);
         foreach ($cpTimes as $timeData) {
             list($time, $name) = $timeData;
-            $output->writeln(\sprintf(
-                '<bg=yellow;fg=black>% 7.2f    % 5.2f    %s</>',
-                $time * 1000,
-                $time / $wholeTime * 100,
-                \str_pad($name, $maxLength, ' ')
-            ));
+            $table->addRow([
+                sprintf('% 7.2f', $time * 1000),
+                sprintf('% 5.2f', $time / $wholeTime * 100),
+                $name
+            ]);
         }
+        $table->render();
     }
 
     public function __construct()
@@ -79,44 +86,48 @@ class TestListener implements \PHPUnit_Framework_TestListener
         }
     }
 
-    public function startTest(\PHPUnit_Framework_Test $test)
+    public function addWarning(Test $test, Warning $e, $time)
     {
     }
 
-    public function endTest(\PHPUnit_Framework_Test $test, $time)
+    public function startTest(Test $test)
     {
-        $name = $test instanceof \PHPUnit_Framework_TestCase
+    }
+
+    public function endTest(Test $test, $time)
+    {
+        $name = $test instanceof TestCase
             ? \get_class($test) . '::' . $test->getName()
             : \get_class($test);
 
-        self::$times[] = array($time, $name);
+        self::$times[] = [$time, $name];
     }
 
-    public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time)
     {
     }
 
-    public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
     }
 
-    public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
     }
 
-    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time)
     {
     }
 
-    public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time)
     {
     }
 
-    public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function startTestSuite(TestSuite $suite)
     {
     }
 
-    public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function endTestSuite(TestSuite $suite)
     {
     }
 }

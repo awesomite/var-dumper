@@ -42,11 +42,11 @@ class VarProperty implements PropertyInterface
      */
     public function __construct($name, $value, $visibility, $declaringClass, $static = false, $virtual = false)
     {
-        $visibilityOptions = array(
+        $visibilityOptions = [
             static::VISIBILITY_PUBLIC,
             static::VISIBILITY_PROTECTED,
             static::VISIBILITY_PRIVATE,
-        );
+        ];
         if (!\in_array($visibility, $visibilityOptions, true)) {
             throw new \InvalidArgumentException('Invalid value of $visibility!');
         }

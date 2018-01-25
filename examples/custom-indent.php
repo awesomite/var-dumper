@@ -16,17 +16,17 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
 $object = new stdClass();
 $object->foo = 'bar';
 
-$array = array(
+$array = [
     1,
     2.5,
-    array(
+    [
         M_PI,
-        array(
+        [
             $object,
             \range(1, 5),
-        ),
-    ),
-);
+        ],
+    ],
+];
 
 $dumper = new LightVarDumper();
 $dumper->setIndent('····');

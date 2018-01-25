@@ -20,10 +20,10 @@ class MyClass
 {
     public function __debugInfo()
     {
-        return array(
+        return [
             'key'=> 'value',
             'some' => 'output',
-        );
+        ];
     }
 }
 

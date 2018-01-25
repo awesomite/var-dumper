@@ -18,17 +18,17 @@ class ProviderIndent implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $result = array(
+        $result = [
             'dashes' => $this->getDashes(),
             'dots'   => $this->getDots(),
-        );
+        ];
 
         return new \ArrayIterator($result);
     }
 
     private function getDashes()
     {
-        $var = array(array(array()));
+        $var = [[[]]];
         $dump
             = <<<'DUMP'
 array(1) {
@@ -37,12 +37,12 @@ array(1) {
 
 DUMP;
 
-        return array('----', $var, $dump);
+        return ['----', $var, $dump];
     }
 
     private function getDots()
     {
-        $var = array(array(array(1, 2, 3)),);
+        $var = [[[1, 2, 3]],];
         $dump
             = <<<'DUMP'
 array(1) {
@@ -54,6 +54,6 @@ array(1) {
 
 DUMP;
 
-        return array('..', $var, $dump);
+        return ['..', $var, $dump];
     }
 }

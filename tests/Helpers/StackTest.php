@@ -39,11 +39,11 @@ class StackTest extends BaseTestCase
         $stack->push($a);
         $stack->push($b);
 
-        return array(
-            array($stack, 1, false),
-            array($stack, '1', true),
-            array($stack, 2, true),
-            array($stack, '2', false),
-        );
+        return [
+            [$stack, 1, false],
+            [$stack, '1', true],
+            [$stack, 2, true],
+            [$stack, '2', false],
+        ];
     }
 }

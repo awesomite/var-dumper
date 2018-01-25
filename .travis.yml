@@ -42,6 +42,7 @@ before_script:
 script:
   - php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
   - php ${PHP_ARGS} vendor/bin/phpunit
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
   - if [[ ${RUN_INFECTION} == "true" ]]; then ./infection.phar; fi
 
   - php examples/big-dump.php

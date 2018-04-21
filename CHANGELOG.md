@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.1 (2018-04-21)
+
+* [Fixes from 1.0.1](https://github.com/awesomite/var-dumper/blob/v1.0.1/CHANGELOG.md#101---2018-04-21)
+
 ## 0.10.0 (2018-01-02)
 
 * Convert `\t`, `\r`, `\0`, `\x0B` to visible characters

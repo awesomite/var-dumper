@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.1 (2018-04-21)
+
+* [Fixes from 1.0.1](https://github.com/awesomite/var-dumper/blob/v1.0.1/CHANGELOG.md#101---2018-04-21)
+
 ## 0.12.0 (2018-01-10)
 
 * Added support for constants `PHP_FLOAT_EPSILON`, `PHP_FLOAT_MIN`, `PHP_FLOAT_MAX`

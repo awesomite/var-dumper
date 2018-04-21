@@ -21,7 +21,34 @@ abstract class AbstractProperties implements PropertiesInterface
     protected function getDeclaredProperties()
     {
         $reflection = new \ReflectionObject($this->object);
+        $result = array();
 
-        return $reflection->getProperties();
+        if ($reflection->hasMethod('__get')) {
+            foreach (\array_keys(\get_object_vars($this->object)) as $name) {
+                $result[] = $reflection->getProperty($name);
+            }
+
+            return $result;
+        }
+
+        foreach ($reflection->getProperties() as $property) {
+            $continue = false;
+            \set_error_handler(
+                function () use (&$continue) {
+                    $continue = true;
+                },
+                E_NOTICE
+            );
+            $property->setAccessible(true);
+            $property->getValue($this->object);
+            \restore_error_handler();
+            if ($continue) {
+                continue;
+            }
+
+            $result[] = $property;
+        }
+
+        return $result;
     }
 }

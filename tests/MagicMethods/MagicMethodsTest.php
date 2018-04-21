@@ -35,24 +35,34 @@ class MagicMethodsTest extends BaseTestCase
 EXPECTED;
         $this->assertContains($expected, $dumper->dumpAsString($object));
 
+        $parts = array(
+            'private $b =>',
+        );
+        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '7.0') >= 0) {
+            $parts[] = '(1) {';
+        } else {
+            $parts[] = '(2) {';
+            $parts[] = 'private $a => NULL';
+        }
         $object->without('a');
-        $expected
-            = <<<'EXPECTED'
-(1) {
-    private $b => “b”
-}
-EXPECTED;
-        $this->assertContains($expected, $dumper->dumpAsString($object));
+        foreach ($parts as $part) {
+            $this->assertContains($part, $dumper->dumpAsString($object));
+        }
 
         $object->c = 'c';
-        $expected
-            = <<<'EXPECTED'
-(2) {
-    private $b => “b”
-    $c =>         “c”
-}
-EXPECTED;
-        $this->assertContains($expected, $dumper->dumpAsString($object));
+        $parts = array(
+            'private $b =>',
+            '$c =>',
+        );
+        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '7.0') >= 0) {
+            $parts[] = '(2) {';
+        } else {
+            $parts[] = '(3) {';
+            $parts[] = 'private $a => NULL';
+        }
+        foreach ($parts as $part) {
+            $this->assertContains($part, $dumper->dumpAsString($object));
+        }
 
         $getter = new GetterObject();
         $this->assertContains('(0) {}', $dumper->dumpAsString($getter));
@@ -61,28 +71,41 @@ EXPECTED;
     /**
      * @dataProvider providerAbstractProperties
      *
-     * @param          $object
-     * @param string[] $expectedProperties
+     * @param       $object
+     * @param array $expectedProperties
+     * @param array $diff
      */
-    public function testAbstractProperties($object, array $expectedProperties)
+    public function testAbstractProperties($object, array $expectedProperties, $diff)
     {
         $reader = new Properties($object);
 
-        $this->assertSame(\count($expectedProperties), \count($reader->getProperties()));
-        foreach ($reader->getProperties() as $property) {
-            /** @var PropertyInterface $property */
-            $this->assertContains($property->getName(), $expectedProperties);
+        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '7.0') >= 0) {
+            $this->assertSame(\count($expectedProperties), \count($reader->getProperties()));
+        } else {
+            $this->assertSame(\count($expectedProperties) + \count($diff), \count($reader->getProperties()));
+        }
+
+        foreach ($expectedProperties as $expectedProperty) {
+            $contains = false;
+            foreach ($reader->getProperties() as $property) {
+                /** @var PropertyInterface $property */
+                if ($contains = $property->getName() === $expectedProperty) {
+                    $contains = true;
+                    break;
+                }
+            }
+            $this->assertTrue($contains);
         }
     }
 
     public function providerAbstractProperties()
     {
         return array(
-            array(new RemovedProperty(), array('a', 'b')),
-            array(new GetterObject(), array()),
-            array(RemovedProperty::createWithout(array('a')), array('b')),
-            array(RemovedProperty::createWithout(array('a'))->with('c'), array('b', 'c')),
-            array(RemovedProperty::createWithout(array('a', 'b')), array()),
+            array(new RemovedProperty(), array('a', 'b'), array()),
+            array(new GetterObject(), array(), array()),
+            array(RemovedProperty::createWithout(array('a')), array('b'), array('a')),
+            array(RemovedProperty::createWithout(array('a'))->with('c'), array('b', 'c'), array('a')),
+            array(RemovedProperty::createWithout(array('a', 'b')), array(), array('a', 'b')),
         );
     }
 }

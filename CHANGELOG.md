@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.2 (2018-04-21)
+
+* [Fixes from 1.0.1](https://github.com/awesomite/var-dumper/blob/v1.0.1/CHANGELOG.md#101---2018-04-21)
+
 ## 0.11.1 (2018-01-10)
 
 * Fixed bug - `Awesomite\VarDumper\InternalVarDumper::dumpAsString`

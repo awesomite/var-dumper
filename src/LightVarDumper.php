@@ -23,7 +23,7 @@ use Awesomite\VarDumper\Subdumpers\NullDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectBigDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectDebugInfoDumper;
 use Awesomite\VarDumper\Subdumpers\ObjectRecursiveDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectTooDepthArrayDumper;
+use Awesomite\VarDumper\Subdumpers\ObjectTooDepthDumper;
 use Awesomite\VarDumper\Subdumpers\ResourceDumper;
 use Awesomite\VarDumper\Subdumpers\ScalarDumper;
 use Awesomite\VarDumper\Subdumpers\StringDumper;
@@ -75,7 +75,7 @@ final class LightVarDumper extends InternalVarDumper
             new NullDumper(),
             new ScalarDumper(),
             new ObjectRecursiveDumper($container),
-            new ObjectTooDepthArrayDumper($container),
+            new ObjectTooDepthDumper($container),
             new ObjectDebugInfoDumper($container),
             new ObjectBigDumper($container),
             new ArrayRecursiveDumper($container),

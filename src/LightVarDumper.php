@@ -122,7 +122,6 @@ final class LightVarDumper extends InternalVarDumper
             return;
         }
 
-        // @codeCoverageIgnoreStart
         // Theoretically the following lines are unnecessary
         $prev = $this->displayPlaceInCode;
         $this->displayPlaceInCode = false;
@@ -139,9 +138,6 @@ final class LightVarDumper extends InternalVarDumper
         }
 
         $this->displayPlaceInCode = $prev;
-
-        return;
-        // @codeCoverageIgnoreEnd
     }
 
     /**

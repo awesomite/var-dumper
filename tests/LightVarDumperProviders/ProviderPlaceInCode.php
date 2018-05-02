@@ -140,10 +140,18 @@ DUMP;
     private function getTestFileLine()
     {
         $reflection = new \ReflectionClass('Awesomite\VarDumper\LightVarDumperTest');
+        $lines = \file($reflection->getFileName());
+
+        $lineNo = false;
+        foreach ($lines as $key => $line) {
+            if (false !== \mb_strpos($line, 'public function testPlaceInCode')) {
+                $lineNo = $key + 3;
+            }
+        }
 
         return array(
             $reflection->getFileName(),
-            74,
+            $lineNo,
         );
     }
 }

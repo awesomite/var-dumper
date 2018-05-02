@@ -62,6 +62,27 @@ class LightVarDumperTest extends BaseTestCase
         );
     }
 
+    public function testNativeDumper()
+    {
+        $dumper = new LightVarDumper();
+
+        $reflectionObject = new \ReflectionObject($dumper);
+        $reflectionSubdumpers = $reflectionObject->getProperty('subdumpers');
+        $reflectionSubdumpers->setAccessible(true);
+        $reflectionSubdumpers->setValue($dumper, array());
+
+        $container = $this->readContainer($dumper);
+
+        foreach (array(false, true) as $bool) {
+            $container->getPrintNlOnEnd()->setValue($bool);
+            $dump = $dumper->dumpAsString(5);
+            $hasNlOnEnd = "\n" === \mb_substr($dump, -1);
+
+            $this->assertTrue('' !== $dump);
+            $this->assertSame($bool, $hasNlOnEnd);
+        }
+    }
+
     /**
      * @dataProvider providerPlaceInCode
      *

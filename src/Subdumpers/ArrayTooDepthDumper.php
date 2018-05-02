@@ -11,32 +11,20 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Config\Config;
-use Awesomite\VarDumper\Helpers\IntValue;
-
 /**
  * @internal
  */
-class ArrayTooDepthDumper implements SubdumperInterface
+class ArrayTooDepthDumper extends AbstractDumper
 {
-    private $config;
-
-    private $depth;
-
-    public function __construct(IntValue $depth, Config $config)
-    {
-        $this->depth = $depth;
-        $this->config = $config;
-    }
-
     public function supports($var)
     {
-        return \is_array($var) && $this->depth->getValue() === $this->config->getMaxDepth();
+        return \is_array($var)
+            && $this->container->getDepth()->getValue() === $this->container->getConfig()->getMaxDepth();
     }
 
     public function dump($var)
     {
         $c = \count($var);
-        echo 'array(', $c, ') {', ($c ? '...' : ''), "}\n";
+        echo 'array(', $c, ') {', ($c ? '...' : ''), "}";
     }
 }

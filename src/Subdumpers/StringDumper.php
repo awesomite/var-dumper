@@ -12,24 +12,22 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\Iterators\CallbackIterator;
-use Awesomite\VarDumper\Config\Config;
+use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Helpers\Symbols;
 
 /**
  * @internal
  */
-class StringDumper implements SubdumperInterface
+class StringDumper extends AbstractDumper
 {
     private static $inited = false;
 
     private static $whiteChars;
 
-    private $config;
-
-    public function __construct(Config $config)
+    public function __construct(Container $container)
     {
-        $this->config = $config;
+        parent::__construct($container);
         self::init();
     }
 
@@ -45,14 +43,14 @@ class StringDumper implements SubdumperInterface
         $withSuffix = false;
 
         $containsNewLine = false !== \mb_strpos($var, "\n");
-        $isMultiLine = $len > $this->config->getMaxLineLength() || $containsNewLine;
+        $isMultiLine = $len > $this->container->getConfig()->getMaxLineLength() || $containsNewLine;
 
         if (!$isMultiLine) {
             $visibleLen = $len;
             foreach (Strings::$replaceChars as $char => $replace) {
                 $number = \mb_substr_count($var, $char);
                 $visibleLen += $number * \mb_strlen($replace);
-                if ($visibleLen > $this->config->getMaxLineLength()) {
+                if ($visibleLen > $this->container->getConfig()->getMaxLineLength()) {
                     $isMultiLine = true;
                     break;
                 }
@@ -63,8 +61,8 @@ class StringDumper implements SubdumperInterface
             $withPrefix = true;
         }
 
-        if ($len > $this->config->getMaxStringLength()) {
-            $var = \mb_substr($var, 0, $this->config->getMaxStringLength());
+        if ($len > $this->container->getConfig()->getMaxStringLength()) {
+            $var = \mb_substr($var, 0, $this->container->getConfig()->getMaxStringLength());
             $withPrefix = true;
             $withSuffix = true;
         }
@@ -86,7 +84,6 @@ class StringDumper implements SubdumperInterface
             }
             $this->dumpMultiLine($var);
         }
-        echo "\n";
     }
 
     private static function init()
@@ -110,7 +107,7 @@ class StringDumper implements SubdumperInterface
                 $metaline .= Symbols::SYMBOL_NEW_LINE;
             }
             foreach ($this->getLines($metaline) as $line) {
-                echo "\n", $this->config->getIndent(), Symbols::SYMBOL_CITE, ' ', $line;
+                echo "\n", $this->container->getConfig()->getIndent(), Symbols::SYMBOL_CITE, ' ', $line;
             }
         }
     }
@@ -119,7 +116,7 @@ class StringDumper implements SubdumperInterface
     {
         $words = $this->explodeWords($string);
         $self = $this;
-        $maxLen = $this->config->getMaxLineLength();
+        $maxLen = $this->container->getConfig()->getMaxLineLength();
 
         return new CallbackIterator(function () use (&$words, $maxLen, $self) {
             while ($words) {

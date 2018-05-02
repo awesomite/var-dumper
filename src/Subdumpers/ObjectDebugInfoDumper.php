@@ -17,7 +17,7 @@ use Awesomite\VarDumper\Properties\PropertyInterface;
 /**
  * @internal
  */
-class ObjectDebugInfoDumper extends AbstractObjectBigDumper
+class ObjectDebugInfoDumper extends AbstractObjectDumper
 {
     public function supports($var)
     {
@@ -33,17 +33,17 @@ class ObjectDebugInfoDumper extends AbstractObjectBigDumper
             throw new VarNotSupportedException();
         }
 
-        $this->references->push($object);
+        $this->container->getReferences()->push($object);
 
         $count = \count($debugInfoData);
-        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', $count, ') {[';
+        echo 'object(', $class, ') #', $this->container->getHasher()->getHashId($object), ' (', $count, ') {[';
         if ($count > 0) {
             echo "\n";
-            ArrayBigDumper::dumpBody($debugInfoData, $this->config, $this->dumper);
+            ArrayBigDumper::dumpBody($debugInfoData, $this->container);
         }
-        echo ']}', "\n";
+        echo ']}';
 
-        $this->references->pop();
+        $this->container->getReferences()->pop();
     }
 
     /**

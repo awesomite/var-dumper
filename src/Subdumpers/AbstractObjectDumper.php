@@ -11,28 +11,14 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Objects\HasherFactory;
-use Awesomite\VarDumper\Objects\HasherInterface;
 use Awesomite\VarDumper\Properties\Properties;
 use Awesomite\VarDumper\Properties\PropertyInterface;
 
 /**
  * @internal
  */
-abstract class AbstractObjectDumper implements SubdumperInterface
+abstract class AbstractObjectDumper extends AbstractDumper
 {
-    /**
-     * @var HasherInterface
-     */
-    protected static $hasher;
-
-    private static $inited = false;
-
-    public function __construct()
-    {
-        self::init();
-    }
-
     /**
      * @param $object
      *
@@ -58,15 +44,5 @@ abstract class AbstractObjectDumper implements SubdumperInterface
         // @codeCoverageIgnoreEnd
 
         return $class;
-    }
-
-    private static function init()
-    {
-        if (self::$inited) {
-            return;
-        }
-
-        self::$hasher = HasherFactory::create();
-        self::$inited = true;
     }
 }

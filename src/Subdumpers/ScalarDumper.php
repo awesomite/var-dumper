@@ -59,7 +59,7 @@ class ScalarDumper implements SubdumperInterface
         if (\is_float($scalar)) {
             foreach (self::$floatMapping as $key => $value) {
                 if ($value === $scalar) {
-                    echo $key, "\n";
+                    echo $key;
 
                     return;
                 }
@@ -67,12 +67,12 @@ class ScalarDumper implements SubdumperInterface
         }
 
         if (\is_int($scalar) && \array_key_exists($scalar, self::$intMapping)) {
-            echo self::$intMapping[$scalar], "\n";
+            echo self::$intMapping[$scalar];
 
             return;
         }
 
-        echo \var_export($scalar, true), "\n";
+        echo \var_export($scalar, true);
     }
 
     private static function init()

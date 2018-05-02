@@ -12,8 +12,7 @@
 namespace Awesomite\VarDumper;
 
 use Awesomite\VarDumper\Config\EditableConfig;
-use Awesomite\VarDumper\Helpers\IntValue;
-use Awesomite\VarDumper\Helpers\Stack;
+use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Subdumpers\ArrayBigDumper;
 use Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper;
@@ -40,13 +39,14 @@ final class LightVarDumper extends InternalVarDumper
     const DEFAULT_INDENT            = '    ';
 
     /**
+     * @var Container
+     */
+    private $container;
+
+    /**
      * @var EditableConfig
      */
     private $config;
-
-    private $depth;
-
-    private $references;
 
     /**
      * @var SubdumperInterface[]
@@ -60,59 +60,84 @@ final class LightVarDumper extends InternalVarDumper
     {
         parent::__construct($displayPlaceInCode, $stepShift);
 
-        $this->config = new Config\EditableConfig(
+        $this->config = $config = new Config\EditableConfig(
             static::DEFAULT_MAX_CHILDREN,
             static::DEFAULT_MAX_DEPTH,
             static::DEFAULT_MAX_STRING_LENGTH,
             static::DEFAULT_MAX_LINE_LENGTH,
             static::DEFAULT_INDENT
         );
-        $this->references = $references = new Stack();
-        $this->depth = new IntValue();
+
+        $this->container = $container = new Container($config, $this);
 
         $this->subdumpers = array(
-            new StringDumper($this->config),
+            new StringDumper($container),
             new NullDumper(),
             new ScalarDumper(),
-            new ObjectRecursiveDumper($references),
-            new ObjectTooDepthArrayDumper($this->depth, $this->config),
-            new ObjectDebugInfoDumper($this, $references, $this->depth, $this->config),
-            new ObjectBigDumper($this, $references, $this->depth, $this->config),
-            new ArrayRecursiveDumper($references),
-            new ArrayTooDepthDumper($this->depth, $this->config),
-            new ArraySimpleViewDumper($this, $this->config, $this->depth),
-            new ArraySingleStringDumper($this, $this->config),
-            new ArrayBigDumper($this, $references, $this->depth, $this->config),
+            new ObjectRecursiveDumper($container),
+            new ObjectTooDepthArrayDumper($container),
+            new ObjectDebugInfoDumper($container),
+            new ObjectBigDumper($container),
+            new ArrayRecursiveDumper($container),
+            new ArrayTooDepthDumper($container),
+            new ArraySimpleViewDumper($container),
+            new ArraySingleStringDumper($container),
+            new ArrayBigDumper($container),
             new ResourceDumper(),
         );
     }
 
     public function dump($var)
     {
-        if ($this->displayPlaceInCode && 0 === $this->depth->getValue()) {
+        if ($this->displayPlaceInCode && 0 === $this->container->getDepth()->getValue()) {
             $this->dumpPlaceInCode(0);
         }
 
+        $printNl = $this->container->getPrintNlOnEnd()->getValue();
+        $this->container->getPrintNlOnEnd()->setValue(true);
+        $return = false;
+
         foreach ($this->subdumpers as $subdumper) {
             if ($subdumper->supports($var)) {
-                $this->depth->incr();
+                $this->container->getDepth()->incr();
                 try {
                     $subdumper->dump($var);
-                    $this->depth->decr();
+                    if ($printNl) {
+                        echo "\n";
+                    }
+                    $this->container->getDepth()->decr();
+                    $return = true;
                 } catch (VarNotSupportedException $exception) {
-                    $this->depth->decr();
+                    $this->container->getDepth()->decr();
                     continue;
                 }
 
-                return;
+                break;
             }
+        }
+
+        $this->container->getPrintNlOnEnd()->setValue($printNl);
+
+        if ($return) {
+            return;
         }
 
         // @codeCoverageIgnoreStart
         // Theoretically the following lines are unnecessary
         $prev = $this->displayPlaceInCode;
         $this->displayPlaceInCode = false;
-        parent::dump($var);
+
+        if ($this->container->getPrintNlOnEnd()->getValue()) {
+            parent::dump($var);
+        } else {
+            \ob_start();
+            parent::dump($var);
+            $result = \ob_get_contents();
+            \ob_end_clean();
+
+            echo \mb_substr($result, 0, -1);
+        }
+
         $this->displayPlaceInCode = $prev;
 
         return;

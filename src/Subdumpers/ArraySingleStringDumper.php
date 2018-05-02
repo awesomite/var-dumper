@@ -11,25 +11,13 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Config\Config;
 use Awesomite\VarDumper\Helpers\Strings;
-use Awesomite\VarDumper\LightVarDumper;
 
 /**
  * @internal
  */
-class ArraySingleStringDumper implements SubdumperInterface
+class ArraySingleStringDumper extends AbstractDumper
 {
-    private $dumper;
-
-    private $config;
-
-    public function __construct(LightVarDumper $dumper, Config $config)
-    {
-        $this->dumper = $dumper;
-        $this->config = $config;
-    }
-
     public function supports($array)
     {
         return \is_array($array)
@@ -37,11 +25,15 @@ class ArraySingleStringDumper implements SubdumperInterface
             && \array_key_exists(0, $array)
             && \is_string($array[0])
             && false === \mb_strpos($array[0], "\n")
-            && \mb_strlen(Strings::prepareSingleLine($array[0])) <= $this->config->getMaxLineLength();
+            && \mb_strlen(Strings::prepareSingleLine($array[0])) <= $this->container->getConfig()->getMaxLineLength();
     }
 
     public function dump($array)
     {
-        echo 'array(1) {', \mb_substr($this->dumper->dumpAsString($array[0]), 0, -1), "}\n";
+        $nlOnEnd = $this->container->getPrintNlOnEnd();
+        $prev = $nlOnEnd->getValue();
+        $nlOnEnd->setValue(false);
+        echo 'array(1) {', $this->container->getDumper()->dumpAsString($array[0]), "}";
+        $nlOnEnd->setValue($prev);
     }
 }

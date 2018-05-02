@@ -18,7 +18,7 @@ use Awesomite\VarDumper\Properties\PropertyInterface;
 /**
  * @internal
  */
-class ObjectBigDumper extends AbstractObjectBigDumper
+class ObjectBigDumper extends AbstractObjectDumper
 {
     public function supports($var)
     {
@@ -27,20 +27,20 @@ class ObjectBigDumper extends AbstractObjectBigDumper
 
     public function dump($object)
     {
-        $this->references->push($object);
+        $this->container->getReferences()->push($object);
 
         $properties = $this->getProperties($object);
         $class = $this->getClassName($object);
 
         $count = \count($properties);
-        echo 'object(', $class, ') #', self::$hasher->getHashId($object), ' (', $count, ') {';
+        echo 'object(', $class, ') #', $this->container->getHasher()->getHashId($object), ' (', $count, ') {';
         if ($count > 0) {
             echo "\n";
             $this->dumpProperties($properties);
         }
-        echo '}', "\n";
+        echo '}';
 
-        $this->references->pop();
+        $this->container->getReferences()->pop();
     }
 
 
@@ -49,15 +49,18 @@ class ObjectBigDumper extends AbstractObjectBigDumper
      */
     private function dumpProperties($properties)
     {
-        $limit = $this->config->getMaxChildren();
+        $nlOnEnd = $this->container->getPrintNlOnEnd();
+        $nlOnEndPrev = $nlOnEnd->getValue();
+        $nlOnEnd->setValue(false);
+
+        $limit = $this->container->getConfig()->getMaxChildren();
         $printer = new KeyValuePrinter();
-        $indent = $this->config->getIndent();
+        $indent = $this->container->getConfig()->getIndent();
         foreach ($properties as $property) {
             $propName = Strings::prepareArrayKey($property->getName());
             $key = "{$this->getTextTypePrefix($property)}\${$propName}";
 
-            $valDump = $this->dumper->dumpAsString($property->getValue());
-            $valDump = \mb_substr($valDump, 0, -1);
+            $valDump = $this->container->getDumper()->dumpAsString($property->getValue());
             if (false === \mb_strpos($valDump, "\n")) {
                 $printer->add("{$indent}{$key} => ", $valDump, \mb_strlen("{$indent}{$key} => "));
             } else {
@@ -68,13 +71,15 @@ class ObjectBigDumper extends AbstractObjectBigDumper
 
             if (!--$limit) {
                 $printer->flush();
-                if (\count($properties) > $this->config->getMaxChildren()) {
+                if (\count($properties) > $this->container->getConfig()->getMaxChildren()) {
                     echo "{$indent}(...)\n";
                 }
                 break;
             }
         }
         $printer->flush();
+
+        $nlOnEnd->setValue($nlOnEndPrev);
     }
 
     private function getTextTypePrefix(PropertyInterface $property)

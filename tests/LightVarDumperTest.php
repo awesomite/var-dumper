@@ -11,8 +11,8 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\IntValue;
-use Awesomite\VarDumper\Helpers\Stack;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDumpConstants;
@@ -319,7 +319,6 @@ class LightVarDumperTest extends BaseTestCase
     private function reinitAllDumpers()
     {
         $classes = array(
-            'Awesomite\VarDumper\Subdumpers\AbstractObjectDumper',
             'Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper',
             'Awesomite\VarDumper\Subdumpers\ScalarDumper',
             'Awesomite\VarDumper\Subdumpers\StringDumper',
@@ -335,17 +334,25 @@ class LightVarDumperTest extends BaseTestCase
     private function assertZeroDepth(LightVarDumper $dumper)
     {
         /** @var IntValue $depth */
-        $depth = $this->readPrivateProperty($dumper, 'depth');
+        $depth = $this->readPrivateProperty($this->readContainer($dumper), 'depth');
+
         $this->assertSame(0, $depth->getValue());
     }
 
     private function assertEmptyReferences(LightVarDumper $dumper)
     {
-        /** @var Stack $references */
-        $references = $this->readPrivateProperty($dumper, 'references');
-
+        $references = $this->readContainer($dumper)->getReferences();
         $array = $this->readPrivateProperty($references, 'array');
         $this->assertSame(0, \count($array));
+    }
+
+    /**
+     * @param  LightVarDumper $dumper
+     * @return Container
+     */
+    private function readContainer(LightVarDumper $dumper)
+    {
+        return $this->readPrivateProperty($dumper, 'container');
     }
 
     private function readPrivateProperty($object, $name)

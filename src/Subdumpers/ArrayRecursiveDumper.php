@@ -11,12 +11,12 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Helpers\Stack;
+use Awesomite\VarDumper\Helpers\Container;
 
 /**
  * @internal
  */
-class ArrayRecursiveDumper implements SubdumperInterface
+class ArrayRecursiveDumper extends AbstractDumper
 {
     private $references;
 
@@ -24,20 +24,20 @@ class ArrayRecursiveDumper implements SubdumperInterface
 
     private static $canCompareArrays = null;
 
-    public function __construct(Stack $references)
+    public function __construct(Container $container)
     {
-        $this->references = $references;
+        parent::__construct($container);
         self::init();
     }
 
     public function supports($var)
     {
-        return self::$canCompareArrays && $this->references->in($var);
+        return self::$canCompareArrays && $this->container->getReferences()->in($var);
     }
 
     public function dump($array)
     {
-        echo 'RECURSIVE array(' . \count($array) . ")\n";
+        echo 'RECURSIVE array(' . \count($array) . ")";
     }
 
     private static function init()

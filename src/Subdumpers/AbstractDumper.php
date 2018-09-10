@@ -11,18 +11,17 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Helpers\Container;
+
 /**
  * @internal
  */
-class NullDumper implements SubdumperInterface
+abstract class AbstractDumper implements SubdumperInterface
 {
-    public function supports($var)
-    {
-        return null === $var;
-    }
+    protected $container;
 
-    public function dump($var)
+    public function __construct(Container $container)
     {
-        echo "NULL";
+        $this->container = $container;
     }
 }

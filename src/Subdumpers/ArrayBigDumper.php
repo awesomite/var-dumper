@@ -11,38 +11,15 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Config\Config;
-use Awesomite\VarDumper\Helpers\IntValue;
+use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
-use Awesomite\VarDumper\Helpers\Stack;
 use Awesomite\VarDumper\Helpers\Strings;
-use Awesomite\VarDumper\LightVarDumper;
 
 /**
  * @internal
  */
-class ArrayBigDumper implements SubdumperInterface
+class ArrayBigDumper extends AbstractDumper
 {
-    private $dumper;
-
-    private $references;
-
-    private $depth;
-
-    private $config;
-
-    public function __construct(
-        LightVarDumper $dumper,
-        Stack $references,
-        IntValue $depth,
-        Config $config
-    ) {
-        $this->dumper = $dumper;
-        $this->references = $references;
-        $this->depth = $depth;
-        $this->config = $config;
-    }
-
     public function supports($var)
     {
         return \is_array($var);
@@ -50,30 +27,36 @@ class ArrayBigDumper implements SubdumperInterface
 
     public function dump($array)
     {
-        $this->references->push($array);
+        $this->container->getReferences()->push($array);
 
         $count = \count($array);
         echo 'array(' . $count . ') {';
 
         if ($count > 0) {
             echo "\n";
-            static::dumpBody($array, $this->config, $this->dumper);
+            static::dumpBody($array, $this->container);
         }
 
-        echo '}' . "\n";
+        echo '}';
 
-        $this->references->pop();
+        $this->container->getReferences()->pop();
     }
 
-    public static function dumpBody(array $array, Config $config, LightVarDumper $dumper)
+    public static function dumpBody(array $array, Container $container)
     {
+        $nlOnEnd = $container->getPrintNlOnEnd();
+        $nlOnEndPrev = $nlOnEnd->getValue();
+        $nlOnEnd->setValue(false);
+
+        $config = $container->getConfig();
+        $dumper = $container->getDumper();
+
         $indent = $config->getIndent();
         $limit = $config->getMaxChildren();
         $printer = new KeyValuePrinter();
         foreach ($array as $key => $value) {
             $key = Strings::prepareArrayKey($key);
             $valDump = $dumper->dumpAsString($value);
-            $valDump = \mb_substr($valDump, 0, -1);
             if (false === \mb_strpos($valDump, "\n")) {
                 $printer->add("{$indent}[{$key}] => ", $valDump, \mb_strlen("{$indent}[{$key}] => "));
             } else {
@@ -91,5 +74,7 @@ class ArrayBigDumper implements SubdumperInterface
             }
         }
         $printer->flush();
+
+        $nlOnEnd->setValue($nlOnEndPrev);
     }
 }

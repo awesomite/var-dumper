@@ -9,20 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace Awesomite\VarDumper\Subdumpers;
+namespace Awesomite\VarDumper\Helpers;
 
 /**
  * @internal
  */
-class NullDumper implements SubdumperInterface
+class BoolValue
 {
-    public function supports($var)
+    private $value;
+
+    public function __construct($value = false)
     {
-        return null === $var;
+        $this->value = $value;
     }
 
-    public function dump($var)
+    public function getValue()
     {
-        echo "NULL";
+        return $this->value;
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
     }
 }

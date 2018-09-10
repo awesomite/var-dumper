@@ -14,17 +14,21 @@ namespace Awesomite\VarDumper\Subdumpers;
 /**
  * @internal
  */
-class ArrayTooDepthDumper extends AbstractDumper
+class ObjectTooDepthDumper extends AbstractObjectDumper
 {
     public function supports($var)
     {
-        return \is_array($var)
+        return \is_object($var)
             && $this->container->getDepth()->getValue() === $this->container->getConfig()->getMaxDepth();
     }
 
-    public function dump($var)
+    public function dump($object)
     {
-        $c = \count($var);
-        echo 'array(', $c, ') {', ($c ? '...' : ''), "}";
+        $class = $this->getClassName($object);
+        $properties = $this->getProperties($object);
+
+        echo 'object(', $class, ') #', $this->container->getHasher()->getHashId($object), ' (', \count($properties), ') {';
+        echo \count($properties) ? '...' : '';
+        echo "}";
     }
 }

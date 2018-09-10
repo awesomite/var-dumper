@@ -11,31 +11,15 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Config\Config;
-use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\Strings;
-use Awesomite\VarDumper\LightVarDumper;
 
 /**
  * @internal
  */
-class ArraySimpleViewDumper implements SubdumperInterface
+class ArraySimpleViewDumper extends AbstractDumper
 {
     const COUNT_LIMIT = 5;
     const KEY_LIMIT   = 20;
-
-    private $dumper;
-
-    private $config;
-
-    private $depth;
-
-    public function __construct(LightVarDumper $dumper, Config $config, IntValue $depth)
-    {
-        $this->dumper = $dumper;
-        $this->config = $config;
-        $this->depth = $depth;
-    }
 
     public function supports($var)
     {
@@ -44,7 +28,7 @@ class ArraySimpleViewDumper implements SubdumperInterface
         }
 
         $count = \count($var);
-        $limit = \min(static::COUNT_LIMIT, $this->config->getMaxChildren());
+        $limit = \min(static::COUNT_LIMIT, $this->container->getConfig()->getMaxChildren());
 
         if ($count > $limit || 0 === $count) {
             return false;
@@ -74,6 +58,10 @@ class ArraySimpleViewDumper implements SubdumperInterface
 
     public function dump($var)
     {
+        $nlOnEnd = $this->container->getPrintNlOnEnd();
+        $nlOnEndPrev = $nlOnEnd->getValue();
+        $nlOnEnd->setValue(false);
+
         echo 'array(', \count($var), ') {';
         $i = 0;
         \end($var);
@@ -89,12 +77,14 @@ class ArraySimpleViewDumper implements SubdumperInterface
                 $keyToDump = '[' . $key . '] => ';
                 $canSkipKey = false;
             }
-            echo $keyToDump, \mb_substr($this->dumper->dumpAsString($value), 0, -1);
+            echo $keyToDump, $this->container->getDumper()->dumpAsString($value);
             if ($last !== $key) {
                 echo ', ';
             }
             ++$i;
         }
-        echo "}\n";
+        echo "}";
+
+        $nlOnEnd->setValue($nlOnEndPrev);
     }
 }

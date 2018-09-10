@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.2] - 2018-09-10
+
+* Refactor, external API has not changed
+
 ## [1.0.1] - 2018-04-21
 
 * Use [`get_object_vars`](http://php.net/manual/en/function.get-object-vars.php)

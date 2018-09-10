@@ -25,13 +25,13 @@ class ResourceDumper implements SubdumperInterface
     {
         $id = $this->getResourceId($resource);
         if (false !== $id) {
-            echo 'resource #', $id, ' of type ', \get_resource_type($resource), "\n";
+            echo 'resource #', $id, ' of type ', \get_resource_type($resource);
 
             return;
         }
 
         // @codeCoverageIgnoreStart
-        echo 'resource of type ', \get_resource_type($resource), "\n";
+        echo 'resource of type ', \get_resource_type($resource);
 
         return;
         // @codeCoverageIgnoreEnd

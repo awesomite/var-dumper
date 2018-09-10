@@ -2,7 +2,7 @@
 
 ## [1.0.2] - 2018-09-10
 
-* Refactor, external API has not changed
+Refactor, external API has not changed.
 
 ## [1.0.1] - 2018-04-21
 

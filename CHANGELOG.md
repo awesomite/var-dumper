@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0] - 2019-09-14
+
+* Added [`Awesomite\VarDumper\SymfonyVarDumper`](./src/SymfonyVarDumper.php)
+* Refactor - all `@internal` classes have been marked as `final` whenever it was possible
+
 ## [1.0.3] - 2018-09-13
 
 Fixed bug for HHVM - [`spl_object_id`](http://php.net/manual/en/function.spl-object-id.php)
@@ -40,6 +45,7 @@ $reflectionProp->getValue($obj);
 
 This version contains the same source code as [0.12.0].
 
+[1.1.0]: https://github.com/awesomite/var-dumper/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/awesomite/var-dumper/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/awesomite/var-dumper/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/awesomite/var-dumper/compare/v1.0.0...v1.0.1

@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Objects;
 /**
  * @internal
  */
-class Hasher72 extends BaseHasher
+final class Hasher72 extends BaseHasher
 {
     public function getHashId($object)
     {

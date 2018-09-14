@@ -16,7 +16,7 @@ use Awesomite\VarDumper\BaseTestCase;
 /**
  * @internal
  */
-class VarPropertyTest extends BaseTestCase
+final class VarPropertyTest extends BaseTestCase
 {
     /**
      * @dataProvider             providerInvalidConstructor

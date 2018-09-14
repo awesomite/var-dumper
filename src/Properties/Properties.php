@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Properties;
 /**
  * @internal
  */
-class Properties extends AbstractProperties
+final class Properties extends AbstractProperties
 {
     const PROPERTY_DEBUG_INFO = '__debugInfo()';
 

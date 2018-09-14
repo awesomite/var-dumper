@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\LightVarDumperProviders;
 /**
  * @internal
  */
-class TestObject extends TestParent
+final class TestObject extends TestParent
 {
     public static $static = 'static value';
 

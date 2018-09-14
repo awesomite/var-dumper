@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Objects;
 /**
  * @internal
  */
-class HasherFactory
+final class HasherFactory
 {
     /**
      * @return HasherInterface

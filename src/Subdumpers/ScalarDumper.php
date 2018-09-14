@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Subdumpers;
 /**
  * @internal
  */
-class ScalarDumper implements SubdumperInterface
+final class ScalarDumper implements SubdumperInterface
 {
     private static $floatMapping
         = array(

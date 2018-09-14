@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Properties;
 /**
  * @internal
  */
-class PropertiesClosure implements PropertiesInterface
+final class PropertiesClosure implements PropertiesInterface
 {
     const DESIRED_CLASS = 'Closure';
 

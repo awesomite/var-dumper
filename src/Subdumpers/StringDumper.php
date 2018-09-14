@@ -19,7 +19,7 @@ use Awesomite\VarDumper\Helpers\Symbols;
 /**
  * @internal
  */
-class StringDumper extends AbstractDumper
+final class StringDumper extends AbstractDumper
 {
     private static $inited = false;
 

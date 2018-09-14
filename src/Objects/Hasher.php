@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Objects;
 /**
  * @internal
  */
-class Hasher extends BaseHasher
+final class Hasher extends BaseHasher
 {
     private static $hashes = array();
 

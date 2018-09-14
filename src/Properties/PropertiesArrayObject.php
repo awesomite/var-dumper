@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Properties;
 /**
  * @internal
  */
-class PropertiesArrayObject extends AbstractProperties
+final class PropertiesArrayObject extends AbstractProperties
 {
     const DESIRED_CLASS_NAME = 'ArrayObject';
 

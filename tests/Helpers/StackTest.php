@@ -16,7 +16,7 @@ use Awesomite\VarDumper\BaseTestCase;
 /**
  * @internal
  */
-class StackTest extends BaseTestCase
+final class StackTest extends BaseTestCase
 {
     /**
      * @dataProvider providerIn

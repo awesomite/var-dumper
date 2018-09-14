@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Subdumpers;
 /**
  * @internal
  */
-class ObjectTooDepthDumper extends AbstractObjectDumper
+final class ObjectTooDepthDumper extends AbstractObjectDumper
 {
     public function supports($var)
     {

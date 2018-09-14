@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Helpers;
 /**
  * @internal
  */
-class BoolValue
+final class BoolValue
 {
     private $value;
 

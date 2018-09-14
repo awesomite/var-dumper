@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\LightVarDumperProviders;
 /**
  * @internal
  */
-class TestInvalidDebugInfo
+final class TestInvalidDebugInfo
 {
     private function __debugInfo()
     {

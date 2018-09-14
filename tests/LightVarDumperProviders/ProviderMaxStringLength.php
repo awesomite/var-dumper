@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\LightVarDumperProviders;
 /**
  * @internal
  */
-class ProviderMaxStringLength implements \IteratorAggregate
+final class ProviderMaxStringLength implements \IteratorAggregate
 {
     public function getIterator()
     {

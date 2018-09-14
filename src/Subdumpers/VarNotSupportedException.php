@@ -14,6 +14,6 @@ namespace Awesomite\VarDumper\Subdumpers;
 /**
  * @internal
  */
-class VarNotSupportedException extends \Exception
+final class VarNotSupportedException extends \Exception
 {
 }

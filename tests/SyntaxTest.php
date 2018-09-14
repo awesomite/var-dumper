@@ -13,8 +13,10 @@ namespace Awesomite\VarDumper;
 
 /**
  * @internal
+ *
+ * @group syntax-test
  */
-class SyntaxTest extends BaseTestCase
+final class SyntaxTest extends BaseTestCase
 {
     public static function requireWholeSrc()
     {

@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Config;
 /**
  * @internal
  */
-class EditableConfig extends Config
+final class EditableConfig extends AbstractConfig
 {
     public function setMaxChildren($limit)
     {

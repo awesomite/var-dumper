@@ -16,7 +16,7 @@ use Awesomite\VarDumper\Objects\HasherFactory;
 /**
  * @internal
  */
-class ProviderRecursive implements \IteratorAggregate
+final class ProviderRecursive implements \IteratorAggregate
 {
     public function getIterator()
     {

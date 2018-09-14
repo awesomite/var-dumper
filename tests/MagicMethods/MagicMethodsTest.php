@@ -19,7 +19,7 @@ use Awesomite\VarDumper\Properties\PropertyInterface;
 /**
  * @internal
  */
-class MagicMethodsTest extends BaseTestCase
+final class MagicMethodsTest extends BaseTestCase
 {
     public function testDump()
     {

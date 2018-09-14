@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Helpers;
 /**
  * @internal
  */
-class Strings
+final class Strings
 {
     const BINARY_CHAR_REGEX = '[\x00-\x1F\x7F]';
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.1.0] - ????-??-??
+## [1.1.0] - 2019-09-14
 
 * Added [`Awesomite\VarDumper\SymfonyVarDumper`](./src/SymfonyVarDumper.php)
 * Refactor - all `@internal` classes have been marked as `final` whenever it was possible

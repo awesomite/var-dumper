@@ -15,6 +15,7 @@
         }
     },
     "autoload-dev": {
+        "files": ["tests/polyfill.php"],
         "psr-4": {
             "Awesomite\\VarDumper\\": "tests/"
         }

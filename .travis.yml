@@ -82,7 +82,9 @@ script:
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar;
-      wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar.pubkey;
+      wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar.asc;
+      gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 493B4AA0
+      gpg --with-fingerprint --verify infection.phar.asc infection.phar
       chmod +x infection.phar;
       ./infection.phar
     fi

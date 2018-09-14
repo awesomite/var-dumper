@@ -10,6 +10,15 @@
  */
 
 if (!\function_exists('is_iterable')) {
+    /**
+     * @internal
+     *
+     * @param $var
+     *
+     * @return bool
+     *
+     * @see https://travis-ci.org/awesomite/var-dumper/jobs/428546478
+     */
     function is_iterable($var)
     {
         return \is_array($var) || $var instanceof \Traversable;

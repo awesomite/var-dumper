@@ -80,7 +80,7 @@ script:
   - php ${PHP_ARGS} vendor/bin/phpunit
   - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
   - |
-    if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then
+    if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar;
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar.asc;
       gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 493B4AA0

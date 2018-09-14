@@ -3,7 +3,7 @@
 ## [1.1.0] - ????-??-??
 
 * Added [`Awesomite\VarDumper\SymfonyVarDumper`](./src/SymfonyVarDumper.php)
-* Refactor - all `@internal` classes have been changed to `final` whenever it was possible
+* Refactor - all `@internal` classes have been marked as `final` whenever it was possible
 
 ## [1.0.3] - 2018-09-13
 

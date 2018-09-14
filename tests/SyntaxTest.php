@@ -13,6 +13,8 @@ namespace Awesomite\VarDumper;
 
 /**
  * @internal
+ *
+ * @group syntax-test
  */
 final class SyntaxTest extends BaseTestCase
 {

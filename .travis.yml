@@ -68,6 +68,13 @@ install:
       export PHP_CS_FIXER="./dev-tools/vendor/bin/php-cs-fixer";
       export RUN_CS_FIXER="true";
     fi
+  # https://travis-ci.org/awesomite/var-dumper/jobs/428682342
+  # Warning: ini_get_all() expects parameter 1 to be string,
+  # null given in /home/travis/build/awesomite/var-dumper/vendor/phpunit/phpunit/src/Util/GlobalState.php on line 79
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:4} == "hhvm" ]]; then
+      export PHPUNIT_EXCLUDE="--exclude-group=syntax-test";
+    fi
   - cd dev-tools; travis_retry composer update; cd ..
 
 before_script:
@@ -77,8 +84,8 @@ before_script:
 
 script:
   - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix; fi
-  - php ${PHP_ARGS} vendor/bin/phpunit
-  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit
+  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE}
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE}
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar;

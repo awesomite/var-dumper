@@ -75,6 +75,7 @@ class SymfonyVarDumperTest extends BaseTestCase
             array(new \stdClass()),
             array(false, new CliDumper()),
             array(\range(1, 10), new CliDumper(), new VarCloner()),
+            array(\tmpfile(), null, new VarCloner()),
         );
     }
 

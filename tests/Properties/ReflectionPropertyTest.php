@@ -16,7 +16,7 @@ use Awesomite\VarDumper\BaseTestCase;
 /**
  * @internal
  */
-class ReflectionPropertyTest extends BaseTestCase
+final class ReflectionPropertyTest extends BaseTestCase
 {
     private $testProperty;
 

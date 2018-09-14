@@ -11,7 +11,7 @@
 
 namespace Awesomite\VarDumper\Helpers;
 
-use Awesomite\VarDumper\Config\Config;
+use Awesomite\VarDumper\Config\AbstractConfig;
 use Awesomite\VarDumper\LightVarDumper;
 use Awesomite\VarDumper\Objects\HasherFactory;
 use Awesomite\VarDumper\Objects\HasherInterface;
@@ -19,7 +19,7 @@ use Awesomite\VarDumper\Objects\HasherInterface;
 /**
  * @internal
  */
-class Container
+final class Container
 {
     private $references;
 
@@ -33,14 +33,14 @@ class Container
 
     private static $hasher;
 
-    public function __construct(Config $config, LightVarDumper $dumper)
+    public function __construct(AbstractConfig $config, LightVarDumper $dumper)
     {
         $this->config = $config;
         $this->dumper = $dumper;
     }
 
     /**
-     * @return Config
+     * @return AbstractConfig
      */
     public function getConfig()
     {

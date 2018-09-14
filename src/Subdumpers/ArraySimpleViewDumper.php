@@ -16,7 +16,7 @@ use Awesomite\VarDumper\Helpers\Strings;
 /**
  * @internal
  */
-class ArraySimpleViewDumper extends AbstractDumper
+final class ArraySimpleViewDumper extends AbstractDumper
 {
     const COUNT_LIMIT = 5;
     const KEY_LIMIT   = 20;

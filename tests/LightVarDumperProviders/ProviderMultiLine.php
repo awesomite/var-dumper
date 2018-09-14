@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\LightVarDumperProviders;
 /**
  * @internal
  */
-class ProviderMultiLine implements \IteratorAggregate
+final class ProviderMultiLine implements \IteratorAggregate
 {
     public function getIterator()
     {

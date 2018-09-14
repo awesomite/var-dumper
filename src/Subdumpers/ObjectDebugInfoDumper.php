@@ -17,7 +17,7 @@ use Awesomite\VarDumper\Properties\PropertyInterface;
 /**
  * @internal
  */
-class ObjectDebugInfoDumper extends AbstractObjectDumper
+final class ObjectDebugInfoDumper extends AbstractObjectDumper
 {
     public function supports($var)
     {

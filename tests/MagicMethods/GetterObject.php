@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\MagicMethods;
 /**
  * @internal
  */
-class GetterObject extends RemovedProperty
+final class GetterObject extends RemovedProperty
 {
     private $c = 'c';
 

@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper;
 /**
  * @internal
  */
-class TestEnv
+final class TestEnv
 {
     public static function isSpeedTest()
     {

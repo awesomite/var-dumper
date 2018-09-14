@@ -16,7 +16,7 @@ use Awesomite\VarDumper\Helpers\Strings;
 /**
  * @internal
  */
-class ArraySingleStringDumper extends AbstractDumper
+final class ArraySingleStringDumper extends AbstractDumper
 {
     public function supports($array)
     {

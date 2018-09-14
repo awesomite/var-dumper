@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\LightVarDumperProviders;
 /**
  * @internal
  */
-class TestDebugInfo
+final class TestDebugInfo
 {
     private $data;
 

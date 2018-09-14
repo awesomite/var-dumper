@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Properties;
 /**
  * @internal
  */
-class VarProperty implements PropertyInterface
+final class VarProperty implements PropertyInterface
 {
     const VISIBILITY_PUBLIC    = 'public';
     const VISIBILITY_PROTECTED = 'protected';

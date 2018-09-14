@@ -27,7 +27,7 @@ use Awesomite\VarDumper\LightVarDumperProviders\ProviderRecursive;
 /**
  * @internal
  */
-class LightVarDumperTest extends BaseTestCase
+final class LightVarDumperTest extends BaseTestCase
 {
     private $wasDumperReset = false;
 

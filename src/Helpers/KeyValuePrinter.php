@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Helpers;
 /**
  * @internal
  */
-class KeyValuePrinter
+final class KeyValuePrinter
 {
     private $maxLength = 0;
 

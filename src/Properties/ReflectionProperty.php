@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Properties;
 /**
  * @internal
  */
-class ReflectionProperty implements PropertyInterface
+final class ReflectionProperty implements PropertyInterface
 {
     private $reflection;
 

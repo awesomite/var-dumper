@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Properties;
 /**
  * @internal
  */
-class ArrayObject extends \ArrayObject
+final class ArrayObject extends \ArrayObject
 {
     private $privateProperty = 'private value';
 

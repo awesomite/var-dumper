@@ -18,7 +18,7 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 /**
  * @internal
  */
-class SymfonyVarDumperTest extends BaseTestCase
+final class SymfonyVarDumperTest extends BaseTestCase
 {
     /**
      * @dataProvider providerAll

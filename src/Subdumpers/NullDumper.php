@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Subdumpers;
 /**
  * @internal
  */
-class NullDumper implements SubdumperInterface
+final class NullDumper implements SubdumperInterface
 {
     public function supports($var)
     {

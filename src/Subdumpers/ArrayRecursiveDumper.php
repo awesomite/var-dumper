@@ -16,7 +16,7 @@ use Awesomite\VarDumper\Helpers\Container;
 /**
  * @internal
  */
-class ArrayRecursiveDumper extends AbstractDumper
+final class ArrayRecursiveDumper extends AbstractDumper
 {
     private $references;
 

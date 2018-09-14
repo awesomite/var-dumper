@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\LightVarDumperProviders;
 /**
  * @internal
  */
-class ProviderDumpConstants implements \IteratorAggregate
+final class ProviderDumpConstants implements \IteratorAggregate
 {
     public function getIterator()
     {

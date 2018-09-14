@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Helpers;
 /**
  * @internal
  */
-class IntValue
+final class IntValue
 {
     private $value;
 

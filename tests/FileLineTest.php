@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper;
 /**
  * @internal
  */
-class FileLineTest extends BaseTestCase
+final class FileLineTest extends BaseTestCase
 {
     /**
      * @dataProvider providerDumpers

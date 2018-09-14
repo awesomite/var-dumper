@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\LightVarDumperProviders;
 /**
  * @internal
  */
-class TestArrayObject extends \ArrayObject
+final class TestArrayObject extends \ArrayObject
 {
     private $privateProperty = 'private value';
 

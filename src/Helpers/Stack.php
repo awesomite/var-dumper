@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Helpers;
 /**
  * @internal
  */
-class Stack
+final class Stack
 {
     private $array = array();
 

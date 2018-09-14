@@ -13,7 +13,7 @@ namespace Awesomite\VarDumper\Objects;
 
 use Awesomite\VarDumper\BaseTestCase;
 
-class HasherTest extends BaseTestCase
+final class HasherTest extends BaseTestCase
 {
     public function testHash()
     {

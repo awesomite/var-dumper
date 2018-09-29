@@ -141,6 +141,7 @@ final class PropertiesTest extends BaseTestCase
     {
         $result = array(
             $this->getClosureData(),
+            $this->getClosureDataWithUse(),
         );
 
         // https://travis-ci.org/awesomite/var-dumper/jobs/240526896
@@ -168,6 +169,35 @@ final class PropertiesTest extends BaseTestCase
         if (\version_compare(PHP_VERSION, '5.4') >= 0) {
             $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
         }
+
+        return array(
+            $closure,
+            $properties,
+        );
+    }
+
+    private function getClosureDataWithUse()
+    {
+        $a = 1;
+        $b = null;
+        $c = new \stdClass();
+
+        $fnCreateProperty = function ($name, $value) {
+            return new VarProperty($name, $value, VarProperty::VISIBILITY_PUBLIC, 'Closure', false, true);
+        };
+
+        $closure = function () use ($a, $b, $c) {
+        };
+        $properties = array(
+            $fnCreateProperty('name', __NAMESPACE__ . '\\{closure}'),
+            $fnCreateProperty('filename', __FILE__),
+            $fnCreateProperty('startLine', __LINE__ - 5),
+            $fnCreateProperty('endLine', __LINE__ - 5),
+        );
+        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
+            $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
+        }
+        $properties[] = $fnCreateProperty('use', array('a' => $a, 'b' => $b, 'c' => $c));
 
         return array(
             $closure,

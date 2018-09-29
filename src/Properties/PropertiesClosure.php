@@ -54,6 +54,10 @@ final class PropertiesClosure implements PropertiesInterface
             }
         }
 
+        if ($vars = $reflection->getStaticVariables()) {
+            $result[] = $this->createProperty('use', $vars);
+        }
+
         return $result;
     }
 

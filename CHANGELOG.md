@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.2.0] - ????-??-?
+
+* Added support for `use` keyword in anonymous functions, e.g.:
+
+```php
+<?php
+
+use Awesomite\VarDumper\LightVarDumper;
+
+$x = 5;
+$y = 6;
+
+$fn = function () use ($x, $y) {
+};
+
+$dumper = new LightVarDumper();
+$dumper->dump($fn);
+```
+
+```
+object(Closure) #1 (5) {
+    $name =>      “{closure}”
+    $filename =>  “(...)/file.php”
+    $startLine => 8
+    $endLine =>   9
+    $use =>       array(2) {[x] => 5, [y] => 6}
+}
+```
+
 ## [1.1.0] - 2019-09-14
 
 * Added [`Awesomite\VarDumper\SymfonyVarDumper`](./src/SymfonyVarDumper.php)
@@ -23,7 +52,9 @@ whenever object contains method [`__get`](http://php.net/manual/en/language.oop5
 * In some cases method `LightVarDumper::dump` didn't work properly, because the following code triggers
 error `Notice: Undefined property: Foo::$a` in PHP ^7.0, fixed issue:
 
-```
+```php
+<?php
+
 class Foo
 {
     private $a = 'a';
@@ -45,6 +76,7 @@ $reflectionProp->getValue($obj);
 
 This version contains the same source code as [0.12.0].
 
+[1.2.0]: https://github.com/awesomite/var-dumper/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/awesomite/var-dumper/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/awesomite/var-dumper/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/awesomite/var-dumper/compare/v1.0.1...v1.0.2

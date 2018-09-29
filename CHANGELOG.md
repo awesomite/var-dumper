@@ -1,8 +1,8 @@
 # Changelog
 
-## [1.2.0] - ????-??-?
+## [1.2.0] - 2018-09-29
 
-* Added support for `use` keyword in anonymous functions, e.g.:
+Added support for `use` keyword in anonymous functions, e.g.:
 
 ```php
 <?php
@@ -29,7 +29,7 @@ object(Closure) #1 (5) {
 }
 ```
 
-## [1.1.0] - 2019-09-14
+## [1.1.0] - 2018-09-14
 
 * Added [`Awesomite\VarDumper\SymfonyVarDumper`](./src/SymfonyVarDumper.php)
 * Refactor - all `@internal` classes have been marked as `final` whenever it was possible

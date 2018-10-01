@@ -31,14 +31,16 @@ class InternalVarDumper implements VarDumperInterface
     {
         $iniKey = 'xdebug.overload_var_dump';
         $previousVal = \ini_get($iniKey);
-        \ini_set($iniKey, 0);
+        \ini_set($iniKey, '0');
 
         if ($this->displayPlaceInCode) {
             $this->dumpPlaceInCode(0);
         }
         \var_dump($var);
 
-        \ini_set($iniKey, $previousVal);
+        if (false !== $previousVal) {
+            \ini_set($iniKey, $previousVal);
+        }
     }
 
     public function dumpAsString($var)

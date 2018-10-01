@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.1] - 2018-10-01
+
+Function [`ini_set`](http://php.net/manual/en/function.ini-set.php) expects second argument as string,
+changed `ini_set('xdebug.overload_var_dump', 0)` to `ini_set('xdebug.overload_var_dump', '0')`.
+
 ## [1.2.0] - 2018-09-29
 
 Added support for `use` keyword in anonymous functions, e.g.:
@@ -76,6 +81,7 @@ $reflectionProp->getValue($obj);
 
 This version contains the same source code as [0.12.0].
 
+[1.2.1]: https://github.com/awesomite/var-dumper/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/awesomite/var-dumper/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/awesomite/var-dumper/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/awesomite/var-dumper/compare/v1.0.2...v1.0.3

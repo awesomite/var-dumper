@@ -18,8 +18,6 @@ use Awesomite\VarDumper\Helpers\Container;
  */
 final class ArrayRecursiveDumper extends AbstractDumper
 {
-    private $references;
-
     private static $inited = false;
 
     private static $canCompareArrays = null;

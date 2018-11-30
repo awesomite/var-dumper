@@ -3,6 +3,7 @@
 ## [1.3.0] - ????-??-??
 
 * Class `Awesomite\VarDumper\Config\AbstractConfig` has been become abstract
+* Removed unused property `Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper::$references`
 
 ## [1.2.1] - 2018-10-01
 

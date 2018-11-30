@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Config;
 /**
  * @internal
  */
-class AbstractConfig
+abstract class AbstractConfig
 {
     protected $maxChildren;
 

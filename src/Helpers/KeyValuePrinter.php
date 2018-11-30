@@ -11,6 +11,10 @@
 
 namespace Awesomite\VarDumper\Helpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+use Awesomite\VarDumper\Strings\PartInterface;
+use Awesomite\VarDumper\Strings\Parts;
+
 /**
  * @internal
  */
@@ -33,13 +37,24 @@ final class KeyValuePrinter
         $this->rows[] = array($key, $value, $strlen);
     }
 
+    /**
+     * @return PartInterface|null
+     */
     public function flush()
     {
+        if (!$this->rows) {
+            return null;
+        }
+
+        $result = new Parts();
         foreach ($this->rows as $data) {
             list($key, $value, $strlen) = $data;
-            echo $key, \str_pad('', $this->maxLength - $strlen, ' '), $value, "\n";
+            $part = new LinePart($key . \str_pad('', $this->maxLength - $strlen, ' ') . $value);
+            $result->appendPart($part);
         }
         $this->rows = array();
         $this->maxLength = 0;
+
+        return $result;
     }
 }

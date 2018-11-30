@@ -14,12 +14,65 @@ namespace Awesomite\VarDumper\Subdumpers;
 use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
 use Awesomite\VarDumper\Helpers\Strings;
+use Awesomite\VarDumper\Strings\LinePart;
+use Awesomite\VarDumper\Strings\PartInterface;
+use Awesomite\VarDumper\Strings\Parts;
 
 /**
  * @internal
  */
 final class ArrayBigDumper extends AbstractDumper
 {
+    /**
+     * @param array     $array
+     * @param Container $container
+     *
+     * @return PartInterface
+     */
+    public static function dumpBody(array $array, Container $container)
+    {
+        $config = $container->getConfig();
+        $dumper = $container->getDumper();
+
+        $indent = $config->getIndent();
+        $limit = $config->getMaxChildren();
+        $printer = new KeyValuePrinter();
+
+        $result = new Parts();
+
+        foreach ($array as $key => $value) {
+            $key = Strings::prepareArrayKey($key);
+            $subPart = $dumper->dumpAsPart($value);
+
+            if (!$subPart->isMultiLine()) {
+                $printer->add("[{$key}] => ", $subPart, \mb_strlen("[{$key}] => "));
+            } else {
+                if ($flushed = $printer->flush()) {
+                    $result->appendPart($flushed);
+                }
+                $subPart->addIndent($indent);
+                $result->appendPart(new LinePart("[{$key}] =>"));
+                $result->appendPart($subPart);
+            }
+
+            if (!--$limit) {
+                if ($flushed = $printer->flush()) {
+                    $result->appendPart($flushed);
+                }
+                if (\count($array) > $config->getMaxChildren()) {
+                    $result->appendPart(new LinePart('(...)'));
+                }
+                break;
+            }
+        }
+
+        if ($flushed = $printer->flush()) {
+            $result->appendPart($flushed);
+        }
+
+        return $result;
+    }
+
     public function supports($var)
     {
         return \is_array($var);
@@ -30,51 +83,22 @@ final class ArrayBigDumper extends AbstractDumper
         $this->container->getReferences()->push($array);
 
         $count = \count($array);
-        echo 'array(' . $count . ') {';
+
+        $result = new Parts();
+        $header = new LinePart('array(' . $count . ') {');
+        $result->appendPart($header);
 
         if ($count > 0) {
-            echo "\n";
-            static::dumpBody($array, $this->container);
+            $body = static::dumpBody($array, $this->container);
+            $body->addIndent($this->container->getConfig()->getIndent());
+            $result->appendPart($body);
+            $result->appendPart(new LinePart('}'));
+        } else {
+            $header->append('}');
         }
-
-        echo '}';
 
         $this->container->getReferences()->pop();
-    }
 
-    public static function dumpBody(array $array, Container $container)
-    {
-        $nlOnEnd = $container->getPrintNlOnEnd();
-        $nlOnEndPrev = $nlOnEnd->getValue();
-        $nlOnEnd->setValue(false);
-
-        $config = $container->getConfig();
-        $dumper = $container->getDumper();
-
-        $indent = $config->getIndent();
-        $limit = $config->getMaxChildren();
-        $printer = new KeyValuePrinter();
-        foreach ($array as $key => $value) {
-            $key = Strings::prepareArrayKey($key);
-            $valDump = $dumper->dumpAsString($value);
-            if (false === \mb_strpos($valDump, "\n")) {
-                $printer->add("{$indent}[{$key}] => ", $valDump, \mb_strlen("{$indent}[{$key}] => "));
-            } else {
-                $printer->flush();
-                $valDump = \str_replace("\n", "\n{$indent}{$indent}", $valDump);
-                echo "{$indent}[{$key}] =>\n{$indent}{$indent}$valDump\n";
-            }
-
-            if (!--$limit) {
-                $printer->flush();
-                if (\count($array) > $config->getMaxChildren()) {
-                    echo "{$indent}(...)\n";
-                }
-                break;
-            }
-        }
-        $printer->flush();
-
-        $nlOnEnd->setValue($nlOnEndPrev);
+        return $result;
     }
 }

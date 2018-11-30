@@ -9,21 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Awesomite\VarDumper\Subdumpers;
-
-use Awesomite\VarDumper\Strings\PartInterface;
+namespace Awesomite\VarDumper\Strings;
 
 /**
  * @internal
  */
-interface SubdumperInterface
+interface PartsInterface extends PartInterface
 {
-    public function supports($var);
-
-    /**
-     * @return PartInterface
-     *
-     * @throws VarNotSupportedException
-     */
-    public function dump($var);
+    public function appendPart(PartInterface $part);
 }

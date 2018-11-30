@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+
 /**
  * @internal
  */
@@ -59,20 +61,16 @@ final class ScalarDumper implements SubdumperInterface
         if (\is_float($scalar)) {
             foreach (self::$floatMapping as $key => $value) {
                 if ($value === $scalar) {
-                    echo $key;
-
-                    return;
+                    return new LinePart($key);
                 }
             }
         }
 
         if (\is_int($scalar) && \array_key_exists($scalar, self::$intMapping)) {
-            echo self::$intMapping[$scalar];
-
-            return;
+            return new LinePart(self::$intMapping[$scalar]);
         }
 
-        echo \var_export($scalar, true);
+        return new LinePart(\var_export($scalar, true));
     }
 
     private static function init()

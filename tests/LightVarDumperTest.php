@@ -23,6 +23,8 @@ use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxStringLength;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMultiLine;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderPlaceInCode;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderRecursive;
+use Awesomite\VarDumper\Subdumpers\NativeDumper;
+use Awesomite\VarDumper\Subdumpers\SubdumpersCollection;
 
 /**
  * @internal
@@ -66,21 +68,30 @@ final class LightVarDumperTest extends BaseTestCase
     {
         $dumper = new LightVarDumper();
 
-        $reflectionObject = new \ReflectionObject($dumper);
-        $reflectionSubdumpers = $reflectionObject->getProperty('subdumpers');
-        $reflectionSubdumpers->setAccessible(true);
-        $reflectionSubdumpers->setValue($dumper, array());
+        $subdumper = $this->readPrivateProperty($dumper, 'subdumper');
+        $refSubDumper = new \ReflectionProperty($subdumper, 'subdumpers');
+        $refSubDumper->setAccessible(true);
+        $refSubDumper->setValue($subdumper, array(new NativeDumper()));
 
-        $container = $this->readContainer($dumper);
+        $dump = $dumper->dumpAsString(5);
+        $this->assertInternalType('string', $dump);
+        $this->assertNotSame('', $dump);
+    }
 
-        foreach (array(false, true) as $bool) {
-            $container->getPrintNlOnEnd()->setValue($bool);
-            $dump = $dumper->dumpAsString(5);
-            $hasNlOnEnd = "\n" === \mb_substr($dump, -1);
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage None of the containers supports this variable [NULL]
+     */
+    public function testNoSupportedContainer()
+    {
+        $dumper = new LightVarDumper();
 
-            $this->assertTrue('' !== $dump);
-            $this->assertSame($bool, $hasNlOnEnd);
-        }
+        $subdumper = $this->readPrivateProperty($dumper, 'subdumper');
+        $refSubDumper = new \ReflectionProperty($subdumper, 'subdumpers');
+        $refSubDumper->setAccessible(true);
+        $refSubDumper->setValue($subdumper, array());
+
+        $dumper->dump(null);
     }
 
     /**
@@ -373,7 +384,10 @@ final class LightVarDumperTest extends BaseTestCase
      */
     private function readContainer(LightVarDumper $dumper)
     {
-        return $this->readPrivateProperty($dumper, 'container');
+        /** @var SubdumpersCollection $subdumper */
+        $subdumper = $this->readPrivateProperty($dumper, 'subdumper');
+
+        return $this->readPrivateProperty($subdumper, 'container');
     }
 
     private function readPrivateProperty($object, $name)

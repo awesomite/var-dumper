@@ -12,9 +12,9 @@
 namespace Awesomite\VarDumper\Helpers;
 
 use Awesomite\VarDumper\Config\AbstractConfig;
-use Awesomite\VarDumper\LightVarDumper;
 use Awesomite\VarDumper\Objects\HasherFactory;
 use Awesomite\VarDumper\Objects\HasherInterface;
+use Awesomite\VarDumper\Subdumpers\SubdumpersCollection;
 
 /**
  * @internal
@@ -27,13 +27,11 @@ final class Container
 
     private $config;
 
-    private $printNlOnEnd;
-
     private $dumper;
 
     private static $hasher;
 
-    public function __construct(AbstractConfig $config, LightVarDumper $dumper)
+    public function __construct(AbstractConfig $config, SubdumpersCollection $dumper)
     {
         $this->config = $config;
         $this->dumper = $dumper;
@@ -64,15 +62,7 @@ final class Container
     }
 
     /**
-     * @return BoolValue
-     */
-    public function getPrintNlOnEnd()
-    {
-        return $this->printNlOnEnd ?: $this->printNlOnEnd = new BoolValue(true);
-    }
-
-    /**
-     * @return LightVarDumper
+     * @return SubdumpersCollection
      */
     public function getDumper()
     {

@@ -11,20 +11,24 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\InternalVarDumper;
 use Awesomite\VarDumper\Strings\LinePart;
 
 /**
  * @internal
  */
-final class NullDumper implements SubdumperInterface
+final class NativeDumper implements SubdumperInterface
 {
     public function supports($var)
     {
-        return null === $var;
+        return true;
     }
 
     public function dump($var)
     {
-        return new LinePart('NULL');
+        $internal = new InternalVarDumper();
+        $result = $internal->dumpAsString($var);
+
+        return new LinePart(\mb_substr($result, 0, -1));
     }
 }

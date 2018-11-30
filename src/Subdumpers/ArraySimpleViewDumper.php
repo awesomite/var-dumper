@@ -12,6 +12,7 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Helpers\Strings;
+use Awesomite\VarDumper\Strings\LinePart;
 
 /**
  * @internal
@@ -58,11 +59,7 @@ final class ArraySimpleViewDumper extends AbstractDumper
 
     public function dump($var)
     {
-        $nlOnEnd = $this->container->getPrintNlOnEnd();
-        $nlOnEndPrev = $nlOnEnd->getValue();
-        $nlOnEnd->setValue(false);
-
-        echo 'array(', \count($var), ') {';
+        $result = new LinePart('array(' . \count($var) . ') {');
         $i = 0;
         \end($var);
         $last = \key($var);
@@ -71,20 +68,20 @@ final class ArraySimpleViewDumper extends AbstractDumper
         foreach ($var as $key => $value) {
             $keyToDump = '';
             if (\is_string($key)) {
-                $keyToDump = '[' . Strings::prepareArrayKey($key) . '] => ';
+                $result->append('[' . Strings::prepareArrayKey($key) . '] => ');
                 $canSkipKey = false;
             } elseif (!$canSkipKey || $key !== $i) {
-                $keyToDump = '[' . $key . '] => ';
+                $result->append('[' . $key . '] => ');
                 $canSkipKey = false;
             }
-            echo $keyToDump, $this->container->getDumper()->dumpAsString($value);
+            $result->append((string) $this->container->getDumper()->dumpAsPart($value));
             if ($last !== $key) {
-                echo ', ';
+                $result->append(', ');
             }
             ++$i;
         }
-        echo "}";
+        $result->append('}');
 
-        $nlOnEnd->setValue($nlOnEndPrev);
+        return $result;
     }
 }

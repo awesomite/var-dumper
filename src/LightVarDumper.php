@@ -12,23 +12,8 @@
 namespace Awesomite\VarDumper;
 
 use Awesomite\VarDumper\Config\EditableConfig;
-use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\Strings;
-use Awesomite\VarDumper\Subdumpers\ArrayBigDumper;
-use Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper;
-use Awesomite\VarDumper\Subdumpers\ArraySimpleViewDumper;
-use Awesomite\VarDumper\Subdumpers\ArraySingleStringDumper;
-use Awesomite\VarDumper\Subdumpers\ArrayTooDepthDumper;
-use Awesomite\VarDumper\Subdumpers\NullDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectBigDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectDebugInfoDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectRecursiveDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectTooDepthDumper;
-use Awesomite\VarDumper\Subdumpers\ResourceDumper;
-use Awesomite\VarDumper\Subdumpers\ScalarDumper;
-use Awesomite\VarDumper\Subdumpers\StringDumper;
-use Awesomite\VarDumper\Subdumpers\SubdumperInterface;
-use Awesomite\VarDumper\Subdumpers\VarNotSupportedException;
+use Awesomite\VarDumper\Subdumpers\SubdumpersCollection;
 
 final class LightVarDumper extends InternalVarDumper
 {
@@ -39,19 +24,14 @@ final class LightVarDumper extends InternalVarDumper
     const DEFAULT_INDENT            = '    ';
 
     /**
-     * @var Container
-     */
-    private $container;
-
-    /**
      * @var EditableConfig
      */
     private $config;
 
     /**
-     * @var SubdumperInterface[]
+     * @var SubdumpersCollection
      */
-    private $subdumpers = array();
+    private $subdumper;
 
     /**
      * {@inheritdoc}
@@ -68,76 +48,16 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_INDENT
         );
 
-        $this->container = $container = new Container($config, $this);
-
-        $this->subdumpers = array(
-            new StringDumper($container),
-            new NullDumper(),
-            new ScalarDumper(),
-            new ObjectRecursiveDumper($container),
-            new ObjectTooDepthDumper($container),
-            new ObjectDebugInfoDumper($container),
-            new ObjectBigDumper($container),
-            new ArrayRecursiveDumper($container),
-            new ArrayTooDepthDumper($container),
-            new ArraySimpleViewDumper($container),
-            new ArraySingleStringDumper($container),
-            new ArrayBigDumper($container),
-            new ResourceDumper(),
-        );
+        $this->subdumper = new SubdumpersCollection($this->config);
     }
 
     public function dump($var)
     {
-        if ($this->displayPlaceInCode && 0 === $this->container->getDepth()->getValue()) {
+        if ($this->displayPlaceInCode) {
             $this->dumpPlaceInCode(0);
         }
 
-        $printNl = $this->container->getPrintNlOnEnd()->getValue();
-        $this->container->getPrintNlOnEnd()->setValue(true);
-        $return = false;
-
-        foreach ($this->subdumpers as $subdumper) {
-            if ($subdumper->supports($var)) {
-                $this->container->getDepth()->incr();
-                try {
-                    $subdumper->dump($var);
-                    if ($printNl) {
-                        echo "\n";
-                    }
-                    $this->container->getDepth()->decr();
-                    $return = true;
-                } catch (VarNotSupportedException $exception) {
-                    $this->container->getDepth()->decr();
-                    continue;
-                }
-
-                break;
-            }
-        }
-
-        $this->container->getPrintNlOnEnd()->setValue($printNl);
-
-        if ($return) {
-            return;
-        }
-
-        // Theoretically the following lines are unnecessary
-        $prev = $this->displayPlaceInCode;
-        $this->displayPlaceInCode = false;
-
-        if ($this->container->getPrintNlOnEnd()->getValue()) {
-            parent::dump($var);
-        } else {
-            \ob_start();
-            parent::dump($var);
-            $result = \ob_get_contents();
-            \ob_end_clean();
-
-            echo \mb_substr($result, 0, -1);
-        }
-
-        $this->displayPlaceInCode = $prev;
+        echo $this->subdumper->dumpAsPart($var), "\n";
     }
 
     /**

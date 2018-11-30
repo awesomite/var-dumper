@@ -9,21 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Awesomite\VarDumper\Subdumpers;
-
-use Awesomite\VarDumper\Strings\PartInterface;
+namespace Awesomite\VarDumper\Strings;
 
 /**
  * @internal
  */
-interface SubdumperInterface
+interface PartInterface
 {
-    public function supports($var);
+    public function isMultiLine();
 
-    /**
-     * @return PartInterface
-     *
-     * @throws VarNotSupportedException
-     */
-    public function dump($var);
+    public function addIndent($indent);
+
+    public function __toString();
 }

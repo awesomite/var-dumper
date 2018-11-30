@@ -12,6 +12,7 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Helpers\Container;
+use Awesomite\VarDumper\Strings\LinePart;
 
 /**
  * @internal
@@ -35,7 +36,7 @@ final class ArrayRecursiveDumper extends AbstractDumper
 
     public function dump($array)
     {
-        echo 'RECURSIVE array(' . \count($array) . ")";
+        return new LinePart('RECURSIVE array(' . \count($array) . ')');
     }
 
     private static function init()

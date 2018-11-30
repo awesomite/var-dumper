@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+
 /**
  * @internal
  */
@@ -27,8 +29,10 @@ final class ObjectTooDepthDumper extends AbstractObjectDumper
         $class = $this->getClassName($object);
         $properties = $this->getProperties($object);
 
-        echo 'object(', $class, ') #', $this->container->getHasher()->getHashId($object), ' (', \count($properties), ') {';
-        echo \count($properties) ? '...' : '';
-        echo "}";
+        $result = 'object(' . $class . ') #' . $this->container->getHasher()->getHashId($object) . ' (' . \count($properties) . ') {';
+        $result .= \count($properties) ? '...' : '';
+        $result .= '}';
+
+        return new LinePart($result);
     }
 }

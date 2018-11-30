@@ -11,15 +11,67 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\KeyValuePrinter;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Properties\PropertyInterface;
+use Awesomite\VarDumper\Strings\LinePart;
+use Awesomite\VarDumper\Strings\Parts;
 
 /**
  * @internal
  */
 final class ObjectBigDumper extends AbstractObjectDumper
 {
+    /**
+     * @param PropertyInterface[] $properties
+     * @param Container           $container
+     *
+     * @return Parts
+     */
+    public static function dumpProperties($properties, Container $container)
+    {
+        $limit = $container->getConfig()->getMaxChildren();
+        $printer = new KeyValuePrinter();
+        $indent = $container->getConfig()->getIndent();
+
+        $result = new Parts();
+
+        foreach ($properties as $property) {
+            $propName = Strings::prepareArrayKey($property->getName());
+            $key = self::getTextTypePrefix($property) . '$' . $propName;
+
+            $subPart = $container->getDumper()->dumpAsPart($property->getValue());
+            if (!$subPart->isMultiLine()) {
+                $printer->add("{$key} => ", $subPart, \mb_strlen("{$key} => "));
+            } else {
+                if ($flushed = $printer->flush()) {
+                    $result->appendPart($flushed);
+                }
+                $subPart->addIndent($indent);
+                $result->appendPart(new LinePart("{$key} =>"));
+                $result->appendPart($subPart);
+            }
+
+            if (!--$limit) {
+                if ($flushed = $printer->flush()) {
+                    $result->appendPart($flushed);
+                }
+                if (\count($properties) > $container->getConfig()->getMaxChildren()) {
+                    $result->appendPart(new LinePart('(...)'));
+                }
+                break;
+            }
+        }
+        if ($flushed = $printer->flush()) {
+            $result->appendPart($flushed);
+        }
+
+        $result->addIndent($indent);
+
+        return $result;
+    }
+
     public function supports($var)
     {
         return \is_object($var);
@@ -33,56 +85,22 @@ final class ObjectBigDumper extends AbstractObjectDumper
         $class = $this->getClassName($object);
 
         $count = \count($properties);
-        echo 'object(', $class, ') #', $this->container->getHasher()->getHashId($object), ' (', $count, ') {';
+        $result = new Parts();
+        $header = new LinePart('object(' . $class . ') #' . $this->container->getHasher()->getHashId($object) . ' (' . $count . ') {');
+        $result->appendPart($header);
         if ($count > 0) {
-            echo "\n";
-            $this->dumpProperties($properties);
+            $result->appendPart(static::dumpProperties($properties, $this->container));
+            $result->appendPart(new LinePart('}'));
+        } else {
+            $header->append('}');
         }
-        echo '}';
 
         $this->container->getReferences()->pop();
+
+        return $result;
     }
 
-
-    /**
-     * @param PropertyInterface[] $properties
-     */
-    private function dumpProperties($properties)
-    {
-        $nlOnEnd = $this->container->getPrintNlOnEnd();
-        $nlOnEndPrev = $nlOnEnd->getValue();
-        $nlOnEnd->setValue(false);
-
-        $limit = $this->container->getConfig()->getMaxChildren();
-        $printer = new KeyValuePrinter();
-        $indent = $this->container->getConfig()->getIndent();
-        foreach ($properties as $property) {
-            $propName = Strings::prepareArrayKey($property->getName());
-            $key = "{$this->getTextTypePrefix($property)}\${$propName}";
-
-            $valDump = $this->container->getDumper()->dumpAsString($property->getValue());
-            if (false === \mb_strpos($valDump, "\n")) {
-                $printer->add("{$indent}{$key} => ", $valDump, \mb_strlen("{$indent}{$key} => "));
-            } else {
-                $printer->flush();
-                $valDump = \str_replace("\n", "\n{$indent}{$indent}", $valDump);
-                echo "{$indent}{$key} =>\n{$indent}{$indent}$valDump\n";
-            }
-
-            if (!--$limit) {
-                $printer->flush();
-                if (\count($properties) > $this->container->getConfig()->getMaxChildren()) {
-                    echo "{$indent}(...)\n";
-                }
-                break;
-            }
-        }
-        $printer->flush();
-
-        $nlOnEnd->setValue($nlOnEndPrev);
-    }
-
-    private function getTextTypePrefix(PropertyInterface $property)
+    private static function getTextTypePrefix(PropertyInterface $property)
     {
         if ($property->isVirtual()) {
             return '';

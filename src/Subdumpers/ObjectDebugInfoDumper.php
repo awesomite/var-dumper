@@ -13,6 +13,8 @@ namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Properties\Properties;
 use Awesomite\VarDumper\Properties\PropertyInterface;
+use Awesomite\VarDumper\Strings\LinePart;
+use Awesomite\VarDumper\Strings\Parts;
 
 /**
  * @internal
@@ -36,14 +38,21 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
         $this->container->getReferences()->push($object);
 
         $count = \count($debugInfoData);
-        echo 'object(', $class, ') #', $this->container->getHasher()->getHashId($object), ' (', $count, ') {[';
+        $header = new LinePart('object(' . $class . ') #' . $this->container->getHasher()->getHashId($object) . ' (' . $count . ') {[');
+        $result = new Parts();
+        $result->appendPart($header);
         if ($count > 0) {
-            echo "\n";
-            ArrayBigDumper::dumpBody($debugInfoData, $this->container);
+            $body = ArrayBigDumper::dumpBody($debugInfoData, $this->container);
+            $body->addIndent($this->container->getConfig()->getIndent());
+            $result->appendPart($body);
+            $result->appendPart(new LinePart(']}'));
+        } else {
+            $header->append(']}');
         }
-        echo ']}';
 
         $this->container->getReferences()->pop();
+
+        return $result;
     }
 
     /**

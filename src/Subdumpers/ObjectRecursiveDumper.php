@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+
 /**
  * @internal
  */
@@ -23,6 +25,8 @@ final class ObjectRecursiveDumper extends AbstractObjectDumper
 
     public function dump($var)
     {
-        echo 'RECURSIVE object(', $this->getClassName($var), ') #', $this->container->getHasher()->getHashId($var);
+        return new LinePart(
+            'RECURSIVE object(' . $this->getClassName($var) . ') #' . $this->container->getHasher()->getHashId($var)
+        );
     }
 }

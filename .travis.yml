@@ -102,7 +102,7 @@ script:
   - php examples/debug-info.php
   - php examples/dumper.php
   - php examples/exception.php
-  - php -r 'exit(version_compare(PHP_VERSION, '5.6') >= 0 ? 0 : 1);' && php examples/exception-variadic.php
+  - php -r 'exit(version_compare(PHP_VERSION, '5.6') >= 0 ? 0 : 1);' && php examples/exception-variadic.php || echo 'PHP >= 5.6 required'
   - php examples/object.php
   - php examples/simple-array.php
 

@@ -63,11 +63,11 @@ object(DivideByZeroException) #2 {[
     [file] =>     “(...)/examples/exception-variadic.php:31”
     [previous] => NULL
     [trace] =>
-        (...)/examples/exception-variadic.php:45 Divider->divide(
+        1. (...)/examples/exception-variadic.php:45 Divider->divide(
             a: 10
             b: 0
         )
-        (...)/examples/exception-variadic.php:50 Controller::execute(
+        2. (...)/examples/exception-variadic.php:50 Controller::execute(
             class:  “Divider”
             method: “divide”
             params: array(2) {10, 0}

@@ -68,11 +68,11 @@ object(DivideByZeroException) #4 {[
     [file] =>     “(...)/examples/exception.php:31”
     [previous] => NULL
     [trace] =>
-        (...)/examples/exception.php:48 Divider->divide(
+        1. (...)/examples/exception.php:48 Divider->divide(
             a: 5
             b: 0
         )
-        (...)/examples/exception.php:55 Calculator::execute(
+        2. (...)/examples/exception.php:55 Calculator::execute(
             action:  “divide”
             numberA: 5
             numberB: 0

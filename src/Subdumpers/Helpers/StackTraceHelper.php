@@ -37,8 +37,8 @@ final class StackTraceHelper
 
         $result = new Parts();
         $limit = $container->getConfig()->getMaxChildren();
-        foreach ($trace as $step) {
-            $result->appendPart(self::dumpStep($step, $container));
+        foreach ($trace as $key => $step) {
+            $result->appendPart(self::dumpStep($step, $container, $key));
             if (!--$limit && \count($trace) > $container->getConfig()->getMaxChildren()) {
                 $result->appendPart(new LinePart('(...)'));
                 break;
@@ -49,21 +49,24 @@ final class StackTraceHelper
     }
 
     /**
-     * @param array     $step      =
+     * @param array     $step
      * @param Container $container
+     * @param int $index
      *
      * @return PartInterface
      */
-    private static function dumpStep(array $step, Container $container)
+    private static function dumpStep(array $step, Container $container, $index)
     {
-        $header = new LinePart('');
+        $header = new LinePart(($index+1) . '.');
         if (isset($step['file']) && isset($step['line'])) {
-            $header->append(new LinePart(FileNameDecorator::decorateFileName($step['file']) . ':' . $step['line']));
+            $header->append(new LinePart(' ' . FileNameDecorator::decorateFileName($step['file']) . ':' . $step['line']));
         }
 
         $addedSpace = false;
+        $hasFunction = false;
         foreach (array('class', 'type', 'function') as $name) {
             if (isset($step[$name])) {
+                $hasFunction = true;
                 if (!$addedSpace) {
                     $header->append(' ');
                     $addedSpace = true;
@@ -71,10 +74,9 @@ final class StackTraceHelper
                 $header->append($step[$name]);
             }
         }
-        if ($addedSpace) {
+        if ($hasFunction) {
             $header->append('(');
         }
-        $hasFunction = $addedSpace;
 
         $args = self::getArgs($step);
 

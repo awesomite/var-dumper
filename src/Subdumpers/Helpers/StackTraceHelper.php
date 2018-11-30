@@ -51,7 +51,7 @@ final class StackTraceHelper
     /**
      * @param array     $step
      * @param Container $container
-     * @param int $index
+     * @param int       $index
      *
      * @return PartInterface
      */

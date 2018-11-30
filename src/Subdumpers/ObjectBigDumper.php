@@ -79,8 +79,6 @@ final class ObjectBigDumper extends AbstractObjectDumper
 
     public function dump($object)
     {
-        $this->container->getReferences()->push($object);
-
         $properties = $this->getProperties($object);
         $class = $this->getClassName($object);
 
@@ -94,8 +92,6 @@ final class ObjectBigDumper extends AbstractObjectDumper
         } else {
             $header->append('}');
         }
-
-        $this->container->getReferences()->pop();
 
         return $result;
     }

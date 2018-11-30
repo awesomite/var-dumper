@@ -36,7 +36,6 @@ final class ExceptionDumper extends AbstractObjectDumper
      */
     public function dump($throwable)
     {
-        $this->container->getReferences()->push($throwable);
         $result = new Parts();
         $header = new LinePart(\sprintf(
             'object(%s) #%s {[',
@@ -62,8 +61,6 @@ final class ExceptionDumper extends AbstractObjectDumper
         }
 
         $result->appendPart(new LinePart(']}'));
-
-        $this->container->getReferences()->pop();
 
         return $result;
     }

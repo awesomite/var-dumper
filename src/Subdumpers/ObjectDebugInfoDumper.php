@@ -35,8 +35,6 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
             throw new VarNotSupportedException();
         }
 
-        $this->container->getReferences()->push($object);
-
         $count = \count($debugInfoData);
         $header = new LinePart('object(' . $class . ') #' . $this->container->getHasher()->getHashId($object) . ' (' . $count . ') {[');
         $result = new Parts();
@@ -49,8 +47,6 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
         } else {
             $header->append(']}');
         }
-
-        $this->container->getReferences()->pop();
 
         return $result;
     }

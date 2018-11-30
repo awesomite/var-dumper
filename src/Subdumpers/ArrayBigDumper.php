@@ -80,8 +80,6 @@ final class ArrayBigDumper extends AbstractDumper
 
     public function dump($array)
     {
-        $this->container->getReferences()->push($array);
-
         $count = \count($array);
 
         $result = new Parts();
@@ -96,8 +94,6 @@ final class ArrayBigDumper extends AbstractDumper
         } else {
             $header->append('}');
         }
-
-        $this->container->getReferences()->pop();
 
         return $result;
     }

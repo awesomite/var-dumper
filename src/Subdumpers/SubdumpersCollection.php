@@ -63,13 +63,17 @@ final class SubdumpersCollection
         foreach ($this->subdumpers as $subdumper) {
             if ($subdumper->supports($var)) {
                 $this->container->getDepth()->incr();
+                $this->container->getReferences()->push($var);
+
                 try {
                     $result = $subdumper->dump($var);
                     $this->container->getDepth()->decr();
+                    $this->container->getReferences()->pop();
 
                     return $result;
                 } catch (VarNotSupportedException $exception) {
                     $this->container->getDepth()->decr();
+                    $this->container->getReferences()->pop();
                 }
             }
         }

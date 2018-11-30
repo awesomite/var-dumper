@@ -29,8 +29,6 @@ final class ClosureDumper extends AbstractObjectDumper
 
     public function dump($closure)
     {
-        $this->container->getReferences()->push($closure);
-
         $header = new LinePart(\sprintf(
             'object(%s) #%s {[',
             $this->getClassName($closure),
@@ -45,8 +43,6 @@ final class ClosureDumper extends AbstractObjectDumper
         $result->appendPart($body);
 
         $result->appendPart(new LinePart(']}'));
-
-        $this->container->getReferences()->pop();
 
         return $result;
     }

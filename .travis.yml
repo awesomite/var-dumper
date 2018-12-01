@@ -97,7 +97,7 @@ script:
     fi
   - php examples/big-dump.php
   - php examples/binary-string.php
-  - php examples/binary-string.php
+  - php examples/closure.php
   - php examples/custom-indent.php
   - php examples/debug-info.php
   - php examples/dumper.php

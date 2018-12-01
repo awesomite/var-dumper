@@ -72,9 +72,7 @@ final class PropertiesTest extends BaseTestCase
     public function testArrayObject(\ArrayObject $array, array $expectedNames)
     {
         if (\defined('HHVM_VERSION')) {
-            $this->assertTrue(true);
-
-            return;
+            $this->markTestSkipped();
         }
         $properties = new Properties($array);
         $names = array();
@@ -107,9 +105,7 @@ final class PropertiesTest extends BaseTestCase
     public function testClosure(\Closure $closure, array $expectedProperties)
     {
         if (\defined('HHVM_VERSION')) {
-            $this->assertTrue(true);
-
-            return;
+            $this->markTestSkipped();
         }
 
         $propertiesObj = new Properties($closure);

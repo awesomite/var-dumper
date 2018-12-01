@@ -39,7 +39,7 @@ final class SyntaxTest extends BaseTestCase
     public function testSyntax()
     {
         if (TestEnv::isSpeedTest()) {
-            $this->markTestSkipped();
+            $this->markTestSkipped('Do not check syntax in speed test mode');
         }
         list($path, $counter) = static::requireWholeSrc();
         $this->assertInternalType('string', $path);

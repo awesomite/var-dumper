@@ -76,10 +76,16 @@ final class ExceptionDumper extends AbstractObjectDumper
             return new LinePart('[trace] =>    []');
         }
 
+        if ($this->container->getDepth()->getValue() === $this->container->getConfig()->getMaxDepth()) {
+            return new LinePart('[trace] =>    [...]');
+        }
+
         $result = new Parts();
         $result->appendPart(new LinePart('[trace] =>'));
 
+        $this->container->getDepth()->incr();
         $trace = StackTraceHelper::dumpStackTraceAsPart($trace, $this->container);
+        $this->container->getDepth()->decr();
         $trace->addIndent($this->container->getConfig()->getIndent());
 
         $result->appendPart($trace);

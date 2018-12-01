@@ -104,10 +104,6 @@ final class PropertiesTest extends BaseTestCase
      */
     public function testClosure(\Closure $closure, array $expectedProperties)
     {
-        if (\defined('HHVM_VERSION')) {
-            $this->markTestSkipped();
-        }
-
         $propertiesObj = new Properties($closure);
         /** @var PropertyInterface[] $properties */
         $properties = $propertiesObj->getProperties();

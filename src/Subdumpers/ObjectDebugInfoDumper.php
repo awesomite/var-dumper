@@ -11,8 +11,6 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Properties\Properties;
-use Awesomite\VarDumper\Properties\PropertyInterface;
 use Awesomite\VarDumper\Strings\LinePart;
 use Awesomite\VarDumper\Strings\Parts;
 
@@ -28,12 +26,12 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
 
     public function dump($object)
     {
-        $properties = $this->getProperties($object);
-        $class = $this->getClassName($object);
-        $debugInfoData = $this->getDebugInfoData($properties);
-        if (false === $debugInfoData) {
+        $debugInfoData = $this->getDebugInfoData($object);
+        if (null === $debugInfoData) {
             throw new VarNotSupportedException();
         }
+
+        $class = $this->getClassName($object);
 
         $count = \count($debugInfoData);
         $header = new LinePart('object(' . $class . ') #' . $this->container->getHasher()->getHashId($object) . ' (' . $count . ') {[');
@@ -52,18 +50,15 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
     }
 
     /**
-     * @param PropertyInterface[] $properties
+     * @param object $object
      *
-     * @return array|false
+     * @return array|null
      */
-    private function getDebugInfoData($properties)
+    private function getDebugInfoData($object)
     {
-        if (1 !== \count($properties)) {
-            return false;
-        }
-
-        if (isset($properties[0]) && Properties::PROPERTY_DEBUG_INFO === $properties[0]->getName()) {
-            $value = $properties[0]->getValue();
+        $reflection = new \ReflectionMethod($object, '__debugInfo');
+        if (!$reflection->isStatic() && $reflection->isPublic() && 0 === $reflection->getNumberOfParameters()) {
+            $value = $reflection->invoke($object);
 
             // check type of value for php < 5.6
             if (\is_array($value)) {
@@ -71,6 +66,6 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
             }
         }
 
-        return false;
+        return null;
     }
 }

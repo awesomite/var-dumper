@@ -22,7 +22,6 @@ final class ProviderDump implements \IteratorAggregate
     public function getIterator()
     {
         $result = array();
-        $result['visibilityModifiers'] = $this->getVisibilityModifiers();
         if (!\defined('HHVM_VERSION')) {
             $result['arrayObject'] = $this->getArrayObject();
             $result['extendedArrayObject'] = $this->getExtendedArrayObject();
@@ -56,31 +55,6 @@ final class ProviderDump implements \IteratorAggregate
         $result['edge_case_for_simple_array'] = $this->getEdgeCaseForSimpleArray();
 
         return new \ArrayIterator($result);
-    }
-
-    private function getVisibilityModifiers()
-    {
-        $hasher = HasherFactory::create();
-
-        $object = new TestObject();
-        $object->setPrivate('private variable');
-        $object->setProtected('protected variable');
-        $object->public = 'public variable';
-        $object->dynamicPublic = 'another public variable';
-
-        $objectDump
-            = <<<OBJECT
-object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHashId($object)} (5) {
-    public static \$static =>             “static value”
-    public \$public =>                    “public variable”
-    protected \$protected =>              “protected variable”
-    protected static \$protectedStatic => “protected static value”
-    \$dynamicPublic =>                    “another public variable”
-}
-
-OBJECT;
-
-        return array($object, $objectDump);
     }
 
     private function getArrayObject()

@@ -16,6 +16,7 @@ use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDumpConstants;
+use Awesomite\VarDumper\LightVarDumperProviders\ProviderDynamicDump;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderIndent;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxChildren;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxDepth;
@@ -62,6 +63,39 @@ final class LightVarDumperTest extends BaseTestCase
             \iterator_to_array(new ProviderDump()),
             \iterator_to_array(new ProviderDumpConstants())
         );
+    }
+
+    /**
+     * HHVM changes order of properties
+     *
+     * @dataProvider providerDynamicDump
+     *
+     * @param          $var
+     * @param string[] $lines
+     *
+     * @see https://travis-ci.org/awesomite/var-dumper/jobs/462117181
+     */
+    public function testDynamicDump($var, array $lines)
+    {
+        if (!$this->wasDumperReset) {
+            $this->reinitAllDumpers();
+        }
+
+        $dumper = new LightVarDumper();
+        $dump = $dumper->dumpAsString($var);
+        $dumpLines = \explode("\n", $dump);
+
+        $this->assertNotEmpty($lines);
+        foreach ($lines as $line) {
+            $this->assertContains($line, $dumpLines);
+        }
+        $this->assertZeroDepth($dumper);
+        $this->assertEmptyReferences($dumper);
+    }
+
+    public function providerDynamicDump()
+    {
+        return \iterator_to_array(new ProviderDynamicDump());
     }
 
     public function testNativeDumper()

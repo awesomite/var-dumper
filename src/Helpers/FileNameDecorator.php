@@ -19,6 +19,8 @@ final class FileNameDecorator
     const MAX_FILE_NAME_DEPTH = 3;
 
     /**
+     * Feature does not work on Windows
+     *
      * @param string   $fileName
      * @param null|int $maxDepth
      *
@@ -26,20 +28,34 @@ final class FileNameDecorator
      */
     public static function decorateFileName($fileName, $maxDepth = null)
     {
+        // @codeCoverageIgnoreStart
+        if (DIRECTORY_SEPARATOR === '\\') {
+            return $fileName;
+        }
+        // @codeCoverageIgnoreEnd
+
+        if ('/' !== \mb_substr($fileName, 0, 1)) {
+            return $fileName; // only absolute paths allowed
+        }
+
+        if ('/' === $fileName) {
+            return $fileName;
+        }
+
         $maxDepth = \is_null($maxDepth)
             ? static::MAX_FILE_NAME_DEPTH
             : $maxDepth;
 
-        $relativeTo = $fileName;
-        for ($i = 0; $i < $maxDepth; $i++) {
-            $relativeTo = \dirname($relativeTo);
-        }
-
-        if ($relativeTo === $fileName) {
-            return $fileName;
+        if ($maxDepth < 1) {
+            throw new \InvalidArgumentException('Parameter $maxDepth must be greater than or equal to 1');
         }
 
         $exploded = \explode(DIRECTORY_SEPARATOR, $fileName);
+
+        if (\count($exploded) -1 <= $maxDepth) {
+            return $fileName;
+        }
+
         $newParts = \array_slice($exploded, -$maxDepth, $maxDepth);
         \array_unshift($newParts, '(...)');
 

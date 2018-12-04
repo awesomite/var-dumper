@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Helpers\FileNameDecorator;
+
 /**
  * @internal
  */
@@ -29,7 +31,7 @@ final class FileLineTest extends BaseTestCase
         $contents = \ob_get_contents();
         \ob_end_clean();
         list($firstLine) = \explode("\n", $contents);
-        $this->assertSame($displayLines, __FILE__ . ':' . (__LINE__ - 4) . ':' === $firstLine, $contents);
+        $this->assertSame($displayLines, FileNameDecorator::decorateFileName(__FILE__) . ':' . (__LINE__ - 4) . ':' === $firstLine, $contents);
     }
 
     public function providerDumpers()
@@ -75,7 +77,7 @@ final class FileLineTest extends BaseTestCase
         \ob_end_clean();
         list($firstLine) = \explode("\n", $contents);
 
-        $this->assertSame(__FILE__ . ':' . (__LINE__ - $nestingMapping[$nestingLevel]) . ':', $firstLine, $contents);
+        $this->assertSame(FileNameDecorator::decorateFileName(__FILE__). ':' . (__LINE__ - $nestingMapping[$nestingLevel]) . ':', $firstLine, $contents);
     }
 
     public function providerNestingLevel()

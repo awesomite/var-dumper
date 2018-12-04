@@ -15,6 +15,8 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
 
 /**
  * @internal
+ *
+ * @see http://php.net/manual/en/language.oop5.magic.php#object.debuginfo
  */
 class MyClass
 {

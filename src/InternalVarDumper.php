@@ -34,7 +34,7 @@ class InternalVarDumper implements VarDumperInterface
         \ini_set($iniKey, '0');
 
         if ($this->displayPlaceInCode) {
-            $this->dumpPlaceInCode(0);
+            echo $this->dumpPlaceInCodeAsString(0);
         }
         \var_dump($var);
 
@@ -55,7 +55,7 @@ class InternalVarDumper implements VarDumperInterface
         return $result;
     }
 
-    protected function dumpPlaceInCode($number)
+    final protected function dumpPlaceInCodeAsString($number)
     {
         $options = \version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;
         $stackTrace = \debug_backtrace($options);
@@ -63,14 +63,16 @@ class InternalVarDumper implements VarDumperInterface
 
         // @codeCoverageIgnoreStart
         if (!isset($stackTrace[$num])) {
-            return;
+            return '';
         }
         // @codeCoverageIgnoreEnd
 
         $step = $stackTrace[$num];
 
         if (isset($step['file']) && !empty($step['file'])) {
-            echo $step['file'], (isset($step['line']) ? ':' . $step['line'] : ''), ":\n";
+            return $step['file'] . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
         }
+
+        return '';
     }
 }

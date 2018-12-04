@@ -54,10 +54,19 @@ final class LightVarDumper extends InternalVarDumper
     public function dump($var)
     {
         if ($this->displayPlaceInCode) {
-            $this->dumpPlaceInCode(0);
+            echo $this->dumpPlaceInCodeAsString(0);
         }
 
         echo $this->subdumper->dumpAsPart($var), "\n";
+    }
+
+    public function dumpAsString($var)
+    {
+        $prefix = $this->displayPlaceInCode
+            ? $this->dumpPlaceInCodeAsString(0)
+            : '';
+
+        return $prefix . $this->subdumper->dumpAsPart($var) . "\n";
     }
 
     /**

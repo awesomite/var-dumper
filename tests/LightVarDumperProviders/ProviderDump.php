@@ -143,8 +143,8 @@ DUMP;
 
         $replace = array(
             '%digit%' => '[0-9]{1,}',
-            '%file%'  => '.*',
-            '%any%'   => '.*',
+            '%file%' => '.*',
+            '%any%' => '.*',
         );
         $regex = '#^' . \preg_quote($dump, '#') . '$#ms';
         $regex = \str_replace(\array_keys($replace), \array_values($replace), $regex);
@@ -156,7 +156,7 @@ DUMP;
     {
         $data = array(
             'greeting' => 'hello world',
-            'class'    => \get_class(new TestDebugInfo(array())),
+            'class' => \get_class(new TestDebugInfo(array())),
         );
 
         $expected
@@ -214,15 +214,14 @@ EXPECTED;
         return array($obj, $expected);
     }
 
-
     private function getBrokenAlign()
     {
         $data = array(
-            'a'        => 'a',
-            'ab'       => 'ab',
-            'abc'      => 'abc',
+            'a' => 'a',
+            'ab' => 'ab',
+            'abc' => 'abc',
             'subarray' => \range('a', 'm'),
-            'abcd'     => 'abcd',
+            'abcd' => 'abcd',
         );
 
         $expected
@@ -252,7 +251,6 @@ array(5) {
 
 EXPECTED;
 
-
         return array($data, $expected);
     }
 
@@ -268,7 +266,7 @@ EXPECTED;
 
     private function getNonArrayDebugInfo()
     {
-        $data = "hello world";
+        $data = 'hello world';
 
         $expected
             = <<<'EXPECTED'
@@ -290,9 +288,9 @@ EXPECTED;
         $zeros = \implode('', \array_fill(0, $this->getDefaultLineLength(), '0'));
 
         $array = array(
-            'first'  => array(null),
+            'first' => array(null),
             'second' => null,
-            'third'  => $zeros,
+            'third' => $zeros,
         );
         $expected
             = <<<EXPECTED
@@ -315,9 +313,9 @@ EXPECTED;
         $zeros = \implode('', \array_fill(0, $textLength, '0'));
 
         $array = array(
-            'first'  => array(1),
+            'first' => array(1),
             'second' => null,
-            'third'  => $zeros,
+            'third' => $zeros,
         );
 
         $zerosLine = \implode('', \array_fill(0, $lineLength, '0'));
@@ -378,7 +376,7 @@ DUMP;
     private function getShortArray2()
     {
         $data = array(
-            -1                => -1,
+            -1 => -1,
             "multi line\nkey" => M_PI,
             null,
             array(),
@@ -476,7 +474,7 @@ DUMP;
         $qqq = \array_fill(0, LightVarDumper::DEFAULT_MAX_LINE_LENGTH - 1, 'q');
         $qqq = \implode('', $qqq);
 
-        $data = array($qqq . "\t",);
+        $data = array($qqq . "\t");
         $dump
             = <<<'DUMP'
 array(1) {
@@ -489,7 +487,7 @@ array(1) {
 DUMP;
         $replace = array(
             '%length%' => (string)LightVarDumper::DEFAULT_MAX_LINE_LENGTH,
-            '%qqq%'    => $qqq,
+            '%qqq%' => $qqq,
         );
         $dump = \str_replace(
             \array_keys($replace),

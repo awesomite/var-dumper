@@ -20,12 +20,12 @@ final class Strings
 
     public static $replaceChars
         = array(
-            "\t"   => '\t',
-            "\r"   => '\r',
-            "\0"   => '\0',
-            "\v"   => '\v',
+            "\t" => '\t',
+            "\r" => '\r',
+            "\0" => '\0',
+            "\v" => '\v',
             "\033" => '\e',
-            "\f"   => '\f',
+            "\f" => '\f',
         );
 
     public static function prepareArrayKey($input)
@@ -39,7 +39,7 @@ final class Strings
     }
 
     /**
-     * Excludes spaces
+     * Excludes spaces.
      *
      * @param      $input
      * @param bool $withNewLine

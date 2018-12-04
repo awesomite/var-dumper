@@ -66,7 +66,7 @@ final class LightVarDumperTest extends BaseTestCase
     }
 
     /**
-     * HHVM changes order of properties
+     * HHVM changes order of properties.
      *
      * @dataProvider providerDynamicDump
      *
@@ -413,7 +413,8 @@ final class LightVarDumperTest extends BaseTestCase
     }
 
     /**
-     * @param  LightVarDumper $dumper
+     * @param LightVarDumper $dumper
+     *
      * @return Container
      */
     private function readContainer(LightVarDumper $dumper)

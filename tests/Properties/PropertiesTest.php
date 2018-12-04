@@ -77,7 +77,7 @@ final class PropertiesTest extends BaseTestCase
         $properties = new Properties($array);
         $names = array();
         foreach ($properties->getProperties() as $property) {
-            /** @var PropertyInterface $property */
+            /* @var PropertyInterface $property */
             $names[] = $property->getName();
         }
         $this->assertSame(\count($expectedNames), \count($names));

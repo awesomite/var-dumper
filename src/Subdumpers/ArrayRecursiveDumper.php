@@ -50,7 +50,7 @@ final class ArrayRecursiveDumper extends AbstractDumper
     }
 
     /**
-     * Code:
+     * Code:.
      *
      * $a = array();
      * $b = &$a;

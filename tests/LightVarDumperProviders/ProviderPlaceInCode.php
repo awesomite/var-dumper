@@ -23,9 +23,9 @@ final class ProviderPlaceInCode implements \IteratorAggregate
     public function getIterator()
     {
         $result = array(
-            'simple_array'           => $this->getSimpleArray(),
-            'nested_array'           => $this->getNestedArray(),
-            'array_with_object'      => $this->getArrayWithObject(),
+            'simple_array' => $this->getSimpleArray(),
+            'nested_array' => $this->getNestedArray(),
+            'array_with_object' => $this->getArrayWithObject(),
             'array_with_single_line' => $this->getSingleLineString(),
         );
 

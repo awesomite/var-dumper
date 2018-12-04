@@ -57,7 +57,7 @@ final class StackTraceHelper
      */
     private static function dumpStep(array $step, Container $container, $index)
     {
-        $header = new LinePart(($index+1) . '.');
+        $header = new LinePart(($index + 1) . '.');
         if (isset($step['file']) && isset($step['line'])) {
             $header->append(new LinePart(' ' . FileNameDecorator::decorateFileName($step['file']) . ':' . $step['line']));
         }
@@ -173,7 +173,7 @@ final class StackTraceHelper
 
             $result[] = array(
                 null !== $param ? $param->getName() : "arg{$k}",
-                $arg
+                $arg,
             );
         }
 

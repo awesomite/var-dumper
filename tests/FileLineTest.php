@@ -77,7 +77,7 @@ final class FileLineTest extends BaseTestCase
         \ob_end_clean();
         list($firstLine) = \explode("\n", $contents);
 
-        $this->assertSame(FileNameDecorator::decorateFileName(__FILE__). ':' . (__LINE__ - $nestingMapping[$nestingLevel]) . ':', $firstLine, $contents);
+        $this->assertSame(FileNameDecorator::decorateFileName(__FILE__) . ':' . (__LINE__ - $nestingMapping[$nestingLevel]) . ':', $firstLine, $contents);
     }
 
     public function providerNestingLevel()

@@ -164,7 +164,7 @@ final class StringDumper extends AbstractDumper
     }
 
     /**
-     * Public for php 5.3
+     * Public for php 5.3.
      *
      * @internal
      *

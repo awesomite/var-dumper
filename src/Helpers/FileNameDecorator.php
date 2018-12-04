@@ -19,7 +19,7 @@ final class FileNameDecorator
     const MAX_FILE_NAME_DEPTH = 3;
 
     /**
-     * Feature does not work on Windows
+     * Feature does not work on Windows.
      *
      * @param string   $fileName
      * @param null|int $maxDepth
@@ -52,7 +52,7 @@ final class FileNameDecorator
 
         $exploded = \explode(DIRECTORY_SEPARATOR, $fileName);
 
-        if (\count($exploded) -1 <= $maxDepth) {
+        if (\count($exploded) - 1 <= $maxDepth) {
             return $fileName;
         }
 

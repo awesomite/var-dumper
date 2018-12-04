@@ -50,7 +50,6 @@ class Foobar extends Bar
     }
 }
 
-
 $object = new Foobar();
 
 $dumper->dump($object);

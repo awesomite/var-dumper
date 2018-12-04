@@ -17,11 +17,11 @@ use Awesomite\VarDumper\Subdumpers\SubdumpersCollection;
 
 final class LightVarDumper extends InternalVarDumper
 {
-    const DEFAULT_MAX_CHILDREN      = 20;
+    const DEFAULT_MAX_CHILDREN = 20;
     const DEFAULT_MAX_STRING_LENGTH = 200;
-    const DEFAULT_MAX_LINE_LENGTH   = 130;
-    const DEFAULT_MAX_DEPTH         = 5;
-    const DEFAULT_INDENT            = '    ';
+    const DEFAULT_MAX_LINE_LENGTH = 130;
+    const DEFAULT_MAX_DEPTH = 5;
+    const DEFAULT_INDENT = '    ';
 
     /**
      * @var EditableConfig

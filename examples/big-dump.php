@@ -42,7 +42,7 @@ class ExampleData
     private function prepareArray()
     {
         $array = array();
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $array[\implode('', \range(0, $i))] = $i;
         }
         $array['greeting'] = 'Welcome!';

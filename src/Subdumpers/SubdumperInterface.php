@@ -22,8 +22,8 @@ interface SubdumperInterface
 
     /**
      * @throws VarNotSupportedException
-     * @return PartInterface
      *
+     * @return PartInterface
      */
     public function dump($var);
 }

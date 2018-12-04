@@ -17,7 +17,7 @@ namespace Awesomite\VarDumper\Objects;
 interface HasherInterface
 {
     /**
-     * Returns hash id for given object
+     * Returns hash id for given object.
      *
      * @param object $object
      *

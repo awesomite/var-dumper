@@ -21,7 +21,7 @@ class MyClass
     public function __debugInfo()
     {
         return array(
-            'key'=> 'value',
+            'key' => 'value',
             'some' => 'output',
         );
     }

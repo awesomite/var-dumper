@@ -26,7 +26,7 @@ final class SyntaxTest extends BaseTestCase
         $regex = new \RegexIterator($iterator, '/^.+\.php$/', \RecursiveRegexIterator::GET_MATCH);
         $counter = 0;
         foreach ($regex as $file) {
-            $counter++;
+            ++$counter;
             require_once $file[0];
         }
 

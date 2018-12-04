@@ -20,7 +20,7 @@ use Awesomite\VarDumper\Strings\LinePart;
 final class ArraySimpleViewDumper extends AbstractDumper
 {
     const COUNT_LIMIT = 5;
-    const KEY_LIMIT   = 20;
+    const KEY_LIMIT = 20;
 
     public function supports($var)
     {
@@ -74,7 +74,7 @@ final class ArraySimpleViewDumper extends AbstractDumper
                 $result->append('[' . $key . '] => ');
                 $canSkipKey = false;
             }
-            $result->append((string) $this->container->getDumper()->dumpAsPart($value));
+            $result->append((string)$this->container->getDumper()->dumpAsPart($value));
             if ($last !== $key) {
                 $result->append(', ');
             }

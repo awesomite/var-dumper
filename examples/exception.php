@@ -31,7 +31,7 @@ class Divider
             throw new DivideByZeroException('Cannot divide by zero');
         }
 
-        return $a/$b;
+        return $a / $b;
     }
 }
 

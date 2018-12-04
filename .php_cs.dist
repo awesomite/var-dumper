@@ -19,6 +19,7 @@ HEADER;
 return PhpCsFixer\Config::create()
     ->setRules(array(
         '@PSR2' => true,
+        '@Symfony' => true,
         'array_syntax' => array('syntax' => 'long'),
         'no_unused_imports' => true,
         'yoda_style' => true,
@@ -29,6 +30,9 @@ return PhpCsFixer\Config::create()
         'phpdoc_align' => true,
         'phpdoc_order' => true,
         'phpdoc_types_order' => true,
+        'return_assignment' => true,
+        'concat_space' => array('spacing' => 'one'),
+        'cast_spaces' => array('space' => 'none'),
     ))
     ->setFinder($finder)
 ;

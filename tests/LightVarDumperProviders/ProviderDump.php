@@ -273,7 +273,7 @@ EXPECTED;
         $expected
             = <<<'EXPECTED'
 object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (1) {
-    public $__debugInfo() => “hello world”
+    private $data => “hello world”
 }
 
 EXPECTED;

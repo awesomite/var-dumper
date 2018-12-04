@@ -38,7 +38,7 @@ final class KeyValuePrinter
     }
 
     /**
-     * @return PartInterface|null
+     * @return null|PartInterface
      */
     public function flush()
     {

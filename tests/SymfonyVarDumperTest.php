@@ -24,8 +24,8 @@ final class SymfonyVarDumperTest extends BaseTestCase
      * @dataProvider providerAll
      *
      * @param                      $var
-     * @param CliDumper|null       $dumper
-     * @param ClonerInterface|null $cloner
+     * @param null|CliDumper       $dumper
+     * @param null|ClonerInterface $cloner
      */
     public function testAll($var, CliDumper $dumper = null, ClonerInterface $cloner = null)
     {

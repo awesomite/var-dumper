@@ -231,7 +231,7 @@ final class LightVarDumperTest extends BaseTestCase
      * @dataProvider providerRecursive
      *
      * @param             $var
-     * @param string|bool $expectedDump
+     * @param bool|string $expectedDump
      */
     public function testRecursive($var, $expectedDump)
     {

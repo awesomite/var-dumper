@@ -160,7 +160,7 @@ final class StackTraceHelper
 
         $k = 0;
         while (\count($args) > 0) {
-            /** @var \ReflectionParameter|null $param */
+            /** @var null|\ReflectionParameter $param */
             $param = \array_shift($params);
             ++$k;
 

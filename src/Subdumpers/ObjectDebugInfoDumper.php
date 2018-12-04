@@ -52,7 +52,7 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
     /**
      * @param object $object
      *
-     * @return array|null
+     * @return null|array
      */
     private function getDebugInfoData($object)
     {

@@ -27,6 +27,8 @@ return PhpCsFixer\Config::create()
         'native_function_invocation' => true,
         'header_comment' => array('header' => $header),
         'phpdoc_align' => true,
+        'phpdoc_order' => true,
+        'phpdoc_types_order' => true,
     ))
     ->setFinder($finder)
 ;

@@ -38,7 +38,7 @@ final class ResourceDumper implements SubdumperInterface
     /**
      * @param resource $resource
      *
-     * @return int|false
+     * @return false|int
      */
     private function getResourceId($resource)
     {

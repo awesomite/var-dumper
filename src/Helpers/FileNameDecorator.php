@@ -19,14 +19,19 @@ final class FileNameDecorator
     const MAX_FILE_NAME_DEPTH = 3;
 
     /**
-     * @param string $fileName
+     * @param string   $fileName
+     * @param null|int $maxDepth
      *
      * @return string
      */
-    public static function decorateFileName($fileName)
+    public static function decorateFileName($fileName, $maxDepth = null)
     {
+        $maxDepth = \is_null($maxDepth)
+            ? static::MAX_FILE_NAME_DEPTH
+            : $maxDepth;
+
         $relativeTo = $fileName;
-        for ($i = 0; $i < static::MAX_FILE_NAME_DEPTH; $i++) {
+        for ($i = 0; $i < $maxDepth; $i++) {
             $relativeTo = \dirname($relativeTo);
         }
 
@@ -35,7 +40,7 @@ final class FileNameDecorator
         }
 
         $exploded = \explode(DIRECTORY_SEPARATOR, $fileName);
-        $newParts = \array_slice($exploded, -static::MAX_FILE_NAME_DEPTH, static::MAX_FILE_NAME_DEPTH);
+        $newParts = \array_slice($exploded, -$maxDepth, $maxDepth);
         \array_unshift($newParts, '(...)');
 
         return \implode(DIRECTORY_SEPARATOR, $newParts);

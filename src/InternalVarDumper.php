@@ -70,7 +70,7 @@ class InternalVarDumper implements VarDumperInterface
         $step = $stackTrace[$num];
 
         if (isset($step['file']) && !empty($step['file'])) {
-            echo $step['file'] . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
+            echo $step['file'], (isset($step['line']) ? ':' . $step['line'] : ''), ":\n";
         }
     }
 }

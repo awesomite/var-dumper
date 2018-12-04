@@ -158,7 +158,7 @@ final class StackTraceHelper
         $params = $function ? $function->getParameters() : array();
         $args = $stackTraceRow['args'];
 
-        $k = -1;
+        $k = 0;
         while (\count($args) > 0) {
             /** @var \ReflectionParameter|null $param */
             $param = \array_shift($params);

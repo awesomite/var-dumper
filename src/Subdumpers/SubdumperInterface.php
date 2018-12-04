@@ -18,6 +18,11 @@ use Awesomite\VarDumper\Strings\PartInterface;
  */
 interface SubdumperInterface
 {
+    /**
+     * @param $var
+     *
+     * @return bool
+     */
     public function supports($var);
 
     /**

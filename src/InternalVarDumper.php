@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Helpers\FileNameDecorator;
+
 class InternalVarDumper implements VarDumperInterface
 {
     protected $displayPlaceInCode;
@@ -70,7 +72,7 @@ class InternalVarDumper implements VarDumperInterface
         $step = $stackTrace[$num];
 
         if (isset($step['file']) && !empty($step['file'])) {
-            return $step['file'] . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
+            return FileNameDecorator::decorateFileName($step['file']) . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
         }
 
         return '';

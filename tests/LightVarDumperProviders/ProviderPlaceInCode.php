@@ -37,7 +37,7 @@ final class ProviderPlaceInCode implements \IteratorAggregate
         $dumper = new LightVarDumper(true);
         $var = \range(1, 5);
         list($file, $line) = $this->getTestFileLine();
-        $file = FileNameDecorator::decorateFileName($file);
+        $file = FileNameDecorator::decorateFileName($file, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH);
         $dump = "{$file}:{$line}:\narray(5) {1, 2, 3, 4, 5}\n";
 
         return array(
@@ -63,7 +63,7 @@ final class ProviderPlaceInCode implements \IteratorAggregate
             ),
         );
         list($file, $line) = $this->getTestFileLine();
-        $file = FileNameDecorator::decorateFileName($file);
+        $file = FileNameDecorator::decorateFileName($file, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH);
         $dump
             = <<<DUMP
 {$file}:{$line}:
@@ -105,7 +105,7 @@ DUMP;
             ),
         );
         list($file, $line) = $this->getTestFileLine();
-        $file = FileNameDecorator::decorateFileName($file);
+        $file = FileNameDecorator::decorateFileName($file, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH);
         $dump
             = <<<DUMP
 {$file}:{$line}:
@@ -136,7 +136,7 @@ DUMP;
         $dumper = new LightVarDumper(true);
         $var = array('Hello world!');
         list($file, $line) = $this->getTestFileLine();
-        $file = FileNameDecorator::decorateFileName($file);
+        $file = FileNameDecorator::decorateFileName($file, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH);
         $dump = "{$file}:{$line}:\narray(1) {“Hello world!”}\n";
 
         return array($dumper, $var, $dump);

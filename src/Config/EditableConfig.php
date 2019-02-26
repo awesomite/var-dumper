@@ -50,4 +50,11 @@ final class EditableConfig extends AbstractConfig
 
         return $this;
     }
+
+    public function setMaxFileNameDepth($maxFileNameDepth)
+    {
+        $this->maxFileNameDepth = $maxFileNameDepth;
+
+        return $this;
+    }
 }

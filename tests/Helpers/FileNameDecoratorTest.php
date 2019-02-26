@@ -36,37 +36,17 @@ final class FileNameDecoratorTest extends BaseTestCase
     public function providerDecorateFileName()
     {
         return array(
-            array('/', '/', null),
+            array('/', '/', 0),
             array('/', '/', 3),
             array('/foo/bar/foobar', '/foo/bar/foobar', 4),
             array('/foo/bar/foobar', '/foo/bar/foobar', 3),
             array('/foo/bar/foobar', '(...)/bar/foobar', 2),
             array('/foo/bar/foobar', '(...)/foobar', 1),
-            array('/foo/bar/foobar', '/foo/bar/foobar', null),
-            array('/foo/bar/foobar/directory', '(...)/bar/foobar/directory', null),
+            array('/foo/bar/foobar', '/foo/bar/foobar', 3),
+            array('/foo/bar/foobar/directory', '(...)/bar/foobar/directory', 3),
             array('relative_path', 'relative_path', null),
             array('relative_path', 'relative_path', 1),
             array('relative_path', 'relative_path', 3),
-        );
-    }
-
-    /**
-     * @dataProvider providerInvalidMaxDepth
-     *
-     * @param int $maxDepth
-     */
-    public function testInvalidMaxDepth($maxDepth)
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        FileNameDecorator::decorateFileName(__FILE__, $maxDepth);
-    }
-
-    public function providerInvalidMaxDepth()
-    {
-        return array(
-            array(0),
-            array(-1),
-            array(-10),
         );
     }
 }

@@ -60,7 +60,7 @@ final class ClosureDumper extends AbstractObjectDumper
             if ('filename' === $property->getName()) {
                 $property = new VarProperty(
                     $property->getName(),
-                    FileNameDecorator::decorateFileName($property->getValue()),
+                    FileNameDecorator::decorateFileName($property->getValue(), $this->container->getConfig()->getMaxFileNameDepth()),
                     $property->isPublic() ? VarProperty::VISIBILITY_PUBLIC : ($property->isProtected() ? VarProperty::VISIBILITY_PROTECTED : VarProperty::VISIBILITY_PRIVATE),
                     $property->getDeclaringClass(),
                     $property->isStatic(),

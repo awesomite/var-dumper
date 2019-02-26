@@ -16,18 +16,20 @@ namespace Awesomite\VarDumper\Helpers;
  */
 final class FileNameDecorator
 {
-    const MAX_FILE_NAME_DEPTH = 3;
-
     /**
      * Feature does not work on Windows.
      *
-     * @param string   $fileName
-     * @param null|int $maxDepth
+     * @param string $fileName
+     * @param int    $maxDepth
      *
      * @return string
      */
-    public static function decorateFileName($fileName, $maxDepth = null)
+    public static function decorateFileName($fileName, $maxDepth)
     {
+        if (0 >= $maxDepth) {
+            return $fileName;
+        }
+
         // @codeCoverageIgnoreStart
         if (DIRECTORY_SEPARATOR === '\\') {
             return $fileName;
@@ -40,14 +42,6 @@ final class FileNameDecorator
 
         if ('/' === $fileName) {
             return $fileName;
-        }
-
-        $maxDepth = \is_null($maxDepth)
-            ? static::MAX_FILE_NAME_DEPTH
-            : $maxDepth;
-
-        if ($maxDepth < 1) {
-            throw new \InvalidArgumentException('Parameter $maxDepth must be greater than or equal to 1');
         }
 
         $exploded = \explode(DIRECTORY_SEPARATOR, $fileName);

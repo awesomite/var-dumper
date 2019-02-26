@@ -19,6 +19,8 @@ class InternalVarDumper implements VarDumperInterface
 
     private $shift;
 
+    private $maxFileNameDepth = LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH;
+
     /**
      * @param bool $displayPlaceInCode true whenever dumper should print also information about file and line
      * @param int  $stepShift          nesting level of method "dump", it is used whenever $displayPlaceInCode is equal to true
@@ -57,6 +59,20 @@ class InternalVarDumper implements VarDumperInterface
         return $result;
     }
 
+    /**
+     * Feature does not work on Windows.
+     *
+     * @param int $depth to remove limit, pass 0 or negative value
+     *
+     * @return $this
+     */
+    public function setMaxFileNameDepth($depth)
+    {
+        $this->maxFileNameDepth = (int)$depth;
+
+        return $this;
+    }
+
     final protected function dumpPlaceInCodeAsString($number)
     {
         $options = \version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;
@@ -72,7 +88,7 @@ class InternalVarDumper implements VarDumperInterface
         $step = $stackTrace[$num];
 
         if (isset($step['file']) && !empty($step['file'])) {
-            return FileNameDecorator::decorateFileName($step['file']) . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
+            return FileNameDecorator::decorateFileName($step['file'], $this->maxFileNameDepth) . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
         }
 
         return '';

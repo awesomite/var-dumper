@@ -21,6 +21,7 @@ final class LightVarDumper extends InternalVarDumper
     const DEFAULT_MAX_STRING_LENGTH = 200;
     const DEFAULT_MAX_LINE_LENGTH = 130;
     const DEFAULT_MAX_DEPTH = 5;
+    const DEFAULT_MAX_FILENAME_DEPTH = 3;
     const DEFAULT_INDENT = '    ';
 
     /**
@@ -45,7 +46,8 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_MAX_DEPTH,
             static::DEFAULT_MAX_STRING_LENGTH,
             static::DEFAULT_MAX_LINE_LENGTH,
-            static::DEFAULT_INDENT
+            static::DEFAULT_INDENT,
+            static::DEFAULT_MAX_FILENAME_DEPTH
         );
 
         $this->subdumper = new SubdumpersCollection($this->config);
@@ -157,5 +159,15 @@ final class LightVarDumper extends InternalVarDumper
         $this->config->setIndent($indent);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMaxFileNameDepth($depth)
+    {
+        $this->config->setMaxFileNameDepth((int)$depth);
+
+        return parent::setMaxFileNameDepth($depth);
     }
 }

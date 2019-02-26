@@ -59,7 +59,7 @@ final class StackTraceHelper
     {
         $header = new LinePart(($index + 1) . '.');
         if (isset($step['file']) && isset($step['line'])) {
-            $header->append(new LinePart(' ' . FileNameDecorator::decorateFileName($step['file']) . ':' . $step['line']));
+            $header->append(new LinePart(' ' . FileNameDecorator::decorateFileName($step['file'], $container->getConfig()->getMaxFileNameDepth()) . ':' . $step['line']));
         }
 
         $addedSpace = false;

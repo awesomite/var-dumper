@@ -47,7 +47,7 @@ final class ExceptionDumper extends AbstractObjectDumper
         $array = array(
             'message' => $throwable->getMessage(),
             'code' => $throwable->getCode(),
-            'file' => FileNameDecorator::decorateFileName($throwable->getFile()) . ':' . $throwable->getLine(),
+            'file' => FileNameDecorator::decorateFileName($throwable->getFile(), $this->container->getConfig()->getMaxFileNameDepth()) . ':' . $throwable->getLine(),
             'previous' => $throwable->getPrevious(),
         );
         $body = ArrayBigDumper::dumpBody($array, $this->container);

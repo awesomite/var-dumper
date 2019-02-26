@@ -4,8 +4,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/awesomite/var-dumper/badge.svg?branch=master)](https://coveralls.io/github/awesomite/var-dumper?branch=master)
 [![Build Status](https://travis-ci.org/awesomite/var-dumper.svg?branch=master)](https://travis-ci.org/awesomite/var-dumper)
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/3a354f9a-85e6-47d6-aa9a-407ba293ad05/mini.png)](https://insight.sensiolabs.com/projects/3a354f9a-85e6-47d6-aa9a-407ba293ad05)
-
 ## Why?
 
 To set limit size of printed variable and produce more readable output than built-in [`var_dump`](http://php.net/manual/en/function.var-dump.php) function.

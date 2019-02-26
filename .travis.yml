@@ -66,7 +66,7 @@ install:
   - if [[ "$IS_HHVM" = 'false' ]] && [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
   - |
     if [[ "$IS_HHVM" = 'true' ]]; then
-      bin/composer-set-config.php $(php -r "echo HHVM_VERSION;") platform php;
+      bin/composer-set-config.php $(php -r "echo HHVM_VERSION;") platform hhvm;
 
       if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then
         bin/composer-set-config.php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") platform php;

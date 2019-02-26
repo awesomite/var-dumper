@@ -49,13 +49,23 @@ matrix:
 install:
 
   - mv .git ~.git
-  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
+  - export IS_HHVM=$(php -r "echo defined('HHVM_VERSION') ? 'true' : 'false';")
+  - if [[ "$IS_HHVM" = 'false' ]] && [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
+  - if [[ "$IS_HHVM" = 'false' ]] && [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
   - |
-    if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then
-      bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;");
-      travis_retry docker run --rm --tty --volume $PWD:/app composer update --no-interaction --prefer-stable;
+    if [[ "$IS_HHVM" = 'true' ]]; then
+      if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then
+        bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;");
+      fi;
+
+      if [[ "$DEPENDENCIES" = 'low' ]]; then
+        export COMPOSER_FLAGS="--prefer-lowest";
+      else
+        export COMPOSER_FLAGS="--prefer-lowest";
+      fi;
+
+      travis_retry docker run --rm --tty --volume $PWD:/app composer update --no-interaction --prefer-stable ${COMPOSER_FLAGS};
     fi
-  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       export PHP_CS_FIXER="./dev-tools/vendor/bin/php-cs-fixer";
@@ -72,7 +82,8 @@ install:
 
 before_script:
   - vendor/bin/phpunit-4.8-fixer
-  - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; echo 'hhvm.enable_hip_hop_syntax=1' >> /etc/hhvm/php.ini fi
+  - if [[ "$IS_HHVM" = 'true' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; echo 'hhvm.enable_hip_hop_syntax=1' >> /etc/hhvm/php.ini; fi
+  - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); else export PHP_ARGS=''; fi
 
 script:

@@ -50,7 +50,11 @@ install:
 
   - mv .git ~.git
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
-  - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") && travis_retry docker run --rm --tty --volume $PWD:/app composer update --no-interaction --prefer-stable; fi
+  - |
+    if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then
+      bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;");
+      travis_retry docker run --rm --tty --volume $PWD:/app composer update --no-interaction --prefer-stable;
+    fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
@@ -70,6 +74,7 @@ before_script:
   - vendor/bin/phpunit-4.8-fixer
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); else export PHP_ARGS=''; fi
+  - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then export PHP_ARGS="${PHP_ARGS} -v Eval.EnableHipHopSyntax=true"; fi
 
 script:
   - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix; fi

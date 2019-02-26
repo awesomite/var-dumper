@@ -60,7 +60,8 @@ matrix:
 install:
 
   - mv .git ~.git
-  - export IS_HHVM=$(php -r "echo defined('HHVM_VERSION') ? 'true' : 'false';")
+  - |
+    export IS_HHVM=$(php -r "echo defined('HHVM_VERSION') ? 'true' : 'false';")
   - if [[ "$IS_HHVM" = 'false' ]] && [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
   - if [[ "$IS_HHVM" = 'false' ]] && [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
   - |

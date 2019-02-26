@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0] - ????-??-??
+
+* Internal refactor, do not call `ob_*` functions
+* Added dedicated dumpers for `Closure` and `Throwable`
+* Added the following methods (default value for both of them is equal to `3`):
+  * `Awesomite\VarDumper\InternalVarDumper::setMaxFileNameDepth`
+  * `Awesomite\VarDumper\LightVarDumper::setMaxFileNameDepth`
+
 ## [1.2.1] - 2018-10-01
 
 Function [`ini_set`](http://php.net/manual/en/function.ini-set.php) expects second argument as string,
@@ -81,6 +89,7 @@ $reflectionProp->getValue($obj);
 
 This version contains the same source code as [0.12.0].
 
+[1.3.0]: https://github.com/awesomite/var-dumper/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/awesomite/var-dumper/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/awesomite/var-dumper/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/awesomite/var-dumper/compare/v1.0.3...v1.1.0

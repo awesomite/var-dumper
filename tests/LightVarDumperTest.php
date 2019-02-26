@@ -382,6 +382,19 @@ final class LightVarDumperTest extends BaseTestCase
         return $result;
     }
 
+    public function testSetMaxFileNameDepth()
+    {
+        if (DIRECTORY_SEPARATOR !== '/') {
+            $this->markTestSkipped('Does not work on Windows');
+        }
+        $dumper = new LightVarDumper(true);
+        $dumper->setMaxFileNameDepth(1);
+        $this->assertSame(
+            \sprintf("(...)/LightVarDumperTest.php:%d:\ntrue\n", __LINE__ + 1),
+            $dumper->dumpAsString(true)
+        );
+    }
+
     private function reinitAllDumpers()
     {
         $classes = array(

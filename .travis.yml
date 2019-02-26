@@ -50,9 +50,6 @@ matrix:
     - php: hhvm-3.18
       env: DEPENDENCIES="hhvm_high"
 
-    - php: hhvm-nightly
-      env: DEPENDENCIES="hhvm_high"
-
 install:
   - mv .git ~.git
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi

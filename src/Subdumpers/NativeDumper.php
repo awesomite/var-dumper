@@ -13,6 +13,7 @@ namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\InternalVarDumper;
 use Awesomite\VarDumper\Strings\LinePart;
+use Awesomite\VarDumper\Strings\Parts;
 
 /**
  * @internal
@@ -27,8 +28,12 @@ final class NativeDumper implements SubdumperInterface
     public function dump($var)
     {
         $internal = new InternalVarDumper();
-        $result = $internal->dumpAsString($var);
+        $rawDump = \rtrim($internal->dumpAsString($var), "\n");
+        $parts = new Parts();
+        foreach (\explode("\n", $rawDump) as $part) {
+            $parts->appendPart(new LinePart($part));
+        }
 
-        return new LinePart(\mb_substr($result, 0, -1));
+        return $parts;
     }
 }

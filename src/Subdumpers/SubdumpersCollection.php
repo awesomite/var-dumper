@@ -30,10 +30,14 @@ final class SubdumpersCollection
      */
     private $subdumpers;
 
-    public function __construct(AbstractConfig $config)
+    /**
+     * @param AbstractConfig            $config
+     * @param null|SubdumperInterface[] $subdumpers
+     */
+    public function __construct(AbstractConfig $config, array $subdumpers = null)
     {
         $this->container = $container = new Container($config, $this);
-        $this->subdumpers = array(
+        $this->subdumpers = null !== $subdumpers ? $subdumpers : array(
             new StringDumper($container),
             new NullDumper(),
             new ScalarDumper(),

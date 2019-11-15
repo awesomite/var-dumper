@@ -102,14 +102,7 @@ final class SubdumpersCollectionTest extends BaseTestCase
      */
     private function createCollection(AbstractConfig $config = null, array $subdumpers = null)
     {
-        $collection = new SubdumpersCollection($config ?: $this->createConfigMock());
-        if (null !== $subdumpers) {
-            $reflection = new \ReflectionProperty($collection, 'subdumpers');
-            $reflection->setAccessible(true);
-            $reflection->setValue($collection, $subdumpers);
-        }
-
-        return $collection;
+        return new SubdumpersCollection($config ?: $this->createConfigMock(), $subdumpers);
     }
 
     /**

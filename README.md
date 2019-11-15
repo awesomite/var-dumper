@@ -84,6 +84,50 @@ Use method `dumpAsString()` instead of `dump()` for saving output as variable.
 
 `composer require awesomite/var-dumper`
 
+## Examples
+
+[See](examples) all examples.
+
+### Exception with stacktrace
+
+[Source](examples/exception.php)
+
+```
+object(DivideByZeroException) #4 {[
+    [message] =>  “Cannot divide by zero”
+    [code] =>     0
+    [file] =>     “(...)/examples/exception.php:31”
+    [previous] => NULL
+    [trace] =>
+        1. (...)/examples/exception.php:48 Divider->divide(
+            a: 5
+            b: 0
+        )
+        2. (...)/examples/exception.php:55 Calculator::execute(
+            action:  “divide”
+            numberA: 5
+            numberB: 0
+        )
+]}
+```
+
+### Simple array
+
+[Source](examples/simple-array.php)
+
+```php
+<?php
+
+use Awesomite\VarDumper\LightVarDumper;
+
+$dumper = new LightVarDumper();
+$dumper->dump(\range(1, 5));
+```
+
+```
+array(5) {1, 2, 3, 4, 5}
+```
+
 ## Versioning
 
 The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) scheme.
@@ -93,10 +137,6 @@ The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) s
 Only source code is considered as backward compatible, result of `dump()` and `dumpAsString()` methods may change.
 Classes, methods, functions and properties marked as `@internal` may change any time,
 promise of backward compatibility excludes them, do not use them.
-
-## Examples
-
-[See](examples) more examples.
 
 ## License
 

@@ -94,7 +94,6 @@ install:
 before_script:
   - vendor/bin/phpunit-4.8-fixer
   - export PHP_ARGS='';
-  - php -r "var_dump(ini_get('hhvm.php7.all'));"
   - if [[ "$IS_HHVM" = 'true' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; echo 'hhvm.enable_hip_hop_syntax=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); fi

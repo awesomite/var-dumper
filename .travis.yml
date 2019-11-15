@@ -100,9 +100,9 @@ before_script:
 
 script:
   - |
-    if [[ "$RUN_CS_FIXER" = "true" ]];
-      then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
-      then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix .php_cs.dist;
+    if [[ "$RUN_CS_FIXER" = "true" ]]; then
+      php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
+      php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix .php_cs.dist;
     fi
   - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v --debug
   - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v --debug

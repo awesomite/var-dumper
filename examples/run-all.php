@@ -11,7 +11,7 @@
 
 foreach (\glob(__DIR__ . DIRECTORY_SEPARATOR . '*.php') as $file) {
     $basename = \basename($file);
-    if (\in_array($basename, array('run-all.php', 'exception-variadic.php'), true)) {
+    if (\in_array($basename, array('run-all.php', 'exception-variadic.php', 'init.php'), true)) {
         continue;
     }
 

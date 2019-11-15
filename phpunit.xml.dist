@@ -3,11 +3,8 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.5/phpunit.xsd"
-        bootstrap="test.php"
+        bootstrap="./vendor/autoload.php"
         colors="auto"
-        convertErrorsToExceptions="false"
-        convertNoticesToExceptions="false"
-        convertWarningsToExceptions="false"
 >
 
     <testsuites>

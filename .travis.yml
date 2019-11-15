@@ -123,4 +123,4 @@ script:
 
 after_script:
   - mv ~.git .git
-  - travis_retry bin/coveralls.sh
+  - if [[ "$IS_HHVM" = 'false' ]] then travis_retry bin/coveralls.sh; fi

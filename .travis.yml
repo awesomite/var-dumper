@@ -91,7 +91,7 @@ install:
   # null given in /home/travis/build/awesomite/var-dumper/vendor/phpunit/phpunit/src/Util/GlobalState.php on line 79
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:4} == "hhvm" ]]; then
-      export PHPUNIT_EXCLUDE="--exclude-group=syntax-test";
+      export PHPUNIT_ARGS="--exclude-group=syntax-test --no-coverage";
     fi
   - cd dev-tools; travis_retry composer update; cd ..
 
@@ -108,8 +108,8 @@ script:
       php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
       php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix .php_cs.dist;
     fi
-  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v
-  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v
+  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_ARGS} -v
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_ARGS} -v
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar;

@@ -389,6 +389,19 @@ final class LightVarDumperTest extends BaseTestCase
         }
         $dumper = new LightVarDumper(true);
         $dumper->setMaxFileNameDepth(1);
+
+        if (\defined('HHVM_VERSION')) {
+            $this->assertContains(
+                $dumper->dumpAsString(true),
+                array(
+                    \sprintf("(...)/LightVarDumperTest.php:%d:\ntrue\n", __LINE__ + 1),
+                    \sprintf("(...)/LightVarDumperTest.php:%d:\ntrue\n", __LINE__ + 2),
+                )
+            );
+
+            return;
+        }
+
         $this->assertSame(
             \sprintf("(...)/LightVarDumperTest.php:%d:\ntrue\n", __LINE__ + 1),
             $dumper->dumpAsString(true)

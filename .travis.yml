@@ -8,6 +8,7 @@ cache:
     - $(composer global config --list | grep "\[cache-files-dir\]" | cut -d  " " -f 3 | tr -d '()')
 
 php:
+  - 7.4snapshot
   - 7.3
   - 7.2
   - 7.1
@@ -21,7 +22,7 @@ php:
   - hhvm-3.12
   - hhvm-3.15
   - hhvm-3.18
-  - hhvm-3.28
+  - hhvm-3.30
 
 env:
   matrix:
@@ -47,8 +48,11 @@ matrix:
     - php: hhvm-3.18
       env: DEPENDENCIES="hhvm_high"
 
-    - php: hhvm-3.28
+    - php: hhvm-3.30
       env: DEPENDENCIES="hhvm_high"
+
+  allow_failures:
+    - php: 7.4snapshot
 
 install:
 

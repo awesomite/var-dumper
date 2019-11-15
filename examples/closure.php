@@ -13,8 +13,8 @@ use Awesomite\VarDumper\LightVarDumper;
 
 require __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
 
-global $argc, $argv;
-$function = function ($a, $b) use ($argc, $argv) {
+$name = 'Jane';
+$function = function ($a, $b) use ($name) {
 };
 
 $dumper = new LightVarDumper();
@@ -24,15 +24,14 @@ $dumper->dump($function);
 
 Output:
 
-object(Closure) #3 {[
+object(Closure) #1 {[
         $name =>      “{closure}”
-        $filename =>  “(...)/examples/closure.php”
+        $filename =>  “(...)/var-dumper/examples/closure.php”
         $startLine => 17
         $endLine =>   18
         $use =>
-            array(2) {
-                [argc] => 1
-                [argv] => array(1) {“examples/closure.php”}
+            array(1) {
+                [name] => “Jane”
             }
 ]}
 

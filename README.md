@@ -128,6 +128,36 @@ $dumper->dump(\range(1, 5));
 array(5) {1, 2, 3, 4, 5}
 ```
 
+### Closure
+
+[Source](examples/closure.php)
+
+```php
+<?php
+
+use Awesomite\VarDumper\LightVarDumper;
+
+$name = 'Jane';
+$function = function ($a, $b) use ($name) {
+};
+
+$dumper = new LightVarDumper();
+$dumper->dump($function);
+```
+
+```
+object(Closure) #1 {[
+        $name =>      “{closure}”
+        $filename =>  “(...)/var-dumper/examples/closure.php”
+        $startLine => 17
+        $endLine =>   18
+        $use =>
+            array(1) {
+                [name] => “Jane”
+            }
+]}
+```
+
 ## Versioning
 
 The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) scheme.

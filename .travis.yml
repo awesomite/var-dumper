@@ -104,8 +104,8 @@ script:
       then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
       then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix .php_cs.dist;
     fi
-  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v
-  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v
+  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v --debug
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v --debug
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar;

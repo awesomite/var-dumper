@@ -115,16 +115,7 @@ script:
       chmod +x infection.phar;
       ./infection.phar
     fi
-  - php examples/big-dump.php
-  - php examples/binary-string.php
-  - php examples/closure.php
-  - php examples/custom-indent.php
-  - php examples/debug-info.php
-  - php examples/dumper.php
-  - php examples/exception.php
-  - php examples/pre-exception-variadic.php
-  - php examples/object.php
-  - php examples/simple-array.php
+  - php run-all.php
 
 after_script:
   - mv ~.git .git

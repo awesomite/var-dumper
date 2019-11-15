@@ -25,7 +25,7 @@ final class SubdumpersCollectionTest extends BaseTestCase
     {
         $this->setExpectedExceptionRegExp(
             'RuntimeException',
-            '/^None of the containers supports this variable \[.*\]$/'
+            '/^None of the subdumpers supports this variable \[.*\]$/'
         );
 
         $collection = $this->createCollection(null, array());

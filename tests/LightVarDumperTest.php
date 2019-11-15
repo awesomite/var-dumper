@@ -114,7 +114,7 @@ final class LightVarDumperTest extends BaseTestCase
 
     /**
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage None of the containers supports this variable [NULL]
+     * @expectedExceptionMessage None of the subdumpers supports this variable [NULL]
      */
     public function testNoSupportedContainer()
     {

@@ -94,6 +94,7 @@ install:
 before_script:
   - vendor/bin/phpunit-4.8-fixer
   - export PHP_ARGS='';
+  - php -r "var_dump(ini_get('hhvm.php7.all'));"
   - if [[ "$IS_HHVM" = 'true' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; echo 'hhvm.enable_hip_hop_syntax=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); fi
@@ -104,8 +105,8 @@ script:
       php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
       php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix .php_cs.dist;
     fi
-  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v --debug
-  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v --debug
+  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE} -v
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar;

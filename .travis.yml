@@ -116,7 +116,7 @@ script:
       chmod +x infection.phar;
       ./infection.phar
     fi
-  - php run-all.php
+  - php examples/run-all.php
 
 after_script:
   - mv ~.git .git

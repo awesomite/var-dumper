@@ -97,9 +97,9 @@ final class LightVarDumperTest extends BaseTestCase
          */
         if (\version_compare(\PHP_VERSION, '5.4') < 0) {
             $regex = '/[a-zA-Z0-9_]+' . \preg_quote('->', '/') . '[a-zA-Z0-9_\\\\]+' . \preg_quote('{closure}()', '/') . '/';
-            $dump = \preg_replace($regex, '{closure}()', $dumper->dumpAsString($exception));
+            $expectedDump = \preg_replace($regex, '{closure}()', $expectedDump);
 
-            $this->assertSame($expectedDump, $dump);
+            $this->assertSame($expectedDump, $dumper->dumpAsString($exception));
 
             return;
         }

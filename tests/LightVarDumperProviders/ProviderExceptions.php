@@ -174,14 +174,14 @@ EXPECTED;
         return $this->createExceptionWithStackTrace6();
     }
 
-    private function createExceptionWithStackTrace4($a, $b, $c, $d, $e)
+    private function createExceptionWithStackTrace4($a, $b, $c, $d, $e, $f)
     {
         return $this->createExceptionWithStackTrace5('hello');
     }
 
     private function createExceptionWithStackTrace3()
     {
-        return $this->createExceptionWithStackTrace4(1, 2, 3, 4, 5, 6);
+        return $this->createExceptionWithStackTrace4(1, 2, 3, 4, 5, 6, 7);
     }
 
     private function createExceptionWithStackTrace2($mathArray)
@@ -191,14 +191,18 @@ EXPECTED;
 
     private function createExceptionWithStackTrace()
     {
-        return $this->createExceptionWithStackTrace2(array(\M_PI, \M_PI_2));
+        $function = function () {
+            return $this->createExceptionWithStackTrace2(array(\M_PI, \M_PI_2));
+        };
+
+        return $function();
     }
 
     private function getExceptionWithStackTrace()
     {
         $dumper = new LightVarDumper();
         $dumper->setMaxDepth(3);
-        $dumper->setMaxChildren(5);
+        $dumper->setMaxChildren(6);
 
         $exception = $this->createExceptionWithStackTrace();
 
@@ -221,15 +225,17 @@ object(RangeException) #{$objectId} {[
             c: 3
             d: 4
             e: 5
+            f: 6
             (...)
         )
         4. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:189 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace3(
             arg1: “first undefined parameter”
             arg2: “second undefined parameter”
         )
-        5. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:194 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
+        5. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:195 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
             mathArray: array(2) {M_PI, M_PI_2}
         )
+        6. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:198 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
         (...)
 ]}
 

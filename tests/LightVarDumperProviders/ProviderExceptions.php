@@ -184,15 +184,16 @@ EXPECTED;
         return $this->createExceptionWithStackTrace4(1, 2, 3, 4, 5, 6, 7);
     }
 
-    private function createExceptionWithStackTrace2($mathArray)
+    public function createExceptionWithStackTrace2($mathArray)
     {
         return $this->createExceptionWithStackTrace3('first undefined parameter', 'second undefined parameter');
     }
 
     private function createExceptionWithStackTrace()
     {
-        $function = function () {
-            return $this->createExceptionWithStackTrace2(array(\M_PI, \M_PI_2), null);
+        $self = $this;
+        $function = function () use ($self) {
+            return $self->createExceptionWithStackTrace2(array(\M_PI, \M_PI_2), null);
         };
 
         return $function();
@@ -233,11 +234,11 @@ object(RangeException) #{$objectId} {[
             arg1: “first undefined parameter”
             arg2: “second undefined parameter”
         )
-        5. (...)/ProviderExceptions.php:195 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
+        5. (...)/ProviderExceptions.php:196 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
             mathArray: array(2) {M_PI, M_PI_2}
             arg2:      NULL
         )
-        6. (...)/ProviderExceptions.php:198 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+        6. (...)/ProviderExceptions.php:199 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
         (...)
 ]}
 

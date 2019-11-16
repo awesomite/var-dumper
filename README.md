@@ -137,8 +137,9 @@ array(5) {1, 2, 3, 4, 5}
 
 use Awesomite\VarDumper\LightVarDumper;
 
-$name = 'Jane';
-$function = function ($a, $b) use ($name) {
+$firstName = 'Mary';
+$lastName = 'Watson';
+$function = function ($a, $b) use ($firstName, $lastName) {
 };
 
 $dumper = new LightVarDumper();
@@ -149,11 +150,12 @@ $dumper->dump($function);
 object(Closure) #1 {[
         $name =>      “{closure}”
         $filename =>  “(...)/var-dumper/examples/closure.php”
-        $startLine => 6
-        $endLine =>   7
+        $startLine => 7
+        $endLine =>   8
         $use =>
-            array(1) {
-                [name] => “Jane”
+            array(2) {
+                [firstName] => “Mary”
+                [lastName] =>  “Watson”
             }
 ]}
 ```

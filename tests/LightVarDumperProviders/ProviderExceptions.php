@@ -203,6 +203,7 @@ EXPECTED;
         $dumper = new LightVarDumper();
         $dumper->setMaxDepth(3);
         $dumper->setMaxChildren(6);
+        $dumper->setMaxFileNameDepth(1);
 
         $exception = $this->createExceptionWithStackTrace();
 
@@ -212,14 +213,14 @@ EXPECTED;
 object(RangeException) #{$objectId} {[
     [message] =>  “My range exception”
     [code] =>     0
-    [file] =>     “(...)/tests/LightVarDumperProviders/ProviderExceptions.php:169”
+    [file] =>     “(...)/ProviderExceptions.php:169”
     [previous] => NULL
     [trace] =>
-        1. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:174 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace6()
-        2. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:179 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace5(
+        1. (...)/ProviderExceptions.php:174 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace6()
+        2. (...)/ProviderExceptions.php:179 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace5(
             hello: “hello”
         )
-        3. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:184 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace4(
+        3. (...)/ProviderExceptions.php:184 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace4(
             a: 1
             b: 2
             c: 3
@@ -228,14 +229,14 @@ object(RangeException) #{$objectId} {[
             f: 6
             (...)
         )
-        4. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:189 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace3(
+        4. (...)/ProviderExceptions.php:189 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace3(
             arg1: “first undefined parameter”
             arg2: “second undefined parameter”
         )
-        5. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:195 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
+        5. (...)/ProviderExceptions.php:195 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
             mathArray: array(2) {M_PI, M_PI_2}
         )
-        6. (...)/tests/LightVarDumperProviders/ProviderExceptions.php:198 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+        6. (...)/ProviderExceptions.php:198 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
         (...)
 ]}
 

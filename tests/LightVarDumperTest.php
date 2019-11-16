@@ -392,7 +392,7 @@ final class LightVarDumperTest extends BaseTestCase
 
         if (\defined('HHVM_VERSION')) {
             $this->assertRegExp(
-                '/' . \preg_quote('(...)/LightVarDumperTest.php:', '/') . '[0-9]+' . \preg_quote(':\ntrue\n', '/') . '/',
+                '/' . \preg_quote('(...)/LightVarDumperTest.php:', '/') . '[0-9]+' . \preg_quote(":\ntrue\n", '/') . '/',
                 $dumper->dumpAsString(true)
             );
 

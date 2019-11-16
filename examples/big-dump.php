@@ -11,7 +11,7 @@
 
 use Awesomite\VarDumper\LightVarDumper;
 
-require __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
+require __DIR__ . \DIRECTORY_SEPARATOR . 'init.php';
 
 /**
  * @internal
@@ -35,14 +35,14 @@ class ExampleData
 
     private function prepareLipsum()
     {
-        $this->lipsum = \file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'lorem-ipsum.txt');
-        $this->lipsum2 = \file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'lorem-ipsum2.txt');
+        $this->lipsum = \file_get_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'lorem-ipsum.txt');
+        $this->lipsum2 = \file_get_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'lorem-ipsum2.txt');
     }
 
     private function prepareArray()
     {
         $array = array();
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $array[\implode('', \range(0, $i))] = $i;
         }
         $array['greeting'] = 'Welcome!';

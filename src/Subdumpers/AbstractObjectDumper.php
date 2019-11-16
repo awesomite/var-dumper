@@ -26,9 +26,9 @@ abstract class AbstractObjectDumper extends AbstractDumper
      */
     protected function getProperties($object)
     {
-        $propertiesIterator = new Properties($object);
+        $properties = new Properties($object);
 
-        return $propertiesIterator->getProperties();
+        return $properties->getProperties();
     }
 
     protected function getClassName($object)

@@ -12,6 +12,7 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Helpers\Strings;
+use Awesomite\VarDumper\Strings\LinePart;
 
 /**
  * @internal
@@ -30,10 +31,6 @@ final class ArraySingleStringDumper extends AbstractDumper
 
     public function dump($array)
     {
-        $nlOnEnd = $this->container->getPrintNlOnEnd();
-        $prev = $nlOnEnd->getValue();
-        $nlOnEnd->setValue(false);
-        echo 'array(1) {', $this->container->getDumper()->dumpAsString($array[0]), "}";
-        $nlOnEnd->setValue($prev);
+        return new LinePart('array(1) {' . $this->container->getDumper()->dumpAsPart($array[0]) . '}');
     }
 }

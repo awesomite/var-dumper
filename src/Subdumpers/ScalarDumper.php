@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+
 /**
  * @internal
  */
@@ -18,28 +20,28 @@ final class ScalarDumper implements SubdumperInterface
 {
     private static $floatMapping
         = array(
-            'M_PI'       => M_PI,
-            'M_E'        => M_E,
-            'M_LOG2E'    => M_LOG2E,
-            'M_LOG10E'   => M_LOG10E,
-            'M_LN2'      => M_LN2,
-            'M_LN10'     => M_LN10,
-            'M_PI_2'     => M_PI_2,
-            'M_PI_4'     => M_PI_4,
-            'M_1_PI'     => M_1_PI,
-            'M_2_PI'     => M_2_PI,
-            'M_SQRTPI'   => M_SQRTPI,
-            'M_2_SQRTPI' => M_2_SQRTPI,
-            'M_SQRT2'    => M_SQRT2,
-            'M_SQRT3'    => M_SQRT3,
-            'M_SQRT1_2'  => M_SQRT1_2,
-            'M_LNPI'     => M_LNPI,
-            'M_EULER'    => M_EULER,
+            'M_PI' => \M_PI,
+            'M_E' => \M_E,
+            'M_LOG2E' => \M_LOG2E,
+            'M_LOG10E' => \M_LOG10E,
+            'M_LN2' => \M_LN2,
+            'M_LN10' => \M_LN10,
+            'M_PI_2' => \M_PI_2,
+            'M_PI_4' => \M_PI_4,
+            'M_1_PI' => \M_1_PI,
+            'M_2_PI' => \M_2_PI,
+            'M_SQRTPI' => \M_SQRTPI,
+            'M_2_SQRTPI' => \M_2_SQRTPI,
+            'M_SQRT2' => \M_SQRT2,
+            'M_SQRT3' => \M_SQRT3,
+            'M_SQRT1_2' => \M_SQRT1_2,
+            'M_LNPI' => \M_LNPI,
+            'M_EULER' => \M_EULER,
         );
 
     private static $intMapping
         = array(
-            PHP_INT_MAX => 'PHP_INT_MAX',
+            \PHP_INT_MAX => 'PHP_INT_MAX',
         );
 
     private static $inited = false;
@@ -59,20 +61,16 @@ final class ScalarDumper implements SubdumperInterface
         if (\is_float($scalar)) {
             foreach (self::$floatMapping as $key => $value) {
                 if ($value === $scalar) {
-                    echo $key;
-
-                    return;
+                    return new LinePart($key);
                 }
             }
         }
 
         if (\is_int($scalar) && \array_key_exists($scalar, self::$intMapping)) {
-            echo self::$intMapping[$scalar];
-
-            return;
+            return new LinePart(self::$intMapping[$scalar]);
         }
 
-        echo \var_export($scalar, true);
+        return new LinePart(\var_export($scalar, true));
     }
 
     private static function init()
@@ -93,7 +91,7 @@ final class ScalarDumper implements SubdumperInterface
             }
         }
 
-        self::$intMapping[~PHP_INT_MAX] = 'PHP_INT_MIN';
+        self::$intMapping[~\PHP_INT_MAX] = 'PHP_INT_MIN';
         self::$inited = true;
     }
 }

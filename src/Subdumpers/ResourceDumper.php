@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+
 /**
  * @internal
  */
@@ -25,22 +27,18 @@ final class ResourceDumper implements SubdumperInterface
     {
         $id = $this->getResourceId($resource);
         if (false !== $id) {
-            echo 'resource #', $id, ' of type ', \get_resource_type($resource);
-
-            return;
+            return new LinePart('resource #' . $id . ' of type ' . \get_resource_type($resource));
         }
 
         // @codeCoverageIgnoreStart
-        echo 'resource of type ', \get_resource_type($resource);
-
-        return;
+        return new LinePart('resource of type ' . \get_resource_type($resource));
         // @codeCoverageIgnoreEnd
     }
 
     /**
      * @param resource $resource
      *
-     * @return int|false
+     * @return false|int
      */
     private function getResourceId($resource)
     {

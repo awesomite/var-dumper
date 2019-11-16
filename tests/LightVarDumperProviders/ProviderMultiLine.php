@@ -19,14 +19,14 @@ final class ProviderMultiLine implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator(array(
-            30                     => $this->getMultiline30(),
-            50                     => $this->getMultiLine50(),
-            'without_dots'         => $this->getMultilineWithoutDots(),
-            'broken_dots'          => $this->getMultilineWithBrokenDots(),
-            'new_lines'            => $this->getMultilineWithNewLines(),
-            'white_chars'          => $this->getStringWithWhiteChars(),
-            'short_multiline'      => $this->getShortMulitiline(),
-            'binary_string'        => $this->getBinaryString(),
+            30 => $this->getMultiline30(),
+            50 => $this->getMultiLine50(),
+            'without_dots' => $this->getMultilineWithoutDots(),
+            'broken_dots' => $this->getMultilineWithBrokenDots(),
+            'new_lines' => $this->getMultilineWithNewLines(),
+            'white_chars' => $this->getStringWithWhiteChars(),
+            'short_multiline' => $this->getShortMulitiline(),
+            'binary_string' => $this->getBinaryString(),
             'new_line_in_new_line' => $this->getNewLineInNewLine(),
         ));
     }
@@ -144,7 +144,6 @@ string(14)
 
 EXCPECTED;
 
-
         return array(100, 20, $input, $expected);
     }
 
@@ -189,7 +188,6 @@ string(11)
     › world
 
 EXCPECTED;
-
 
         return array(100, 8, $input, $expected);
     }

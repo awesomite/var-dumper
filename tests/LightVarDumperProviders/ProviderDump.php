@@ -22,7 +22,6 @@ final class ProviderDump implements \IteratorAggregate
     public function getIterator()
     {
         $result = array();
-        $result['visibilityModifiers'] = $this->getVisibilityModifiers();
         if (!\defined('HHVM_VERSION')) {
             $result['arrayObject'] = $this->getArrayObject();
             $result['extendedArrayObject'] = $this->getExtendedArrayObject();
@@ -30,14 +29,14 @@ final class ProviderDump implements \IteratorAggregate
         }
         $result['null'] = array(null, "NULL\n");
         $result['resource'] = array(\tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
-        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '5.4') >= 0) {
+        if (!\defined('HHVM_VERSION') && \version_compare(\PHP_VERSION, '5.4') >= 0) {
             $result['closure'] = $this->getClosure();
         }
         $result['debugInfo'] = $this->getDebugInfo();
         $result['debugInfo2'] = $this->getDebugInfo2();
         $result['debugInfo3'] = $this->getDebugInfo3();
         $result['brokenAlign'] = $this->getBrokenAlign();
-        if (\version_compare(PHP_VERSION, '5.6') < 0) {
+        if (\version_compare(\PHP_VERSION, '5.6') < 0) {
             $result['invalidDebugInfo'] = $this->getInvalidDebugInfo();
             $result['nonArrayDebugInfo'] = $this->getNonArrayDebugInfo();
         }
@@ -56,31 +55,6 @@ final class ProviderDump implements \IteratorAggregate
         $result['edge_case_for_simple_array'] = $this->getEdgeCaseForSimpleArray();
 
         return new \ArrayIterator($result);
-    }
-
-    private function getVisibilityModifiers()
-    {
-        $hasher = HasherFactory::create();
-
-        $object = new TestObject();
-        $object->setPrivate('private variable');
-        $object->setProtected('protected variable');
-        $object->public = 'public variable';
-        $object->dynamicPublic = 'another public variable';
-
-        $objectDump
-            = <<<OBJECT
-object(Awesomite\VarDumper\LightVarDumperProviders\TestObject) #{$hasher->getHashId($object)} (5) {
-    public static \$static =>             “static value”
-    public \$public =>                    “public variable”
-    protected \$protected =>              “protected variable”
-    protected static \$protectedStatic => “protected static value”
-    \$dynamicPublic =>                    “another public variable”
-}
-
-OBJECT;
-
-        return array($object, $objectDump);
     }
 
     private function getArrayObject()
@@ -157,20 +131,20 @@ DUMP;
 
         $dump
             = <<<'DUMP'
-object(Closure) #%%digit%% (%%digit%%) {
-    $name =>              %%any%%“Awesomite\VarDumper\LightVarDumperProviders\{closure}”
-    $filename =>          %%any%%“%%file%%”
-    $startLine =>         %%digit%%
-    $endLine =>           %%digit%%
-    $closureScopeClass => “Awesomite\VarDumper\LightVarDumperProviders\ProviderDump”
-}
+object(Closure) #%digit% {[
+        $name =>              “Awesomite\VarDumper\LightVarDumperProviders\{closure}”
+        $filename =>          “(...)/tests/LightVarDumperProviders/ProviderDump.php”
+        $startLine =>         %digit%
+        $endLine =>           %digit%
+        $closureScopeClass => “Awesomite\VarDumper\LightVarDumperProviders\ProviderDump”
+]}
 
 DUMP;
 
         $replace = array(
-            '%%digit%%' => '[0-9]{1,}',
-            '%%file%%'  => '.*',
-            '%%any%%'   => '.*',
+            '%digit%' => '[0-9]{1,}',
+            '%file%' => '.*',
+            '%any%' => '.*',
         );
         $regex = '#^' . \preg_quote($dump, '#') . '$#ms';
         $regex = \str_replace(\array_keys($replace), \array_values($replace), $regex);
@@ -182,7 +156,7 @@ DUMP;
     {
         $data = array(
             'greeting' => 'hello world',
-            'class'    => \get_class(new TestDebugInfo(array())),
+            'class' => \get_class(new TestDebugInfo(array())),
         );
 
         $expected
@@ -203,7 +177,7 @@ EXPECTED;
 
     private function getDebugInfo2()
     {
-        $data = array(1, 2.5, null, INF);
+        $data = array(1, 2.5, null, \INF);
 
         $expected
             = <<<'EXPECTED'
@@ -240,15 +214,14 @@ EXPECTED;
         return array($obj, $expected);
     }
 
-
     private function getBrokenAlign()
     {
         $data = array(
-            'a'        => 'a',
-            'ab'       => 'ab',
-            'abc'      => 'abc',
+            'a' => 'a',
+            'ab' => 'ab',
+            'abc' => 'abc',
             'subarray' => \range('a', 'm'),
-            'abcd'     => 'abcd',
+            'abcd' => 'abcd',
         );
 
         $expected
@@ -278,7 +251,6 @@ array(5) {
 
 EXPECTED;
 
-
         return array($data, $expected);
     }
 
@@ -294,12 +266,12 @@ EXPECTED;
 
     private function getNonArrayDebugInfo()
     {
-        $data = "hello world";
+        $data = 'hello world';
 
         $expected
             = <<<'EXPECTED'
 object(Awesomite\VarDumper\LightVarDumperProviders\TestDebugInfo) #%d (1) {
-    public $__debugInfo() => “hello world”
+    private $data => “hello world”
 }
 
 EXPECTED;
@@ -316,9 +288,9 @@ EXPECTED;
         $zeros = \implode('', \array_fill(0, $this->getDefaultLineLength(), '0'));
 
         $array = array(
-            'first'  => array(null),
+            'first' => array(null),
             'second' => null,
-            'third'  => $zeros,
+            'third' => $zeros,
         );
         $expected
             = <<<EXPECTED
@@ -341,9 +313,9 @@ EXPECTED;
         $zeros = \implode('', \array_fill(0, $textLength, '0'));
 
         $array = array(
-            'first'  => array(1),
+            'first' => array(1),
             'second' => null,
-            'third'  => $zeros,
+            'third' => $zeros,
         );
 
         $zerosLine = \implode('', \array_fill(0, $lineLength, '0'));
@@ -391,7 +363,7 @@ EXPECTED;
 
     private function getShortArray()
     {
-        $data = array(1, 2, null, 4.5, INF);
+        $data = array(1, 2, null, 4.5, \INF);
         $dump
             = <<<'DUMP'
 array(5) {1, 2, NULL, 4.5, INF}
@@ -404,8 +376,8 @@ DUMP;
     private function getShortArray2()
     {
         $data = array(
-            -1                => -1,
-            "multi line\nkey" => M_PI,
+            -1 => -1,
+            "multi line\nkey" => \M_PI,
             null,
             array(),
         );
@@ -502,7 +474,7 @@ DUMP;
         $qqq = \array_fill(0, LightVarDumper::DEFAULT_MAX_LINE_LENGTH - 1, 'q');
         $qqq = \implode('', $qqq);
 
-        $data = array($qqq . "\t",);
+        $data = array($qqq . "\t");
         $dump
             = <<<'DUMP'
 array(1) {
@@ -515,7 +487,7 @@ array(1) {
 DUMP;
         $replace = array(
             '%length%' => (string)LightVarDumper::DEFAULT_MAX_LINE_LENGTH,
-            '%qqq%'    => $qqq,
+            '%qqq%' => $qqq,
         );
         $dump = \str_replace(
             \array_keys($replace),

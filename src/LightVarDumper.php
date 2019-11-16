@@ -12,36 +12,17 @@
 namespace Awesomite\VarDumper;
 
 use Awesomite\VarDumper\Config\EditableConfig;
-use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\Strings;
-use Awesomite\VarDumper\Subdumpers\ArrayBigDumper;
-use Awesomite\VarDumper\Subdumpers\ArrayRecursiveDumper;
-use Awesomite\VarDumper\Subdumpers\ArraySimpleViewDumper;
-use Awesomite\VarDumper\Subdumpers\ArraySingleStringDumper;
-use Awesomite\VarDumper\Subdumpers\ArrayTooDepthDumper;
-use Awesomite\VarDumper\Subdumpers\NullDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectBigDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectDebugInfoDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectRecursiveDumper;
-use Awesomite\VarDumper\Subdumpers\ObjectTooDepthDumper;
-use Awesomite\VarDumper\Subdumpers\ResourceDumper;
-use Awesomite\VarDumper\Subdumpers\ScalarDumper;
-use Awesomite\VarDumper\Subdumpers\StringDumper;
-use Awesomite\VarDumper\Subdumpers\SubdumperInterface;
-use Awesomite\VarDumper\Subdumpers\VarNotSupportedException;
+use Awesomite\VarDumper\Subdumpers\SubdumpersCollection;
 
 final class LightVarDumper extends InternalVarDumper
 {
-    const DEFAULT_MAX_CHILDREN      = 20;
+    const DEFAULT_MAX_CHILDREN = 20;
     const DEFAULT_MAX_STRING_LENGTH = 200;
-    const DEFAULT_MAX_LINE_LENGTH   = 130;
-    const DEFAULT_MAX_DEPTH         = 5;
-    const DEFAULT_INDENT            = '    ';
-
-    /**
-     * @var Container
-     */
-    private $container;
+    const DEFAULT_MAX_LINE_LENGTH = 130;
+    const DEFAULT_MAX_DEPTH = 5;
+    const DEFAULT_MAX_FILENAME_DEPTH = 3;
+    const DEFAULT_INDENT = '    ';
 
     /**
      * @var EditableConfig
@@ -49,9 +30,9 @@ final class LightVarDumper extends InternalVarDumper
     private $config;
 
     /**
-     * @var SubdumperInterface[]
+     * @var SubdumpersCollection
      */
-    private $subdumpers = array();
+    private $subdumper;
 
     /**
      * {@inheritdoc}
@@ -65,79 +46,29 @@ final class LightVarDumper extends InternalVarDumper
             static::DEFAULT_MAX_DEPTH,
             static::DEFAULT_MAX_STRING_LENGTH,
             static::DEFAULT_MAX_LINE_LENGTH,
-            static::DEFAULT_INDENT
+            static::DEFAULT_INDENT,
+            static::DEFAULT_MAX_FILENAME_DEPTH
         );
 
-        $this->container = $container = new Container($config, $this);
-
-        $this->subdumpers = array(
-            new StringDumper($container),
-            new NullDumper(),
-            new ScalarDumper(),
-            new ObjectRecursiveDumper($container),
-            new ObjectTooDepthDumper($container),
-            new ObjectDebugInfoDumper($container),
-            new ObjectBigDumper($container),
-            new ArrayRecursiveDumper($container),
-            new ArrayTooDepthDumper($container),
-            new ArraySimpleViewDumper($container),
-            new ArraySingleStringDumper($container),
-            new ArrayBigDumper($container),
-            new ResourceDumper(),
-        );
+        $this->subdumper = new SubdumpersCollection($this->config);
     }
 
     public function dump($var)
     {
-        if ($this->displayPlaceInCode && 0 === $this->container->getDepth()->getValue()) {
-            $this->dumpPlaceInCode(0);
+        if ($this->displayPlaceInCode) {
+            echo $this->dumpPlaceInCodeAsString(0);
         }
 
-        $printNl = $this->container->getPrintNlOnEnd()->getValue();
-        $this->container->getPrintNlOnEnd()->setValue(true);
-        $return = false;
+        echo $this->subdumper->dumpAsPart($var), "\n";
+    }
 
-        foreach ($this->subdumpers as $subdumper) {
-            if ($subdumper->supports($var)) {
-                $this->container->getDepth()->incr();
-                try {
-                    $subdumper->dump($var);
-                    if ($printNl) {
-                        echo "\n";
-                    }
-                    $this->container->getDepth()->decr();
-                    $return = true;
-                } catch (VarNotSupportedException $exception) {
-                    $this->container->getDepth()->decr();
-                    continue;
-                }
+    public function dumpAsString($var)
+    {
+        $prefix = $this->displayPlaceInCode
+            ? $this->dumpPlaceInCodeAsString(0)
+            : '';
 
-                break;
-            }
-        }
-
-        $this->container->getPrintNlOnEnd()->setValue($printNl);
-
-        if ($return) {
-            return;
-        }
-
-        // Theoretically the following lines are unnecessary
-        $prev = $this->displayPlaceInCode;
-        $this->displayPlaceInCode = false;
-
-        if ($this->container->getPrintNlOnEnd()->getValue()) {
-            parent::dump($var);
-        } else {
-            \ob_start();
-            parent::dump($var);
-            $result = \ob_get_contents();
-            \ob_end_clean();
-
-            echo \mb_substr($result, 0, -1);
-        }
-
-        $this->displayPlaceInCode = $prev;
+        return $prefix . $this->subdumper->dumpAsPart($var) . "\n";
     }
 
     /**
@@ -228,5 +159,15 @@ final class LightVarDumper extends InternalVarDumper
         $this->config->setIndent($indent);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMaxFileNameDepth($depth)
+    {
+        $this->config->setMaxFileNameDepth((int)$depth);
+
+        return parent::setMaxFileNameDepth($depth);
     }
 }

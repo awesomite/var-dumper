@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+
 /**
  * @internal
  */
@@ -23,6 +25,6 @@ final class NullDumper implements SubdumperInterface
 
     public function dump($var)
     {
-        echo "NULL";
+        return new LinePart('NULL');
     }
 }

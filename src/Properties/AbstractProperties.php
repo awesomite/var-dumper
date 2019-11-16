@@ -37,7 +37,7 @@ abstract class AbstractProperties implements PropertiesInterface
                 function () use (&$continue) {
                     $continue = true;
                 },
-                E_NOTICE
+                \E_NOTICE
             );
             $property->setAccessible(true);
             $property->getValue($this->object);

@@ -20,13 +20,13 @@ final class SyntaxTest extends BaseTestCase
 {
     public static function requireWholeSrc()
     {
-        $path = \realpath(\implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'src')));
+        $path = \realpath(\implode(\DIRECTORY_SEPARATOR, array(__DIR__, '..', 'src')));
         $directory = new \RecursiveDirectoryIterator($path);
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/^.+\.php$/', \RecursiveRegexIterator::GET_MATCH);
         $counter = 0;
         foreach ($regex as $file) {
-            $counter++;
+            ++$counter;
             require_once $file[0];
         }
 
@@ -39,9 +39,7 @@ final class SyntaxTest extends BaseTestCase
     public function testSyntax()
     {
         if (TestEnv::isSpeedTest()) {
-            $this->assertTrue(true);
-
-            return;
+            $this->markTestSkipped('Do not check syntax in speed test mode');
         }
         list($path, $counter) = static::requireWholeSrc();
         $this->assertInternalType('string', $path);

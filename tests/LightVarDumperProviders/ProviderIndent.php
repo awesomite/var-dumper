@@ -20,7 +20,7 @@ final class ProviderIndent implements \IteratorAggregate
     {
         $result = array(
             'dashes' => $this->getDashes(),
-            'dots'   => $this->getDots(),
+            'dots' => $this->getDots(),
         );
 
         return new \ArrayIterator($result);
@@ -42,7 +42,7 @@ DUMP;
 
     private function getDots()
     {
-        $var = array(array(array(1, 2, 3)),);
+        $var = array(array(array(1, 2, 3)));
         $dump
             = <<<'DUMP'
 array(1) {

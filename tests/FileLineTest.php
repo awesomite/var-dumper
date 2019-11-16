@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Helpers\FileNameDecorator;
+
 /**
  * @internal
  */
@@ -21,24 +23,25 @@ final class FileLineTest extends BaseTestCase
      *
      * @param VarDumperInterface $dumper
      * @param bool               $displayLines
+     * @param int                $maxDepth
      */
-    public function testFileLine(VarDumperInterface $dumper, $displayLines)
+    public function testFileLine(VarDumperInterface $dumper, $displayLines, $maxDepth)
     {
         \ob_start();
         $dumper->dump(1);
         $contents = \ob_get_contents();
         \ob_end_clean();
         list($firstLine) = \explode("\n", $contents);
-        $this->assertSame($displayLines, __FILE__ . ':' . (__LINE__ - 4) . ':' === $firstLine, $contents);
+        $this->assertSame($displayLines, FileNameDecorator::decorateFileName(__FILE__, $maxDepth) . ':' . (__LINE__ - 4) . ':' === $firstLine, $contents);
     }
 
     public function providerDumpers()
     {
         return array(
-            array(new LightVarDumper(true), true),
-            array(new InternalVarDumper(true), true),
-            array(new LightVarDumper(), false),
-            array(new InternalVarDumper(), false),
+            array(new LightVarDumper(true), true, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH),
+            array(new InternalVarDumper(true), true, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH),
+            array(new LightVarDumper(), false, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH),
+            array(new InternalVarDumper(), false, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH),
         );
     }
 
@@ -64,9 +67,9 @@ final class FileLineTest extends BaseTestCase
         };
 
         $nestingMapping = array(
-            0 => 21,
-            1 => 18,
-            2 => 15,
+            0 => 22,
+            1 => 19,
+            2 => 16,
         );
 
         \ob_start();
@@ -75,7 +78,11 @@ final class FileLineTest extends BaseTestCase
         \ob_end_clean();
         list($firstLine) = \explode("\n", $contents);
 
-        $this->assertSame(__FILE__ . ':' . (__LINE__ - $nestingMapping[$nestingLevel]) . ':', $firstLine, $contents);
+        $this->assertSame(
+            FileNameDecorator::decorateFileName(__FILE__, LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH) . ':' . (__LINE__ - $nestingMapping[$nestingLevel]) . ':',
+            $firstLine,
+            $contents
+        );
     }
 
     public function providerNestingLevel()

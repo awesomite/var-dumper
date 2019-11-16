@@ -14,7 +14,7 @@ namespace Awesomite\VarDumper\Config;
 /**
  * @internal
  */
-class AbstractConfig
+abstract class AbstractConfig
 {
     protected $maxChildren;
 
@@ -26,13 +26,16 @@ class AbstractConfig
 
     protected $indent;
 
-    public function __construct($maxChildren, $maxDepth, $maxStringLen, $maxLineLen, $indent)
+    protected $maxFileNameDepth;
+
+    public function __construct($maxChildren, $maxDepth, $maxStringLen, $maxLineLen, $indent, $maxFileNameDepth)
     {
         $this->maxChildren = $maxChildren;
         $this->maxDepth = $maxDepth;
         $this->maxStringLen = $maxStringLen;
         $this->maxLineLen = $maxLineLen;
         $this->indent = $indent;
+        $this->maxFileNameDepth = $maxFileNameDepth;
     }
 
     public function getMaxChildren()
@@ -58,5 +61,10 @@ class AbstractConfig
     public function getIndent()
     {
         return $this->indent;
+    }
+
+    public function getMaxFileNameDepth()
+    {
+        return $this->maxFileNameDepth;
     }
 }

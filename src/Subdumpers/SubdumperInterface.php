@@ -11,15 +11,24 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\PartInterface;
+
 /**
  * @internal
  */
 interface SubdumperInterface
 {
+    /**
+     * @param $var
+     *
+     * @return bool
+     */
     public function supports($var);
 
     /**
      * @throws VarNotSupportedException
+     *
+     * @return PartInterface
      */
     public function dump($var);
 }

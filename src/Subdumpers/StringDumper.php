@@ -15,6 +15,8 @@ use Awesomite\Iterators\CallbackIterator;
 use Awesomite\VarDumper\Helpers\Container;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\Helpers\Symbols;
+use Awesomite\VarDumper\Strings\LinePart;
+use Awesomite\VarDumper\Strings\Parts;
 
 /**
  * @internal
@@ -67,23 +69,29 @@ final class StringDumper extends AbstractDumper
             $withSuffix = true;
         }
 
+        $result = new Parts();
+        $result->appendPart($firstLine = new LinePart(''));
+
         if ($withPrefix || $containsNewLine) {
-            echo "string({$len})";
+            $firstLine->append("string({$len})");
         }
         if (!$isMultiLine) {
             if ($withPrefix) {
-                echo ' ';
+                $firstLine->append(' ');
             }
-            echo Symbols::SYMBOL_LEFT_QUOT, $this->escapeWhiteChars($var), Symbols::SYMBOL_RIGHT_QUOT;
+            $firstLine->append(Symbols::SYMBOL_LEFT_QUOT . $this->escapeWhiteChars($var) . Symbols::SYMBOL_RIGHT_QUOT);
             if ($withSuffix) {
-                echo '...';
+                $firstLine->append('...');
             }
         } else {
             if ($withSuffix) {
                 $var .= '...';
             }
-            $this->dumpMultiLine($var);
+            $subParts = $this->dumpMultiLine($var);
+            $result->appendPart($subParts);
         }
+
+        return $result;
     }
 
     private static function init()
@@ -98,8 +106,14 @@ final class StringDumper extends AbstractDumper
         self::$inited = true;
     }
 
+    /**
+     * @param $string
+     *
+     * @return Parts
+     */
     private function dumpMultiLine($string)
     {
+        $result = new Parts();
         $metalines = \explode("\n", $string);
 
         while (null !== $metaline = \array_shift($metalines)) {
@@ -107,9 +121,12 @@ final class StringDumper extends AbstractDumper
                 $metaline .= Symbols::SYMBOL_NEW_LINE;
             }
             foreach ($this->getLines($metaline) as $line) {
-                echo "\n", $this->container->getConfig()->getIndent(), Symbols::SYMBOL_CITE, ' ', $line;
+                $line = $this->container->getConfig()->getIndent() . Symbols::SYMBOL_CITE . ' ' . $line;
+                $result->appendPart(new LinePart($line));
             }
         }
+
+        return $result;
     }
 
     private function getLines($string)
@@ -147,7 +164,7 @@ final class StringDumper extends AbstractDumper
     }
 
     /**
-     * Public for php 5.3
+     * Public for php 5.3.
      *
      * @internal
      *

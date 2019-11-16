@@ -72,14 +72,11 @@ final class PropertiesTest extends BaseTestCase
     public function testArrayObject(\ArrayObject $array, array $expectedNames)
     {
         if (\defined('HHVM_VERSION')) {
-            $this->assertTrue(true);
-
-            return;
+            $this->markTestSkipped();
         }
         $properties = new Properties($array);
         $names = array();
         foreach ($properties->getProperties() as $property) {
-            /** @var PropertyInterface $property */
             $names[] = $property->getName();
         }
         $this->assertSame(\count($expectedNames), \count($names));
@@ -106,12 +103,6 @@ final class PropertiesTest extends BaseTestCase
      */
     public function testClosure(\Closure $closure, array $expectedProperties)
     {
-        if (\defined('HHVM_VERSION')) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         $propertiesObj = new Properties($closure);
         /** @var PropertyInterface[] $properties */
         $properties = $propertiesObj->getProperties();
@@ -145,7 +136,7 @@ final class PropertiesTest extends BaseTestCase
         );
 
         // https://travis-ci.org/awesomite/var-dumper/jobs/240526896
-        if (\version_compare(PHP_VERSION, '7.1') >= 0 && !\defined('HHVM_VERSION')) {
+        if (\version_compare(\PHP_VERSION, '7.1') >= 0 && !\defined('HHVM_VERSION')) {
             $result[] = $this->getInternalClosureName();
         }
 
@@ -166,7 +157,7 @@ final class PropertiesTest extends BaseTestCase
             $fnCreateProperty('startLine', __LINE__ - 5),
             $fnCreateProperty('endLine', __LINE__ - 5),
         );
-        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
+        if (\version_compare(\PHP_VERSION, '5.4') >= 0) {
             $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
         }
 
@@ -194,7 +185,7 @@ final class PropertiesTest extends BaseTestCase
             $fnCreateProperty('startLine', __LINE__ - 5),
             $fnCreateProperty('endLine', __LINE__ - 5),
         );
-        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
+        if (\version_compare(\PHP_VERSION, '5.4') >= 0) {
             $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
         }
         $properties[] = $fnCreateProperty('use', array('a' => $a, 'b' => $b, 'c' => $c));

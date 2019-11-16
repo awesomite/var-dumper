@@ -11,11 +11,15 @@
 
 namespace Awesomite\VarDumper;
 
+use Awesomite\VarDumper\Helpers\FileNameDecorator;
+
 class InternalVarDumper implements VarDumperInterface
 {
     protected $displayPlaceInCode;
 
     private $shift;
+
+    private $maxFileNameDepth = LightVarDumper::DEFAULT_MAX_FILENAME_DEPTH;
 
     /**
      * @param bool $displayPlaceInCode true whenever dumper should print also information about file and line
@@ -34,7 +38,7 @@ class InternalVarDumper implements VarDumperInterface
         \ini_set($iniKey, '0');
 
         if ($this->displayPlaceInCode) {
-            $this->dumpPlaceInCode(0);
+            echo $this->dumpPlaceInCodeAsString(0);
         }
         \var_dump($var);
 
@@ -55,22 +59,38 @@ class InternalVarDumper implements VarDumperInterface
         return $result;
     }
 
-    protected function dumpPlaceInCode($number)
+    /**
+     * Feature does not work on Windows.
+     *
+     * @param int $depth to remove limit, pass 0 or negative value
+     *
+     * @return $this
+     */
+    public function setMaxFileNameDepth($depth)
     {
-        $options = \version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;
+        $this->maxFileNameDepth = (int)$depth;
+
+        return $this;
+    }
+
+    final protected function dumpPlaceInCodeAsString($number)
+    {
+        $options = \version_compare(\PHP_VERSION, '5.3.6') >= 0 ? \DEBUG_BACKTRACE_IGNORE_ARGS : false;
         $stackTrace = \debug_backtrace($options);
         $num = 1 + $number + $this->shift;
 
         // @codeCoverageIgnoreStart
         if (!isset($stackTrace[$num])) {
-            return;
+            return '';
         }
         // @codeCoverageIgnoreEnd
 
         $step = $stackTrace[$num];
 
         if (isset($step['file']) && !empty($step['file'])) {
-            echo $step['file'] . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
+            return FileNameDecorator::decorateFileName($step['file'], $this->maxFileNameDepth) . (isset($step['line']) ? ':' . $step['line'] : '') . ":\n";
         }
+
+        return '';
     }
 }

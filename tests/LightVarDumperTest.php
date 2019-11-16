@@ -16,6 +16,8 @@ use Awesomite\VarDumper\Helpers\IntValue;
 use Awesomite\VarDumper\Helpers\Strings;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDump;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderDumpConstants;
+use Awesomite\VarDumper\LightVarDumperProviders\ProviderDynamicDump;
+use Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderIndent;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxChildren;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxDepth;
@@ -23,6 +25,8 @@ use Awesomite\VarDumper\LightVarDumperProviders\ProviderMaxStringLength;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderMultiLine;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderPlaceInCode;
 use Awesomite\VarDumper\LightVarDumperProviders\ProviderRecursive;
+use Awesomite\VarDumper\Subdumpers\NativeDumper;
+use Awesomite\VarDumper\Subdumpers\SubdumpersCollection;
 
 /**
  * @internal
@@ -47,7 +51,7 @@ final class LightVarDumperTest extends BaseTestCase
         if ('#' === $expectedDump[0]) {
             $this->assertRegExp($expectedDump, $dumper->dumpAsString($var));
         } else {
-            $this->assertSame($expectedDump, $dumper->dumpAsString($var));
+            $this->assertSame($expectedDump, $dumper->dumpAsString($var), $expectedDump . "==========\n" . $dumper->dumpAsString($var));
         }
 
         $this->assertZeroDepth($dumper);
@@ -62,25 +66,113 @@ final class LightVarDumperTest extends BaseTestCase
         );
     }
 
+    /**
+     * @dataProvider providerThrowable
+     *
+     * @param VarDumperInterface    $dumper
+     * @param \Exception|\Throwable $exception
+     * @param string                $expectedDump
+     */
+    public function testThrowable(VarDumperInterface $dumper, $exception, $expectedDump)
+    {
+        /*
+         * There are small differences between HHVM and PHP, e.g. name of function for closure:
+         *
+         * PHP:   Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+         * HHVM: {closure}()
+         *
+         * https://travis-ci.org/awesomite/var-dumper/jobs/612736181
+         */
+        if (\defined('HHVM_VERSION')) {
+            $this->assertInternalType('string', $dumper->dumpAsString($exception));
+
+            return;
+        }
+
+        /*
+         * PHP ^5.4:  Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+         * PHP 5.3.*: Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+         *
+         * https://travis-ci.org/awesomite/var-dumper/jobs/612762242
+         */
+        if (\version_compare(\PHP_VERSION, '5.4') < 0) {
+            $regex = '/[a-zA-Z0-9_]+' . \preg_quote('->', '/') . '[a-zA-Z0-9_\\\\]+' . \preg_quote('{closure}()', '/') . '/';
+            $expectedDump = \preg_replace($regex, '{closure}()', $expectedDump);
+
+            $this->assertSame($expectedDump, $dumper->dumpAsString($exception));
+
+            return;
+        }
+
+        $this->assertSame($expectedDump, $dumper->dumpAsString($exception));
+    }
+
+    public function providerThrowable()
+    {
+        return \iterator_to_array(new ProviderExceptions());
+    }
+
+    /**
+     * HHVM changes order of properties.
+     *
+     * @dataProvider providerDynamicDump
+     *
+     * @param          $var
+     * @param string[] $lines
+     *
+     * @see https://travis-ci.org/awesomite/var-dumper/jobs/462117181
+     */
+    public function testDynamicDump($var, array $lines)
+    {
+        if (!$this->wasDumperReset) {
+            $this->reinitAllDumpers();
+        }
+
+        $dumper = new LightVarDumper();
+        $dump = $dumper->dumpAsString($var);
+        $dumpLines = \explode("\n", $dump);
+
+        $this->assertNotEmpty($lines);
+        foreach ($lines as $line) {
+            $this->assertContains($line, $dumpLines);
+        }
+        $this->assertZeroDepth($dumper);
+        $this->assertEmptyReferences($dumper);
+    }
+
+    public function providerDynamicDump()
+    {
+        return \iterator_to_array(new ProviderDynamicDump());
+    }
+
     public function testNativeDumper()
     {
         $dumper = new LightVarDumper();
 
-        $reflectionObject = new \ReflectionObject($dumper);
-        $reflectionSubdumpers = $reflectionObject->getProperty('subdumpers');
-        $reflectionSubdumpers->setAccessible(true);
-        $reflectionSubdumpers->setValue($dumper, array());
+        $subdumper = $this->getPrivateProperty($dumper, 'subdumper');
+        $refSubDumper = new \ReflectionProperty($subdumper, 'subdumpers');
+        $refSubDumper->setAccessible(true);
+        $refSubDumper->setValue($subdumper, array(new NativeDumper()));
 
-        $container = $this->readContainer($dumper);
+        $dump = $dumper->dumpAsString(5);
+        $this->assertInternalType('string', $dump);
+        $this->assertNotSame('', $dump);
+    }
 
-        foreach (array(false, true) as $bool) {
-            $container->getPrintNlOnEnd()->setValue($bool);
-            $dump = $dumper->dumpAsString(5);
-            $hasNlOnEnd = "\n" === \mb_substr($dump, -1);
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage None of the subdumpers supports this variable [NULL]
+     */
+    public function testNoSupportedSubdumper()
+    {
+        $dumper = new LightVarDumper();
 
-            $this->assertTrue('' !== $dump);
-            $this->assertSame($bool, $hasNlOnEnd);
-        }
+        $subdumper = $this->getPrivateProperty($dumper, 'subdumper');
+        $refSubDumper = new \ReflectionProperty($subdumper, 'subdumpers');
+        $refSubDumper->setAccessible(true);
+        $refSubDumper->setValue($subdumper, array());
+
+        $dumper->dump(null);
     }
 
     /**
@@ -186,7 +278,7 @@ final class LightVarDumperTest extends BaseTestCase
      * @dataProvider providerRecursive
      *
      * @param             $var
-     * @param string|bool $expectedDump
+     * @param bool|string $expectedDump
      */
     public function testRecursive($var, $expectedDump)
     {
@@ -337,6 +429,29 @@ final class LightVarDumperTest extends BaseTestCase
         return $result;
     }
 
+    public function testSetMaxFileNameDepth()
+    {
+        if (\DIRECTORY_SEPARATOR !== '/') {
+            $this->markTestSkipped('Does not work on Windows');
+        }
+        $dumper = new LightVarDumper(true);
+        $dumper->setMaxFileNameDepth(1);
+
+        if (\defined('HHVM_VERSION')) {
+            $this->assertRegExp(
+                '/' . \preg_quote('(...)/LightVarDumperTest.php:', '/') . '[0-9]+' . \preg_quote(":\ntrue\n", '/') . '/',
+                $dumper->dumpAsString(true)
+            );
+
+            return;
+        }
+
+        $this->assertSame(
+            \sprintf("(...)/LightVarDumperTest.php:%d:\ntrue\n", __LINE__ + 1),
+            $dumper->dumpAsString(true)
+        );
+    }
+
     private function reinitAllDumpers()
     {
         $classes = array(
@@ -355,28 +470,32 @@ final class LightVarDumperTest extends BaseTestCase
     private function assertZeroDepth(LightVarDumper $dumper)
     {
         /** @var IntValue $depth */
-        $depth = $this->readPrivateProperty($this->readContainer($dumper), 'depth');
+        $depth = $this->getPrivateProperty($this->getContainer($dumper), 'depth');
 
         $this->assertSame(0, $depth->getValue());
     }
 
     private function assertEmptyReferences(LightVarDumper $dumper)
     {
-        $references = $this->readContainer($dumper)->getReferences();
-        $array = $this->readPrivateProperty($references, 'array');
+        $references = $this->getContainer($dumper)->getReferences();
+        $array = $this->getPrivateProperty($references, 'array');
         $this->assertSame(0, \count($array));
     }
 
     /**
-     * @param  LightVarDumper $dumper
+     * @param LightVarDumper $dumper
+     *
      * @return Container
      */
-    private function readContainer(LightVarDumper $dumper)
+    private function getContainer(LightVarDumper $dumper)
     {
-        return $this->readPrivateProperty($dumper, 'container');
+        /** @var SubdumpersCollection $subdumper */
+        $subdumper = $this->getPrivateProperty($dumper, 'subdumper');
+
+        return $this->getPrivateProperty($subdumper, 'container');
     }
 
-    private function readPrivateProperty($object, $name)
+    private function getPrivateProperty($object, $name)
     {
         $property = new \ReflectionProperty(\get_class($object), $name);
         $property->setAccessible(true);

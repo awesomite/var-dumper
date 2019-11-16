@@ -11,17 +11,19 @@
 
 use Awesomite\VarDumper\LightVarDumper;
 
-require __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
+require __DIR__ . \DIRECTORY_SEPARATOR . 'init.php';
 
 /**
  * @internal
+ *
+ * @see http://php.net/manual/en/language.oop5.magic.php#object.debuginfo
  */
 class MyClass
 {
     public function __debugInfo()
     {
         return array(
-            'key'=> 'value',
+            'key' => 'value',
             'some' => 'output',
         );
     }

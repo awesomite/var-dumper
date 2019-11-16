@@ -12,14 +12,13 @@
 namespace Awesomite\VarDumper\Subdumpers;
 
 use Awesomite\VarDumper\Helpers\Container;
+use Awesomite\VarDumper\Strings\LinePart;
 
 /**
  * @internal
  */
 final class ArrayRecursiveDumper extends AbstractDumper
 {
-    private $references;
-
     private static $inited = false;
 
     private static $canCompareArrays = null;
@@ -37,7 +36,7 @@ final class ArrayRecursiveDumper extends AbstractDumper
 
     public function dump($array)
     {
-        echo 'RECURSIVE array(' . \count($array) . ")";
+        return new LinePart('RECURSIVE array(' . \count($array) . ')');
     }
 
     private static function init()
@@ -51,7 +50,7 @@ final class ArrayRecursiveDumper extends AbstractDumper
     }
 
     /**
-     * Code:
+     * Code:.
      *
      * $a = array();
      * $b = &$a;
@@ -65,15 +64,15 @@ final class ArrayRecursiveDumper extends AbstractDumper
      */
     private static function canCompareArrayReferences()
     {
-        if (\version_compare(PHP_VERSION, '5.4.5') >= 0) {
+        if (\version_compare(\PHP_VERSION, '5.4.5') >= 0) {
             return true;
         }
 
         // 5.4.* && < 5.4.5
-        if (PHP_MINOR_VERSION === 4) {
+        if (\PHP_MINOR_VERSION === 4) {
             return false;
         }
 
-        return \version_compare(PHP_VERSION, '5.3.15') >= 0;
+        return \version_compare(\PHP_VERSION, '5.3.15') >= 0;
     }
 }

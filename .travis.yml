@@ -7,22 +7,25 @@ cache:
   directories:
     - $(composer global config --list | grep "\[cache-files-dir\]" | cut -d  " " -f 3 | tr -d '()')
 
+env:
+  - COMPOSER_MEMORY_LIMIT=-1
+
 php:
+  - 7.4snapshot
+  - 7.3
   - 7.2
   - 7.1
   - 7.0
   - 5.6
   - 5.5
   - 5.4
-  - hhvm
   - hhvm-3.3
   - hhvm-3.6
   - hhvm-3.9
   - hhvm-3.12
   - hhvm-3.15
   - hhvm-3.18
-  - nightly
-  - hhvm-nightly
+  - hhvm-3.30
 
 env:
   matrix:
@@ -30,10 +33,6 @@ env:
     - DEPENDENCIES="low"
 
 matrix:
-  allow_failures:
-    - php: nightly
-    - php: hhvm-nightly
-
   include:
     - php: 5.3
       dist: precise
@@ -42,9 +41,6 @@ matrix:
     - php: 5.3
       dist: precise
       env: DEPENDENCIES="low"
-
-    - php: hhvm
-      env: DEPENDENCIES="hhvm_high"
 
     - php: hhvm-3.12
       env: DEPENDENCIES="hhvm_high"
@@ -55,14 +51,39 @@ matrix:
     - php: hhvm-3.18
       env: DEPENDENCIES="hhvm_high"
 
-    - php: hhvm-nightly
+    - php: hhvm-3.30
       env: DEPENDENCIES="hhvm_high"
 
+  allow_failures:
+    - php: 7.4snapshot
+
 install:
+
   - mv .git ~.git
-  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
-  - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then bin/composer-set-config.php php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") && travis_retry composer update --no-interaction --prefer-stable; fi
-  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
+  - |
+    export IS_HHVM=$(php -r "echo defined('HHVM_VERSION') ? 'true' : 'false';")
+  - if [[ "$IS_HHVM" = 'false' ]] && [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --prefer-stable; fi
+  - if [[ "$IS_HHVM" = 'false' ]] && [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --prefer-stable --prefer-lowest; fi
+  - |
+    if [[ "$IS_HHVM" = 'true' ]]; then
+      bin/composer-set-config.php $(php -r "echo HHVM_VERSION;") platform hhvm;
+
+      if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then
+        bin/composer-set-config.php $(php -d hhvm.php7.all=1 -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") platform php;
+      else
+        bin/composer-set-config.php $(php --r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") platform php;
+      fi;
+
+      cat composer.json
+
+      if [[ "$DEPENDENCIES" = 'low' ]]; then
+        export COMPOSER_FLAGS="--prefer-lowest";
+      else
+        export COMPOSER_FLAGS="--prefer-lowest";
+      fi;
+
+      travis_retry docker run --rm --tty --volume $PWD:/app composer update --no-interaction --prefer-stable ${COMPOSER_FLAGS};
+    fi
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       export PHP_CS_FIXER="./dev-tools/vendor/bin/php-cs-fixer";
@@ -73,19 +94,31 @@ install:
   # null given in /home/travis/build/awesomite/var-dumper/vendor/phpunit/phpunit/src/Util/GlobalState.php on line 79
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:4} == "hhvm" ]]; then
-      export PHPUNIT_EXCLUDE="--exclude-group=syntax-test";
+      export PHPUNIT_ARGS="--exclude-group=syntax-test --no-coverage";
+    fi
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:3} != "7.1" ]]; then
+      cd dev-tools;
+      composer remove friendsofphp/php-cs-fixer --no-update;
+      cd ..;
     fi
   - cd dev-tools; travis_retry composer update; cd ..
 
 before_script:
   - vendor/bin/phpunit-4.8-fixer
+  - export PHP_ARGS='';
+  - if [[ "$IS_HHVM" = 'true' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; echo 'hhvm.enable_hip_hop_syntax=1' >> /etc/hhvm/php.ini; fi
   - if [[ "$DEPENDENCIES" = 'hhvm_high' ]]; then echo 'hhvm.php7.all=1' >> /etc/hhvm/php.ini; fi
-  - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); else export PHP_ARGS=''; fi
+  - if [[ "$DEPENDENCIES" = 'low' ]]; then export PHP_ARGS=$(php -r "echo '-d error_reporting=', E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED);"); fi
 
 script:
-  - if [[ "$RUN_CS_FIXER" = "true" ]]; then php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix; fi
-  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE}
-  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_EXCLUDE}
+  - |
+    if [[ "$RUN_CS_FIXER" = "true" ]]; then
+      php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix;
+      php -n ${PHP_CS_FIXER} --diff --dry-run -v --allow-risky=yes fix .php_cs.dist;
+    fi
+  - php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_ARGS} -v
+  - MODE_SPEED_TEST=true php ${PHP_ARGS} vendor/bin/phpunit ${PHPUNIT_ARGS} -v
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then
       wget https://github.com/infection/infection/releases/download/0.10.3/infection.phar;
@@ -95,13 +128,8 @@ script:
       chmod +x infection.phar;
       ./infection.phar
     fi
-  - php examples/big-dump.php
-  - php examples/binary-string.php
-  - php examples/custom-indent.php
-  - php examples/debug-info.php
-  - php examples/dumper.php
-  - php examples/object.php
+  - php examples/run-all.php
 
 after_script:
   - mv ~.git .git
-  - travis_retry bin/coveralls.sh
+  - if [[ "$IS_HHVM" = 'false' ]]; then travis_retry bin/coveralls.sh; fi

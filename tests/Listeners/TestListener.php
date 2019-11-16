@@ -37,7 +37,6 @@ final class TestListener implements \PHPUnit_Framework_TestListener
                 : ($left[0] < $right[0] ? 1 : -1);
         });
 
-
         $wholeTime = 0;
         \array_walk($times, function ($element) use (&$wholeTime) {
             $wholeTime += $element[0];

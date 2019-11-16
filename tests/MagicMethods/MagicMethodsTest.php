@@ -38,7 +38,7 @@ EXPECTED;
         $parts = array(
             'private $b =>',
         );
-        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '7.0') >= 0) {
+        if (!\defined('HHVM_VERSION') && \version_compare(\PHP_VERSION, '7.0') >= 0) {
             $parts[] = '(1) {';
         } else {
             $parts[] = '(2) {';
@@ -54,7 +54,7 @@ EXPECTED;
             'private $b =>',
             '$c =>',
         );
-        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '7.0') >= 0) {
+        if (!\defined('HHVM_VERSION') && \version_compare(\PHP_VERSION, '7.0') >= 0) {
             $parts[] = '(2) {';
         } else {
             $parts[] = '(3) {';
@@ -79,7 +79,7 @@ EXPECTED;
     {
         $reader = new Properties($object);
 
-        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '7.0') >= 0) {
+        if (!\defined('HHVM_VERSION') && \version_compare(\PHP_VERSION, '7.0') >= 0) {
             $this->assertSame(\count($expectedProperties), \count($reader->getProperties()));
         } else {
             $this->assertSame(\count($expectedProperties) + \count($diff), \count($reader->getProperties()));

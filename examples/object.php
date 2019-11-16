@@ -11,7 +11,7 @@
 
 use Awesomite\VarDumper\LightVarDumper;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
+require_once __DIR__ . \DIRECTORY_SEPARATOR . 'init.php';
 
 $dumper = new LightVarDumper();
 $dumper
@@ -49,7 +49,6 @@ class Foobar extends Bar
         );
     }
 }
-
 
 $object = new Foobar();
 

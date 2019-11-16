@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of the awesomite/var-dumper package.
+ *
+ * (c) Bartłomiej Krukowski <bartlomiej@krukowski.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'bin')
-    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'examples')
-    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'src')
-    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'tests')
+    ->in(__DIR__ . \DIRECTORY_SEPARATOR . 'bin')
+    ->in(__DIR__ . \DIRECTORY_SEPARATOR . 'examples')
+    ->in(__DIR__ . \DIRECTORY_SEPARATOR . 'src')
+    ->in(__DIR__ . \DIRECTORY_SEPARATOR . 'tests')
 ;
 
 $header = <<<'HEADER'
@@ -19,14 +28,22 @@ HEADER;
 return PhpCsFixer\Config::create()
     ->setRules(array(
         '@PSR2' => true,
+        '@Symfony' => true,
         'array_syntax' => array('syntax' => 'long'),
         'no_unused_imports' => true,
         'yoda_style' => true,
         'new_with_braces' => true,
         'mb_str_functions' => true,
         'native_function_invocation' => true,
+        'native_constant_invocation' => true,
         'header_comment' => array('header' => $header),
         'phpdoc_align' => true,
+        'phpdoc_order' => true,
+        'phpdoc_types_order' => true,
+        'return_assignment' => true,
+        'concat_space' => array('spacing' => 'one'),
+        'cast_spaces' => array('space' => 'none'),
+        'no_superfluous_phpdoc_tags' => false,
     ))
     ->setFinder($finder)
 ;

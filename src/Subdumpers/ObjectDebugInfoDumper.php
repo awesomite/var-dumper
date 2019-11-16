@@ -11,8 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
-use Awesomite\VarDumper\Properties\Properties;
-use Awesomite\VarDumper\Properties\PropertyInterface;
+use Awesomite\VarDumper\Strings\LinePart;
+use Awesomite\VarDumper\Strings\Parts;
 
 /**
  * @internal
@@ -26,39 +26,39 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
 
     public function dump($object)
     {
-        $properties = $this->getProperties($object);
-        $class = $this->getClassName($object);
-        $debugInfoData = $this->getDebugInfoData($properties);
-        if (false === $debugInfoData) {
+        $debugInfoData = $this->getDebugInfoData($object);
+        if (null === $debugInfoData) {
             throw new VarNotSupportedException();
         }
 
-        $this->container->getReferences()->push($object);
+        $class = $this->getClassName($object);
 
         $count = \count($debugInfoData);
-        echo 'object(', $class, ') #', $this->container->getHasher()->getHashId($object), ' (', $count, ') {[';
+        $header = new LinePart('object(' . $class . ') #' . $this->container->getHasher()->getHashId($object) . ' (' . $count . ') {[');
+        $result = new Parts();
+        $result->appendPart($header);
         if ($count > 0) {
-            echo "\n";
-            ArrayBigDumper::dumpBody($debugInfoData, $this->container);
+            $body = ArrayBigDumper::dumpBody($debugInfoData, $this->container);
+            $body->addIndent($this->container->getConfig()->getIndent());
+            $result->appendPart($body);
+            $result->appendPart(new LinePart(']}'));
+        } else {
+            $header->append(']}');
         }
-        echo ']}';
 
-        $this->container->getReferences()->pop();
+        return $result;
     }
 
     /**
-     * @param PropertyInterface[] $properties
+     * @param object $object
      *
-     * @return array|false
+     * @return null|array
      */
-    private function getDebugInfoData($properties)
+    private function getDebugInfoData($object)
     {
-        if (1 !== \count($properties)) {
-            return false;
-        }
-
-        if (isset($properties[0]) && Properties::PROPERTY_DEBUG_INFO === $properties[0]->getName()) {
-            $value = $properties[0]->getValue();
+        $reflection = new \ReflectionMethod($object, '__debugInfo');
+        if (!$reflection->isStatic() && $reflection->isPublic() && 0 === $reflection->getNumberOfParameters()) {
+            $value = $reflection->invoke($object);
 
             // check type of value for php < 5.6
             if (\is_array($value)) {
@@ -66,6 +66,6 @@ final class ObjectDebugInfoDumper extends AbstractObjectDumper
             }
         }
 
-        return false;
+        return null;
     }
 }

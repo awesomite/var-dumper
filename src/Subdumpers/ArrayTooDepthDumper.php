@@ -11,6 +11,8 @@
 
 namespace Awesomite\VarDumper\Subdumpers;
 
+use Awesomite\VarDumper\Strings\LinePart;
+
 /**
  * @internal
  */
@@ -25,6 +27,7 @@ final class ArrayTooDepthDumper extends AbstractDumper
     public function dump($var)
     {
         $c = \count($var);
-        echo 'array(', $c, ') {', ($c ? '...' : ''), "}";
+
+        return new LinePart('array(' . $c . ') {' . ($c ? '...' : '') . '}');
     }
 }

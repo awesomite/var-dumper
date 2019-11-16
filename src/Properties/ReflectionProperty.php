@@ -32,9 +32,8 @@ final class ReflectionProperty implements PropertyInterface
     public function getValue()
     {
         $this->reflection->setAccessible(true);
-        $result = $this->reflection->getValue($this->object);
 
-        return $result;
+        return $this->reflection->getValue($this->object);
     }
 
     public function getName()

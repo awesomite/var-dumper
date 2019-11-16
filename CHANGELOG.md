@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.3.0] - ????-??-??
+## [1.3.0] - 2019-11-16
 
 * Internal refactor, do not call `ob_*` functions
 * Added dedicated dumpers for `Closure` and `Throwable`

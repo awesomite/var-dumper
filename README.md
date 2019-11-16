@@ -88,7 +88,7 @@ Use method `dumpAsString()` instead of `dump()` for saving output as variable.
 
 [See](examples) all examples.
 
-### Exception with stacktrace
+### Exception with stack trace
 
 [Source](examples/exception.php)
 

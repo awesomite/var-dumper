@@ -27,7 +27,8 @@ final class ProviderExceptions implements \IteratorAggregate
             $this->getExceptionWith2Children(),
             $this->getExceptionWith3Children(),
             $this->getExceptionWith4Children(),
-            $this->getExceptionWithStackTrace()
+            $this->getExceptionWithStackTrace(),
+            $this->getExceptionWithVariadicParamsInStackTrace()
         ));
     }
 
@@ -44,7 +45,7 @@ final class ProviderExceptions implements \IteratorAggregate
 object(RuntimeException) #{$objectId} {[
     [message] =>  “”
     [code] =>     0
-    [file] =>     “(...)/tests/LightVarDumperProviders/ProviderExceptions.php:39”
+    [file] =>     “(...)/tests/LightVarDumperProviders/ProviderExceptions.php:40”
     [previous] => NULL
     [trace] =>    [...]
 ]}
@@ -123,7 +124,7 @@ EXPECTED;
 object(LogicException) #{$objectId} {[
     [message] => “My message”
     [code] =>    0
-    [file] =>    “(...)/tests/LightVarDumperProviders/ProviderExceptions.php:118”
+    [file] =>    “(...)/tests/LightVarDumperProviders/ProviderExceptions.php:119”
     (...)
 ]}
 
@@ -150,7 +151,7 @@ EXPECTED;
 object(LogicException) #{$objectId} {[
     [message] =>  “My message”
     [code] =>     0
-    [file] =>     “(...)/tests/LightVarDumperProviders/ProviderExceptions.php:145”
+    [file] =>     “(...)/tests/LightVarDumperProviders/ProviderExceptions.php:146”
     [previous] => NULL
     (...)
 ]}
@@ -186,7 +187,7 @@ EXPECTED;
 
     public function createExceptionWithStackTrace2($mathArray)
     {
-        return $this->createExceptionWithStackTrace3('first undefined parameter', 'second undefined parameter');
+        return $this->createExceptionWithStackTrace3('first undefined parameter', 'second undefined parameter', "third\nundefined\nparameter");
     }
 
     private function createExceptionWithStackTrace()
@@ -214,14 +215,14 @@ EXPECTED;
 object(RangeException) #{$objectId} {[
     [message] =>  “My range exception”
     [code] =>     0
-    [file] =>     “(...)/ProviderExceptions.php:169”
+    [file] =>     “(...)/ProviderExceptions.php:170”
     [previous] => NULL
     [trace] =>
-        1. (...)/ProviderExceptions.php:174 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace6()
-        2. (...)/ProviderExceptions.php:179 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace5(
+        1. (...)/ProviderExceptions.php:175 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace6()
+        2. (...)/ProviderExceptions.php:180 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace5(
             hello: “hello”
         )
-        3. (...)/ProviderExceptions.php:184 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace4(
+        3. (...)/ProviderExceptions.php:185 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace4(
             a: 1
             b: 2
             c: 3
@@ -230,15 +231,20 @@ object(RangeException) #{$objectId} {[
             f: 6
             (...)
         )
-        4. (...)/ProviderExceptions.php:189 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace3(
+        4. (...)/ProviderExceptions.php:190 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace3(
             arg1: “first undefined parameter”
             arg2: “second undefined parameter”
+            arg3:
+                string(25)
+                    › third↵
+                    › undefined↵
+                    › parameter
         )
-        5. (...)/ProviderExceptions.php:196 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
+        5. (...)/ProviderExceptions.php:197 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
             mathArray: array(2) {M_PI, M_PI_2}
             arg2:      NULL
         )
-        6. (...)/ProviderExceptions.php:199 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+        6. (...)/ProviderExceptions.php:200 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
         (...)
 ]}
 
@@ -248,6 +254,19 @@ EXCPECTED;
             'exception with stack trace' => array(
                 $dumper, $exception, $expected,
             ),
+        );
+    }
+
+    private function getExceptionWithVariadicParamsInStackTrace()
+    {
+        if (\version_compare(\PHP_VERSION, '5.6') < 0) {
+            return array();
+        }
+
+        require_once __DIR__ . \DIRECTORY_SEPARATOR . 'get_exception_php56.php';
+
+        return array(
+            'exception with variadic number of args in trace' => _test_php56_create_exception_data(),
         );
     }
 }

@@ -197,9 +197,11 @@ final class StackTraceHelper
 
         if (!empty($stackTraceRow['class'])) {
             $class = $stackTraceRow['class'];
+            // @codeCoverageIgnoreStart
             if (!\class_exists($class)) {
                 return null;
             }
+            // @codeCoverageIgnoreEnd
 
             $reflectionClass = new \ReflectionClass($class);
             if (!$reflectionClass->hasMethod($fn)) {

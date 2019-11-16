@@ -29,6 +29,11 @@ final class SymfonyVarDumperTest extends BaseTestCase
      */
     public function testAll($var, CliDumper $dumper = null, ClonerInterface $cloner = null)
     {
+        if (\version_compare(\PHP_VERSION, '7.4') >= 0 && 'high' === \getenv('DEPENDENCIES')) {
+            // https://travis-ci.org/awesomite/var-dumper/jobs/612654461
+            $this->markTestSkipped('Function ReflectionType::__toString() is deprecated');
+        }
+
         $dumper = new SymfonyVarDumper($dumper, $cloner);
 
         /** @var CliDumper $sfDumper */

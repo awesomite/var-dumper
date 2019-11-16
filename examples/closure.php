@@ -11,7 +11,7 @@
 
 use Awesomite\VarDumper\LightVarDumper;
 
-require __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
+require __DIR__ . \DIRECTORY_SEPARATOR . 'init.php';
 
 $name = 'Jane';
 $function = function ($a, $b) use ($name) {

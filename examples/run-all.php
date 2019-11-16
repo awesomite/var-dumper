@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-foreach (\glob(__DIR__ . DIRECTORY_SEPARATOR . '*.php') as $file) {
+foreach (\glob(__DIR__ . \DIRECTORY_SEPARATOR . '*.php') as $file) {
     $basename = \basename($file);
     if (\in_array($basename, array('run-all.php', 'exception-variadic.php', 'init.php'), true)) {
         continue;

@@ -136,7 +136,7 @@ final class PropertiesTest extends BaseTestCase
         );
 
         // https://travis-ci.org/awesomite/var-dumper/jobs/240526896
-        if (\version_compare(PHP_VERSION, '7.1') >= 0 && !\defined('HHVM_VERSION')) {
+        if (\version_compare(\PHP_VERSION, '7.1') >= 0 && !\defined('HHVM_VERSION')) {
             $result[] = $this->getInternalClosureName();
         }
 
@@ -157,7 +157,7 @@ final class PropertiesTest extends BaseTestCase
             $fnCreateProperty('startLine', __LINE__ - 5),
             $fnCreateProperty('endLine', __LINE__ - 5),
         );
-        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
+        if (\version_compare(\PHP_VERSION, '5.4') >= 0) {
             $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
         }
 
@@ -185,7 +185,7 @@ final class PropertiesTest extends BaseTestCase
             $fnCreateProperty('startLine', __LINE__ - 5),
             $fnCreateProperty('endLine', __LINE__ - 5),
         );
-        if (\version_compare(PHP_VERSION, '5.4') >= 0) {
+        if (\version_compare(\PHP_VERSION, '5.4') >= 0) {
             $properties[] = $fnCreateProperty('closureScopeClass', \get_class($this));
         }
         $properties[] = $fnCreateProperty('use', array('a' => $a, 'b' => $b, 'c' => $c));

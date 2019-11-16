@@ -158,6 +158,28 @@ object(Closure) #1 {[
 ]}
 ```
 
+### Predefined constants
+
+[Source](examples/predefined-constants.php)
+
+```php
+<?php
+
+use Awesomite\VarDumper\LightVarDumper;
+
+$dumper = new LightVarDumper();
+$dumper->dump(array(
+    \M_LOG2E,
+    \PHP_INT_MAX,
+    \M_PI,
+));
+
+```
+
+```
+array(3) {M_LOG2E, PHP_INT_MAX, M_PI}
+```
+
 ## Versioning
 
 The version numbers follow the [Semantic Versioning 2.0.0](http://semver.org/) scheme.

@@ -35,6 +35,7 @@ return PhpCsFixer\Config::create()
         'new_with_braces' => true,
         'mb_str_functions' => true,
         'native_function_invocation' => true,
+        'native_constant_invocation' => true,
         'header_comment' => array('header' => $header),
         'phpdoc_align' => true,
         'phpdoc_order' => true,

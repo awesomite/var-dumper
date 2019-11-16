@@ -11,7 +11,7 @@
 
 use Awesomite\VarDumper\LightVarDumper;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
+require_once __DIR__ . \DIRECTORY_SEPARATOR . 'init.php';
 
 /**
  * The following class is just an example how to use LightVarDumper.

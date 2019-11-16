@@ -52,7 +52,7 @@ final class VarDumpersTest extends BaseTestCase
             false,
             null,
             \tmpfile(),
-            INF,
+            \INF,
             new \stdClass(),
             new ArrayObject(\range(1, 100)),
             new \RuntimeException('My exception'),

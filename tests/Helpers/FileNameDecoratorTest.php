@@ -27,7 +27,7 @@ final class FileNameDecoratorTest extends BaseTestCase
      */
     public function testDecorateFileName($input, $output, $maxDepth = null)
     {
-        if (DIRECTORY_SEPARATOR === '\\') {
+        if (\DIRECTORY_SEPARATOR === '\\') {
             $this->markTestSkipped('Feature does not work on Windows');
         }
         $this->assertSame($output, FileNameDecorator::decorateFileName($input, $maxDepth));

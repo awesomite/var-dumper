@@ -29,14 +29,14 @@ final class ProviderDump implements \IteratorAggregate
         }
         $result['null'] = array(null, "NULL\n");
         $result['resource'] = array(\tmpfile(), "#resource (\#[0-9]+ )?of type stream\n#");
-        if (!\defined('HHVM_VERSION') && \version_compare(PHP_VERSION, '5.4') >= 0) {
+        if (!\defined('HHVM_VERSION') && \version_compare(\PHP_VERSION, '5.4') >= 0) {
             $result['closure'] = $this->getClosure();
         }
         $result['debugInfo'] = $this->getDebugInfo();
         $result['debugInfo2'] = $this->getDebugInfo2();
         $result['debugInfo3'] = $this->getDebugInfo3();
         $result['brokenAlign'] = $this->getBrokenAlign();
-        if (\version_compare(PHP_VERSION, '5.6') < 0) {
+        if (\version_compare(\PHP_VERSION, '5.6') < 0) {
             $result['invalidDebugInfo'] = $this->getInvalidDebugInfo();
             $result['nonArrayDebugInfo'] = $this->getNonArrayDebugInfo();
         }
@@ -177,7 +177,7 @@ EXPECTED;
 
     private function getDebugInfo2()
     {
-        $data = array(1, 2.5, null, INF);
+        $data = array(1, 2.5, null, \INF);
 
         $expected
             = <<<'EXPECTED'
@@ -363,7 +363,7 @@ EXPECTED;
 
     private function getShortArray()
     {
-        $data = array(1, 2, null, 4.5, INF);
+        $data = array(1, 2, null, 4.5, \INF);
         $dump
             = <<<'DUMP'
 array(5) {1, 2, NULL, 4.5, INF}
@@ -377,7 +377,7 @@ DUMP;
     {
         $data = array(
             -1 => -1,
-            "multi line\nkey" => M_PI,
+            "multi line\nkey" => \M_PI,
             null,
             array(),
         );

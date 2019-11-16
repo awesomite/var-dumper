@@ -24,7 +24,7 @@ final class ExceptionDumper extends AbstractObjectDumper
 {
     public function supports($var)
     {
-        $baseClass = \version_compare(PHP_VERSION, '7.0') >= 0 ? 'Throwable' : 'Exception';
+        $baseClass = \version_compare(\PHP_VERSION, '7.0') >= 0 ? 'Throwable' : 'Exception';
 
         return \is_object($var) && $var instanceof $baseClass;
     }

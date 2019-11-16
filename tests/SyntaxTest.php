@@ -20,7 +20,7 @@ final class SyntaxTest extends BaseTestCase
 {
     public static function requireWholeSrc()
     {
-        $path = \realpath(\implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'src')));
+        $path = \realpath(\implode(\DIRECTORY_SEPARATOR, array(__DIR__, '..', 'src')));
         $directory = new \RecursiveDirectoryIterator($path);
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/^.+\.php$/', \RecursiveRegexIterator::GET_MATCH);

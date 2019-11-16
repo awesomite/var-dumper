@@ -75,7 +75,7 @@ class InternalVarDumper implements VarDumperInterface
 
     final protected function dumpPlaceInCodeAsString($number)
     {
-        $options = \version_compare(PHP_VERSION, '5.3.6') >= 0 ? DEBUG_BACKTRACE_IGNORE_ARGS : false;
+        $options = \version_compare(\PHP_VERSION, '5.3.6') >= 0 ? \DEBUG_BACKTRACE_IGNORE_ARGS : false;
         $stackTrace = \debug_backtrace($options);
         $num = 1 + $number + $this->shift;
 

@@ -100,7 +100,7 @@ DUMP;
             1,
             null,
             array(
-                M_PI,
+                \M_PI,
                 $object,
             ),
         );

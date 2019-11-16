@@ -31,7 +31,7 @@ final class FileNameDecorator
         }
 
         // @codeCoverageIgnoreStart
-        if (DIRECTORY_SEPARATOR === '\\') {
+        if (\DIRECTORY_SEPARATOR === '\\') {
             return $fileName;
         }
         // @codeCoverageIgnoreEnd
@@ -44,7 +44,7 @@ final class FileNameDecorator
             return $fileName;
         }
 
-        $exploded = \explode(DIRECTORY_SEPARATOR, $fileName);
+        $exploded = \explode(\DIRECTORY_SEPARATOR, $fileName);
 
         if (\count($exploded) - 1 <= $maxDepth) {
             return $fileName;
@@ -53,6 +53,6 @@ final class FileNameDecorator
         $newParts = \array_slice($exploded, -$maxDepth, $maxDepth);
         \array_unshift($newParts, '(...)');
 
-        return \implode(DIRECTORY_SEPARATOR, $newParts);
+        return \implode(\DIRECTORY_SEPARATOR, $newParts);
     }
 }

@@ -82,9 +82,6 @@ final class SubdumpersCollection
             }
         }
 
-        throw new \RuntimeException(\sprintf(
-            'None of the subdumpers supports this variable [%s]',
-            \is_object($var) ? \get_class($var) : \gettype($var)
-        ));
+        throw new \RuntimeException(\sprintf('None of the subdumpers supports this variable [%s]', \is_object($var) ? \get_class($var) : \gettype($var)));
     }
 }

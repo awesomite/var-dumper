@@ -64,15 +64,15 @@ final class ArrayRecursiveDumper extends AbstractDumper
      */
     private static function canCompareArrayReferences()
     {
-        if (\version_compare(PHP_VERSION, '5.4.5') >= 0) {
+        if (\version_compare(\PHP_VERSION, '5.4.5') >= 0) {
             return true;
         }
 
         // 5.4.* && < 5.4.5
-        if (PHP_MINOR_VERSION === 4) {
+        if (\PHP_MINOR_VERSION === 4) {
             return false;
         }
 
-        return \version_compare(PHP_VERSION, '5.3.15') >= 0;
+        return \version_compare(\PHP_VERSION, '5.3.15') >= 0;
     }
 }

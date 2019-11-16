@@ -14,12 +14,16 @@ use Awesomite\VarDumper\LightVarDumper;
 require __DIR__ . \DIRECTORY_SEPARATOR . 'init.php';
 
 $dumper = new LightVarDumper();
-$dumper->dump("some\x01\x02text");
+$dumper->dump(array(
+    \M_LOG2E,
+    \PHP_INT_MAX,
+    \M_PI,
+));
 
 /*
 
 Output:
 
-“some\x01\x02text”
+array(3) {M_LOG2E, PHP_INT_MAX, M_PI}
 
 */

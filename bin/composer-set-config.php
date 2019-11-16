@@ -6,7 +6,7 @@
  * @param ...$keys
  */
 $handle = function ($value, $_) {
-    $jsonPath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'composer.json';
+    $jsonPath = __DIR__ . \DIRECTORY_SEPARATOR . '..' . \DIRECTORY_SEPARATOR . 'composer.json';
     $json = \json_decode(\file_get_contents($jsonPath), true);
     if (!isset($json['config'])) {
         $json['config'] = array();
@@ -23,7 +23,7 @@ $handle = function ($value, $_) {
 
     $config[\array_slice(\func_get_args(), -1, 1)[0]] = $value;
 
-    $options = JSON_UNESCAPED_UNICODE;
+    $options = \JSON_UNESCAPED_UNICODE;
     if (\defined('JSON_PRETTY_PRINT')) {
         $options |= \constant('JSON_PRETTY_PRINT');
     }

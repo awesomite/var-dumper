@@ -96,6 +96,12 @@ install:
     if [[ ${TRAVIS_PHP_VERSION:0:4} == "hhvm" ]]; then
       export PHPUNIT_ARGS="--exclude-group=syntax-test --no-coverage";
     fi
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.3" ]]; then
+      cd dev-tools;
+      composer remove friendsofphp/php-cs-fixer --no-update;
+      cd ..;
+    fi
   - cd dev-tools; travis_retry composer update; cd ..
 
 before_script:

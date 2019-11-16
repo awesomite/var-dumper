@@ -192,7 +192,7 @@ EXPECTED;
     private function createExceptionWithStackTrace()
     {
         $function = function () {
-            return $this->createExceptionWithStackTrace2(array(\M_PI, \M_PI_2));
+            return $this->createExceptionWithStackTrace2(array(\M_PI, \M_PI_2), null);
         };
 
         return $function();
@@ -235,6 +235,7 @@ object(RangeException) #{$objectId} {[
         )
         5. (...)/ProviderExceptions.php:195 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->createExceptionWithStackTrace2(
             mathArray: array(2) {M_PI, M_PI_2}
+            arg2:      NULL
         )
         6. (...)/ProviderExceptions.php:198 Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
         (...)

@@ -88,14 +88,14 @@ EXPECTED;
         $dumper->setMaxDepth(1);
         $dumper->setMaxChildren(2);
 
-        $exception = new \LogicException('My message');
+        $exception = new \UnexpectedValueException('My unexpected exception', 64);
 
         $objectId = HasherFactory::create()->getHashId($exception);
 
         $expected = <<<EXPECTED
-object(LogicException) #{$objectId} {[
-    [message] => “My message”
-    [code] =>    0
+object(UnexpectedValueException) #{$objectId} {[
+    [message] => “My unexpected exception”
+    [code] =>    64
     (...)
 ]}
 

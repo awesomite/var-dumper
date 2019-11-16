@@ -149,8 +149,8 @@ $dumper->dump($function);
 object(Closure) #1 {[
         $name =>      “{closure}”
         $filename =>  “(...)/var-dumper/examples/closure.php”
-        $startLine => 17
-        $endLine =>   18
+        $startLine => 6
+        $endLine =>   7
         $use =>
             array(1) {
                 [name] => “Jane”

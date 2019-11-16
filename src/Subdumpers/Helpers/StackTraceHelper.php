@@ -31,9 +31,11 @@ final class StackTraceHelper
      */
     public static function dumpStackTraceAsPart(array $trace, Container $container)
     {
+        // @codeCoverageIgnoreStart
         if (empty($trace)) {
             return new LinePart('[]');
         }
+        // @codeCoverageIgnoreEnd
 
         $result = new Parts();
         $limit = $container->getConfig()->getMaxChildren();

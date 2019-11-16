@@ -54,10 +54,16 @@ final class ExceptionDumper extends AbstractObjectDumper
         $body->addIndent($this->container->getConfig()->getIndent());
         $result->appendPart($body);
 
-        if (\count($array) < $this->container->getConfig()->getMaxChildren()) {
+        $childDiff = $this->container->getConfig()->getMaxChildren() - \count($array);
+
+        if ($childDiff > 0) {
             $trace = $this->prepareTrace($throwable->getTrace());
             $trace->addIndent($this->container->getConfig()->getIndent());
             $result->appendPart($trace);
+        } elseif (0 === $childDiff) {
+            $dotsPart = new LinePart('(...)');
+            $dotsPart->addIndent($this->container->getConfig()->getIndent());
+            $result->appendPart($dotsPart);
         }
 
         $result->appendPart(new LinePart(']}'));
@@ -72,9 +78,11 @@ final class ExceptionDumper extends AbstractObjectDumper
      */
     private function prepareTrace(array $trace)
     {
+        // @codeCoverageIgnoreStart
         if (!$trace) {
             return new LinePart('[trace] =>    []');
         }
+        // @codeCoverageIgnoreEnd
 
         if ($this->container->getDepth()->getValue() === $this->container->getConfig()->getMaxDepth()) {
             return new LinePart('[trace] =>    [...]');

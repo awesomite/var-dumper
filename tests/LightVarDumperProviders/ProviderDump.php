@@ -132,19 +132,17 @@ DUMP;
         $dump
             = <<<'DUMP'
 object(Closure) #%digit% {[
-        $name =>              “Awesomite\VarDumper\LightVarDumperProviders\{closure}”
-        $filename =>          “(...)/tests/LightVarDumperProviders/ProviderDump.php”
-        $startLine =>         %digit%
-        $endLine =>           %digit%
-        $closureScopeClass => “Awesomite\VarDumper\LightVarDumperProviders\ProviderDump”
+    [name] =>              “Awesomite\VarDumper\LightVarDumperProviders\{closure}”
+    [filename] =>          “(...)/tests/LightVarDumperProviders/ProviderDump.php”
+    [startLine] =>         %digit%
+    [endLine] =>           %digit%
+    [closureScopeClass] => “Awesomite\VarDumper\LightVarDumperProviders\ProviderDump”
 ]}
 
 DUMP;
 
         $replace = array(
             '%digit%' => '[0-9]{1,}',
-            '%file%' => '.*',
-            '%any%' => '.*',
         );
         $regex = '#^' . \preg_quote($dump, '#') . '$#ms';
         $regex = \str_replace(\array_keys($replace), \array_values($replace), $regex);

@@ -38,7 +38,11 @@ final class ClosureDumper extends AbstractObjectDumper
         $result = new Parts();
         $result->appendPart($header);
 
-        $body = ObjectBigDumper::dumpProperties($this->decorateProperties($this->getProperties($closure)), $this->container);
+        $properties = array();
+        foreach ($this->decorateProperties($this->getProperties($closure)) as $property) {
+            $properties[$property->getName()] = $property->getValue();
+        }
+        $body = ArrayBigDumper::dumpBody($properties, $this->container);
         $body->addIndent($this->container->getConfig()->getIndent());
         $result->appendPart($body);
 

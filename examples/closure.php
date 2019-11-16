@@ -25,16 +25,16 @@ $dumper->dump($function);
 
 Output:
 
-object(Closure) #1 {[
-        $name =>      “{closure}”
-        $filename =>  “(...)/var-dumper/examples/closure.php”
-        $startLine => 18
-        $endLine =>   19
-        $use =>
-            array(2) {
-                [firstName] => “Mary”
-                [lastName] =>  “Watson”
-            }
+object(Closure) #3 {[
+    [name] =>      “{closure}”
+    [filename] =>  “(...)/var-dumper/examples/closure.php”
+    [startLine] => 18
+    [endLine] =>   19
+    [use] =>
+        array(2) {
+            [firstName] => “Mary”
+            [lastName] =>  “Watson”
+        }
 ]}
 
 */

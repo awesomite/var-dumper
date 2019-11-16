@@ -70,10 +70,10 @@ final class LightVarDumperTest extends BaseTestCase
      * @dataProvider providerThrowable
      *
      * @param VarDumperInterface    $dumper
-     * @param \Exception|\Throwable $data
+     * @param \Exception|\Throwable $exception
      * @param string                $expectedDump
      */
-    public function testThrowable(VarDumperInterface $dumper, $data, $expectedDump)
+    public function testThrowable(VarDumperInterface $dumper, $exception, $expectedDump)
     {
         /*
          * There are small differences between HHVM and PHP, e.g. name of function for closure:
@@ -84,12 +84,27 @@ final class LightVarDumperTest extends BaseTestCase
          * https://travis-ci.org/awesomite/var-dumper/jobs/612736181
          */
         if (\defined('HHVM_VERSION')) {
-            $this->assertInternalType('string', $dumper->dumpAsString($data));
+            $this->assertInternalType('string', $dumper->dumpAsString($exception));
 
             return;
         }
 
-        $this->assertSame($expectedDump, $dumper->dumpAsString($data));
+        /*
+         * PHP ^5.4:  Awesomite\VarDumper\LightVarDumperProviders\ProviderExceptions->Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+         * PHP 5.3.*: Awesomite\VarDumper\LightVarDumperProviders\{closure}()
+         *
+         * https://travis-ci.org/awesomite/var-dumper/jobs/612762242
+         */
+        if (\version_compare(\PHP_VERSION, '5.4') < 0) {
+            $regex = '/[a-zA-Z0-9_]+' . \preg_quote('->', '/') . '[a-zA-Z0-9_\\\\]+' . \preg_quote('{closure}()', '/') . '/';
+            $dump = \preg_replace($regex, '{closure}()', $dumper->dumpAsString($exception));
+
+            $this->assertSame($expectedDump, $dump);
+
+            return;
+        }
+
+        $this->assertSame($expectedDump, $dumper->dumpAsString($exception));
     }
 
     public function providerThrowable()

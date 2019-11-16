@@ -189,9 +189,11 @@ final class StackTraceHelper
      */
     private static function getFunctionReflection(array $stackTraceRow)
     {
+        // @codeCoverageIgnoreStart
         if (empty($stackTraceRow['function'])) {
             return null;
         }
+        // @codeCoverageIgnoreEnd
 
         $fn = $stackTraceRow['function'];
 

@@ -171,11 +171,10 @@ use Awesomite\VarDumper\LightVarDumper;
 
 $dumper = new LightVarDumper();
 $dumper->dump(array(
-    \M_LOG2E,
-    \PHP_INT_MAX,
-    \M_PI,
+    M_LOG2E,
+    PHP_INT_MAX,
+    M_PI,
 ));
-
 ```
 
 ```

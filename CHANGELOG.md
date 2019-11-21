@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.4.0] - ????-??-??
+## [1.4.0] - 2019-11-21
 
 Output format of printed `Closure` has been changed. New format:
 

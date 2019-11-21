@@ -147,16 +147,16 @@ $dumper->dump($function);
 ```
 
 ```
-object(Closure) #1 {[
-        $name =>      “{closure}”
-        $filename =>  “(...)/var-dumper/examples/closure.php”
-        $startLine => 7
-        $endLine =>   8
-        $use =>
-            array(2) {
-                [firstName] => “Mary”
-                [lastName] =>  “Watson”
-            }
+object(Closure) #3 {[
+    [name] =>      “{closure}”
+    [filename] =>  “(...)/var-dumper/examples/closure.php”
+    [startLine] => 7
+    [endLine] =>   8
+    [use] =>
+        array(2) {
+            [firstName] => “Mary”
+            [lastName] =>  “Watson”
+        }
 ]}
 ```
 
@@ -171,11 +171,10 @@ use Awesomite\VarDumper\LightVarDumper;
 
 $dumper = new LightVarDumper();
 $dumper->dump(array(
-    \M_LOG2E,
-    \PHP_INT_MAX,
-    \M_PI,
+    M_LOG2E,
+    PHP_INT_MAX,
+    M_PI,
 ));
-
 ```
 
 ```

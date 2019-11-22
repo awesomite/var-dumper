@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.5.0] - 2019-11-22
+## [1.5.0] - 2019-11-23
 
 Symfony 5.0 has been supported.
 

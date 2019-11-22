@@ -27,4 +27,4 @@ $dumped = $dumper->dumpAsString('Hello world!');
     \is_string($dumped) && '' !== $dumped,
     'Method dumpAsString must return not empty string.'
 );
-$dumper->dump('Tests passed');
+$dumper->dump('Tests passed.');

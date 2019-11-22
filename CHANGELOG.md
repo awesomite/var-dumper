@@ -2,7 +2,7 @@
 
 ## [1.5.0] - 2019-11-23
 
-Symfony 5.0 has been supported.
+Symfony 5.0 has become supported.
 
 ## [1.4.0] - 2019-11-21
 

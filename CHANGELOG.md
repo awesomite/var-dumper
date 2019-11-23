@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.5.0] - 2019-11-23
+
+Symfony 5.0 has become supported.
+
 ## [1.4.0] - 2019-11-21
 
 Output format of printed `Closure` has been changed. New format:
@@ -104,6 +108,7 @@ $reflectionProp->getValue($obj);
 
 This version contains the same source code as [0.12.0].
 
+[1.5.0]: https://github.com/awesomite/var-dumper/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/awesomite/var-dumper/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/awesomite/var-dumper/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/awesomite/var-dumper/compare/v1.2.0...v1.2.1

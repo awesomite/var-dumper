@@ -128,6 +128,14 @@ script:
       chmod +x infection.phar;
       ./infection.phar
     fi
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.3" ]]; then
+      composer update --no-dev
+      composer remove --dev phpunit/phpunit awesomite/phpunit-4.8-fixer sebastian/comparator
+      composer require symfony/var-dumper:^5.0
+      composer show
+    fi
+  - php tests/symfony.php
   - php examples/run-all.php
 
 after_script:

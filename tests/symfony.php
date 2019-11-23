@@ -13,18 +13,25 @@ namespace Awesomite\VarDumper;
 
 require \implode(\DIRECTORY_SEPARATOR, array(__DIR__, '..', 'vendor', 'autoload.php'));
 
-\assert_options(\ASSERT_WARNING, 0);
-\assert_options(
-    \ASSERT_CALLBACK,
-    function ($file, $line, $_, $message) {
-        throw new \RuntimeException(\sprintf('%s %s:%d', $message, $file, $line));
+\set_error_handler(
+    function ($no, $message, $file, $line) {
+        throw new \ErrorException($message, 0, $no, $file, $no);
+    },
+    \E_ALL | \E_STRICT
+);
+
+\set_exception_handler(
+    function ($exception) {
+        /** @var \Exception $exception */
+        echo '[', \get_class($exception), '] ', $exception->getMessage(), "\n";
+        echo $exception->getTraceAsString(), "\n";
+        exit(1);
     }
 );
 
 $dumper = new SymfonyVarDumper();
 $dumped = $dumper->dumpAsString('Hello world!');
-\assert(
-    \is_string($dumped) && '' !== $dumped,
-    'Method dumpAsString must return not empty string.'
-);
+if (!\is_string($dumped) || '' === $dumped) {
+    throw new \UnexpectedValueException('Method dumpAsString must return not empty string.');
+}
 $dumper->dump('Tests passed.');
